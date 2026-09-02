@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto — Tecno Factory</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="blogs.html">Blogs</a></li>
+      <li><a href="contacto.html" aria-current="page">Contacto</a></li>
+      <li><a href="registro.html">Registrarme</a></li>
+      <li><a href="login.html">Iniciar sesión</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="carrito.html" class="cart-btn" aria-label="Ver carrito de compras">
+        🛒 Carrito <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head wrap">
+    <span class="eyebrow">TF / CONTACTO</span>
+    <h1>Escríbenos</h1>
+    <p>¿Tienes una consulta sobre un producto, tu pedido o algo que quieras contarnos? Completa el formulario y te responderemos a la brevedad.</p>
+  </section>
+
+  <section class="section wrap">
+    <form class="form" id="form-contacto" novalidate>
+
+      <div class="field" id="field-nombre">
+        <label for="nombre">Nombre *</label>
+        <input type="text" id="nombre" name="nombre" maxlength="100" autocomplete="name">
+        <span class="hint">Máximo 100 caracteres.</span>
+        <span class="error-msg">Ingresa tu nombre.</span>
+      </div>
+
+      <div class="field" id="field-correo">
+        <label for="correo">Correo electrónico</label>
+        <input type="text" id="correo" name="correo" maxlength="100" autocomplete="email" placeholder="nombre@gmail.com">
+        <span class="hint">Solo se aceptan correos @duoc.cl, @profesor.duoc.cl o @gmail.com.</span>
+        <span class="error-msg">Ingresa un correo válido de dominio @duoc.cl, @profesor.duoc.cl o @gmail.com.</span>
+      </div>
+
+      <div class="field" id="field-comentario">
+        <label for="comentario">Comentario *</label>
+        <textarea id="comentario" name="comentario" maxlength="500"></textarea>
+        <span class="hint"><span id="contador-comentario">0</span>/500 caracteres.</span>
+        <span class="error-msg">Cuéntanos tu consulta o comentario (máximo 500 caracteres).</span>
+      </div>
+
+      <button type="submit" class="btn">Enviar mensaje</button>
+
+      <div class="form-status" id="form-status"></div>
+    </form>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <h4>Tecno Factory</h4>
+      <p>Tecnología pensada para acompañarte en el estudio, el trabajo y tus proyectos personales.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>hola@tecnofactory.cl</li>
+        <li>+56 9 1234 5678</li>
+        <li>Santiago, Chile</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Tecno Factory.</span>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/contacto.js"></script>
+</body>
+</html>
