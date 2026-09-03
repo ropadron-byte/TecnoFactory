@@ -448,6 +448,15 @@ button{ font-family:inherit; cursor:pointer; }
 .blog-hero{
   aspect-ratio:21/8;
   background:linear-gradient(135deg,var(--brand),#4A6E9C);
+  background-size:cover;
+  background-position:center;
+  border-radius:var(--radius);
+  margin-bottom:28px;
+}
+.blog-hero-img{
+  width:100%;
+  aspect-ratio:21/8;
+  object-fit:cover;
   border-radius:var(--radius);
   margin-bottom:28px;
 }
