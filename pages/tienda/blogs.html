@@ -1,12 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogs</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blogs — Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
 </head>
 <body>
-    <h1> Noticias Importantes </h1>
-    <h2>  </h2>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="blogs.html"aria-current="page">Blogs</a></li>
+      <li><a href="contacto.html" >Contacto</a></li>
+      <li><a href="registro_usuario.html">Registrarme</a></li>
+      <li><a href="iniciar_sesion.html">Iniciar sesión</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="carrito.html" class="cart-btn" aria-label="Ver carrito de compras">
+        🛒 Carrito <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head wrap">
+    <span class="eyebrow">TF / BLOG</span>
+    <h1>Novedades y curiosidades tecno</h1>
+    <p>Aquí podrás encontrar noticias de la tienda, lanzamientos y datos curiosos sobre tecnología, seleccionados por el equipo de Tecno Factory.</p>
+  </section>
+
+  <section class="section wrap">
+    <div class="grid grid-3">
+
+      <article class="card">
+        <div class="media media--card">
+        <img src="../../images/blog_apertura_tienda.jpg" alt="Apertura de la tienda online Tecno Factory">
+        <span class="media-tag">NOVEDAD</span>
+        </div>
+        <div class="card-body">
+          <span class="card-meta">12 AGO 2026 · NOTICIAS</span>
+          <h3>Abrimos nuestra tienda online</h3>
+          <p>Tecno Factory ya está disponible en línea: conoce por qué decidimos dar el salto al ecommerce y qué viene después.</p>
+          <a class="btn ghost small" href="detalle_blog_1.html">Leer más</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="media media--card">
+        <img src="../../images/blog_ssd.jpg" alt="Disco de estado sólido">
+        <span class="media-tag">DATO CURIOSO</span>
+        </div>
+        <div class="card-body">
+          <span class="card-meta">28 AGO 2026 · CURIOSIDADES</span>
+          <h3>5 datos curiosos sobre el SSD</h3>
+          <p>¿Sabías que el primer SSD comercial costaba miles de dólares por apenas unos megabytes? Te contamos esto y más.</p>
+          <a class="btn ghost small" href="detalle_blog_2.html">Leer más</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="media media--card">
+        <img src="../../images/blog_setup.jpg" alt="Escritorio con equipo de computación">
+        <span class="media-tag">PRÓXIMAMENTE</span>
+        </div>
+        <div class="card-body">
+          <span class="card-meta">PRÓXIMAMENTE</span>
+          <h3>Guía para armar tu setup ideal</h3>
+          <p>Estamos preparando una guía completa para elegir monitor, teclado y mouse según tu forma de trabajar. Vuelve pronto.</p>
+          <span class="btn ghost small" style="opacity:.5;pointer-events:none;">Próximamente</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <h4>Tecno Factory</h4>
+      <p>Tecnología pensada para acompañarte en el estudio, el trabajo y tus proyectos personales.</p>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>tecnofactoryservicio@gmail.cl</li>
+        <li>+56 9 1234 5678</li>
+        <li>Santiago, Chile</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Tecno Factory.</span>
+  </div>
+</footer>
+
+<script src="../../js/products.js"></script>
+<script src="../../js/carrito.js"></script>
+<script src="../../js/main.js"></script>
 </body>
 </html>
