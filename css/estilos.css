@@ -561,7 +561,7 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .blog-hero-img{
   width:100%;
-  aspect-ratio:21/8;
+  aspect-ratio:16/9;
   object-fit:cover;
   border-radius:var(--radius);
   margin-bottom:28px;
@@ -579,4 +579,3 @@ button{ font-family:inherit; cursor:pointer; }
   position:absolute; width:1px; height:1px;
   overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
 }
-
