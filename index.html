@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoFactory</title>
 
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/estilosIndex.css">
     <link rel="stylesheet" href="css/estilos.css">
+
+
 </head>
 
 <body>
@@ -38,41 +46,47 @@
 </header>
  
 <!-- 1. HERO Y CARRUSEL -->
-<section class="bg-dark text-white py-5 position-relative">
+<section class="hero-banner text-white py-5 position-relative">
   <div class="container text-center mb-4">
-    <h1 class="display-4 fw-bold">Bienvenido a Tecno Factory
-      <p class = "fs-1">Los mejores precios y una gran variedad de productos electrónicos</p>
-    </h1>
-    
+    <h1 class="display-4 hero-title mb-3">Bienvenido a Tecno Factory</h1>
+    <p class="fs-5 hero-subtitle max-w-2xl mx-auto">
+      Los mejores precios y una gran variedad de productos electrónicos
+    </p>
   </div>
 
   <div class="container">
-    <!-- Contenedor para controlar la altura máxima del carrusel -->
-    <div id="carouselHero" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 1500px; min-width: 1000px; max-height: 500px; overflow: hidden;">
-      <div class="carousel-inner rounded shadow">
-        <div class="carousel-item active bg-white p-4">
-          <img src="https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Monitor 1" style="max-height: 400px; min-height: 400px; object-fit: contain;">
+    <div id="carouselHero" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 1000px; overflow: hidden;">
+      <!-- Quitado bordes duros y sombras para integración perfecta -->
+      <div class="carousel-inner">
+        
+        <div class="carousel-item active hero-carousel-item p-4">
+          <img src="https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Monitor 1" style="max-height: 380px; object-fit: contain;">
         </div>
-        <div class="carousel-item bg-white p-4">
-          <img src="https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Monitor 2" style="max-height: 400px; min-height: 400px; object-fit: contain;">
+        
+        <div class="carousel-item hero-carousel-item p-4">
+          <img src="https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Monitor 2" style="max-height: 380px; object-fit: contain;">
         </div>
-        <div class="carousel-item bg-white p-4">
-          <img src="https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Disco Duro" style="max-height: 400px; min-height: 400px; object-fit: contain;">
+        
+        <div class="carousel-item hero-carousel-item p-4">
+          <img src="https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Disco Duro" style="max-height: 380px; object-fit: contain;">
         </div>
+
       </div>
+
+      <!-- Botones de navegación del carrusel -->
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
-        <span aria-hidden="true"></span>
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Anterior</span>
       </button>
       <button class="carousel-control-next" type="button" data-bs-target="#carouselHero" data-bs-slide="next">
-        <span aria-hidden="true"></span>
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Siguiente</span>
       </button>
     </div>
   </div>
 </section>
 
-<!-- 2. BARRA DE BENEFICIOS (OPCIONAL) -->
+<!-- 2. BARRA DE BENEFICIOS -->
 <section class="py-4 bg-body-tertiary border-bottom">
   <div class="container">
     <div class="row text-center g-3">
@@ -165,11 +179,16 @@
 </section>
 
 <footer class="site-footer">
-  <div class="wrap footer-grid">
+  <div class="wrap footer-grid" style="
+    border-top-width: 5px;
+    border-bottom-width: 10px;
+    padding-bottom: 5px;
+    padding-top: 10px;">
     <div>
       <h4>Tecno Factory</h4>
       <p>Tecnología pensada para acompañarte en el estudio, el trabajo y tus proyectos personales.</p>
     </div>
+
     <div>
       <h4>Contacto</h4>
       <ul>
@@ -178,13 +197,46 @@
         <li>Santiago, Chile</li>
       </ul>
     </div>
+
+    <div>
+      <h4>Medios de Pago</h4>
+      <div class="payment-methods">
+        
+        <div class="payment-card-badge">
+          <img src="https://e7.pngegg.com/pngimages/882/375/png-clipart-wikipedia-logo-visa-graphics-credit-card-the-african-grassland-blue-text.png" alt="Visa">
+          <span>Crédito</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+          <span>Mastercard</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="https://vectorseek.com/wp-content/uploads/2023/09/WebPay-Logo-Vector.svg-.png" alt="Webpay">
+          <span>WebPay</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="https://clientes.xgaming.cl/tutoriales/pago/1.png" alt="BancoEstado">
+          <span>CuentaRUT</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="images/logos/Falabella-Banco-Logo-PNG-Picture.png" alt="Banco Falabella">
+          <span>CMR</span>
+        </div>
+
+      </div>
+    </div>
   </div>
+
   <div class="wrap footer-bottom">
     <span>© 2026 Tecno Factory.</span>
   </div>
 </footer>
 
-<!-- Bootstrap 5.3 JS Bundle (Incluye Popper) -->
+<!-- Bootstrap 5.3 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

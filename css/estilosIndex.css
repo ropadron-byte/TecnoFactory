@@ -1,0 +1,111 @@
+/* Ampliar el espacio del footer hacia las esquinas */
+.site-footer .wrap.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Grilla de medios de pago en 2 columnas */
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 120px);
+  gap: 10px;
+  justify-content: start;
+  margin-top: 12px;
+}
+
+/* El 5º elemento (impar) se ubica centrado abajo */
+.payment-card-badge:nth-child(5) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 120px;
+}
+
+/* Estilo general del bloque transparente */
+.payment-card-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.payment-card-badge:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tamaño base estándar para Visa, Mastercard y Webpay */
+.payment-card-badge img {
+  width: 26px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- AJUSTE ESPECÍFICO PARA AGRANDAR IMÁGENES --- */
+
+/* 4º elemento: BancoEstado / CuentaRUT */
+.payment-card-badge:nth-child(4) img {
+  width: 36px;
+  height: 24px;
+}
+
+/* 5º elemento: CMR Falabella */
+.payment-card-badge:nth-child(5) img {
+  width: 38px;
+  height: 26px;
+}
+
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      /* Fondo general del banner */
+      .hero-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+      }
+
+      /* Tipografía estilizada */
+      .hero-title {
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        background: linear-gradient(90deg, #ffffff, #93c5fd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-subtitle {
+        color: #cbd5e1;
+        font-weight: 400;
+      }
+
+      /* Hacer transparente el interior del carrusel para tomar exactamente el mismo fondo del banner */
+      .hero-carousel-item {
+        background: transparent !important;
+      }
+
+      /* Flechas en tono gris muy suave/degradado */
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        filter: invert(100%) opacity(0.25);
+        transition: opacity 0.3s ease;
+      }
+
+      /* Mostrar las flechas más claras solo al pasar el mouse por encima */
+      .carousel-control-prev:hover .carousel-control-prev-icon,
+      .carousel-control-next:hover .carousel-control-next-icon {
+        filter: invert(100%) opacity(0.7);
+      }
