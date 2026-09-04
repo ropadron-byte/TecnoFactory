@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de producto — Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="../../index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="blogs.html">Blogs</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="registro_usuario.html">Registrarme</a></li>
+      <li><a href="iniciar_sesion.html">Iniciar sesión</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="carrito.html" class="cart-btn" aria-label="Ver carrito de compras">
+        🛒 Carrito <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head wrap">
+    <span class="eyebrow"><a href="productos.html">← Volver al catálogo</a></span>
+    <h1 id="producto-titulo">Ficha de producto</h1>
+  </section>
+
+  <section class="section wrap">
+
+    <!-- Mientras detalle.js todavía está pidiendo el producto a la API -->
+    <p id="estado-carga" style="color:var(--ink-soft); padding-block:20px;">
+      Cargando ficha del producto...
+    </p>
+
+    <!-- Se muestra si el id de la URL no existe o la API falla -->
+    <p id="producto-error" style="color:var(--danger); display:none; padding-block:20px;">
+      No encontramos este producto. <a href="productos.html">Vuelve al catálogo</a>.
+    </p>
+
+    <!-- Ficha completa, la arma detalle.js con los datos reales -->
+    <div id="producto-detalle" class="product-detail" style="display:none;">
+
+      <div class="product-gallery">
+        <div class="media media--square">
+          <img id="producto-imagen" src="" alt="">
+        </div>
+      </div>
+
+      <div class="product-info">
+        <span class="card-meta" id="producto-categoria"></span>
+        <h1 id="producto-nombre" style="margin-top:.2em;"></h1>
+        <p id="producto-descripcion"></p>
+
+        <p class="price" id="producto-precio"></p>
+        <span class="stock-tag" id="producto-stock"></span>
+
+        <div class="qty" id="selector-cantidad" style="margin-top:20px;">
+          <button type="button" id="btn-restar" aria-label="Restar unidad">−</button>
+          <input type="number" id="input-cantidad" value="1" min="1">
+          <button type="button" id="btn-sumar" aria-label="Sumar unidad">+</button>
+        </div>
+
+        <button class="btn accent" id="btn-agregar-carrito" style="margin-top:16px;">
+          Agregar al carrito
+        </button>
+        <p id="mensaje-carrito" style="display:none; margin-top:10px;"></p>
+
+        <div class="spec-list" id="lista-especificaciones"></div>
+      </div>
+
+    </div>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <h4>Tecno Factory</h4>
+      <p>Tecnología pensada para acompañarte en el estudio, el trabajo y tus proyectos personales.</p>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>tecnofactoryservicio@gmail.cl</li>
+        <li>+56 9 1234 5678</li>
+        <li>Santiago, Chile</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Tecno Factory.</span>
+  </div>
+</footer>
+
+<!-- carrito.js primero (script clásico), para que window.addToCart
+     ya exista cuando detalle.js (módulo) enlace el botón de compra. -->
+<script src="../../js/carrito.js"></script>
+<script type="module" src="../../js/ApiDummyJson/detalle.js"></script>
+</body>
+</html>

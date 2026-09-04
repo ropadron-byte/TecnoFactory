@@ -1,27 +1,42 @@
 // categoryManager.js
+//
+// Este archivo lo pienso como un "puente" entre la capa cruda de la API
+// (api.js) y las páginas que necesitan los productos ya organizados por
+// categoría. No hago fetch acá directamente, reutilizo lo que ya expone
+// api.js para no duplicar la lógica de peticiones.
 import { fetchAllTargetProducts, fetchCategory } from './api.js';
 
-// 1. Traer solo los productos de CIERTA categoría
-// Reutiliza directamente la función de api.js, actuando como un puente limpio.
+/**
+ * Traigo solo los productos de UNA categoría específica.
+ * Es básicamente un alias de fetchCategory, pero lo dejo con este nombre
+ * porque desde las páginas (por ejemplo el catálogo con sus botones de
+ * filtro) queda más claro llamar a "getProductsBySpecificCategory" que
+ * acordarme del nombre interno de la función de la API.
+ */
 export async function getProductsBySpecificCategory(categoryName) {
   return await fetchCategory(categoryName);
 }
 
-// 2. Traer TODOS los productos ordenados/agrupados por su categoría
+/**
+ * Traigo TODOS los productos de las categorías que me interesan y los
+ * agrupo en un objeto donde cada llave es el nombre de la categoría y
+ * el valor es el array de productos de esa categoría. Esto me sirve,
+ * por ejemplo, para armar el catálogo completo dividido en secciones.
+ */
 export async function getGroupedProducts() {
-  // Obtenemos la data cruda de la cápsula base
+  // Primero obtengo la data "cruda" (todos los productos mezclados).
   const allProducts = await fetchAllTargetProducts();
-  
-  // Usamos reduce para crear un objeto donde cada "llave" es una categoría
+
+  // Uso reduce para ir armando el objeto agrupado: por cada producto,
+  // reviso a qué categoría pertenece y lo empujo al array de esa llave.
   const grouped = allProducts.reduce((acumulador, producto) => {
     const categoria = producto.category;
-    
-    // Si la categoría no existe en el objeto, la creamos como un array vacío
+
+    // Si todavía no existe esa categoría en el objeto, la creo vacía.
     if (!acumulador[categoria]) {
       acumulador[categoria] = [];
     }
-    
-    // Empujamos el producto a su respectiva categoría
+
     acumulador[categoria].push(producto);
     return acumulador;
   }, {});

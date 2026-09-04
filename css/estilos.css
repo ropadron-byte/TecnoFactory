@@ -1,10 +1,23 @@
 /* =========================================================
    TECNO FACTORY — hoja de estilos compartida (tienda)
    Paleta: catálogo/ficha técnica industrial.
+
+   La uso en casi todas las páginas de "pages/tienda/" (blogs, contacto,
+   catálogo, ficha de producto, etc). index.html usa Bootstrap para el
+   home, pero desde acá para adentro prefiero mis propias clases para
+   tener control total del diseño sin pelear con las clases de Bootstrap.
    ========================================================= */
 
+/* Traigo 3 tipografías de Google Fonts: una para títulos (Space
+   Grotesk), una para texto normal (Inter) y una monoespaciada
+   (JetBrains Mono) que uso para precios, fechas y datos técnicos, así
+   se sienten como una "ficha técnica" real. */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
 
+/* Dejo toda la paleta de colores y variables de layout acá arriba, en
+   :root, para no repetir valores sueltos por todo el archivo. Si algún
+   día quiero cambiar el color de marca, lo cambio en un solo lugar y
+   se actualiza en toda la tienda. */
 :root{
   --bg:        #F4F5F7;
   --surface:   #FFFFFF;
@@ -26,8 +39,11 @@
   --radius: 3px;
 }
 
+/* Uso box-sizing:border-box en todo para que el padding y el border no
+   me alteren el ancho que yo defino, que es el comportamiento que
+   siempre termino necesitando. */
 *,*::before,*::after{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; } /* así los links con # (anclas) se desplazan suave */
 body{
   margin:0;
   background:var(--bg);
@@ -53,13 +69,20 @@ img{ max-width:100%; display:block; }
 ul{ margin:0; padding:0; list-style:none; }
 button{ font-family:inherit; cursor:pointer; }
 
+/* .wrap es mi contenedor genérico: centra el contenido y le pone un
+   ancho máximo, lo uso dentro de casi cualquier <section> de la tienda
+   en vez de escribir margin/max-width a cada rato. */
 .wrap{
   max-width:var(--maxw);
   margin-inline:auto;
   padding-inline:24px;
 }
 
-/* ---------- Botones ---------- */
+/* ---------- Botones ----------
+   Un botón base (.btn) y un par de variantes (.ghost, .accent) que voy
+   combinando según el contexto: el sólido para la acción principal, el
+   "ghost" para acciones secundarias como "Ver más" o "Volver", y el
+   "accent" para destacar algo como "Agregar al carrito". */
 .btn{
   display:inline-flex;
   align-items:center;
@@ -89,7 +112,10 @@ button{ font-family:inherit; cursor:pointer; }
 .btn:disabled{ opacity:.5; cursor:not-allowed; }
 .btn.small{ padding:.45em .9em; font-size:.82rem; }
 
-/* ---------- Header / nav ---------- */
+/* ---------- Header / nav ----------
+   El header queda "pegado" arriba (position:sticky) mientras el
+   usuario hace scroll, y adentro uso flexbox para separar el logo, el
+   menú y el botón del carrito en 3 grupos bien distribuidos. */
 .site-header{
   background:var(--surface);
   border-bottom:1px solid var(--line);
@@ -185,6 +211,9 @@ button{ font-family:inherit; cursor:pointer; }
   padding:.4em .6em;
 }
 
+/* En pantallas angostas escondo el menú horizontal y muestro el botón
+   "☰" (.nav-toggle); el propio JS del header (si lo agrego más
+   adelante) se encarga de sumarle la clase .open para desplegarlo. */
 @media (max-width:820px){
   .nav-toggle{ display:inline-flex; }
   .nav-links{
@@ -200,7 +229,10 @@ button{ font-family:inherit; cursor:pointer; }
   .nav{ flex-wrap:wrap; }
 }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer ----------
+   Uso un grid de 3 columnas para separar "quiénes somos", contacto y
+   (en el home) medios de pago. En pantallas angostas lo colapso a una
+   sola columna para que no quede apretado. */
 .site-footer{
   background:var(--brand);
   color:#EAF0F8;
@@ -239,7 +271,10 @@ button{ font-family:inherit; cursor:pointer; }
   .footer-grid{ grid-template-columns:1fr; }
 }
 
-/* ---------- Página genérica ---------- */
+/* ---------- Página genérica ----------
+   Este bloque lo repito arriba de casi todas las páginas internas: un
+   "eyebrow" chico (por ejemplo "TF / CONTACTO") seguido del título y
+   una bajada. Lo pienso como el encabezado estándar de cada sección. */
 .page-head{
   padding-block:40px 28px;
   border-bottom:1px solid var(--line);
@@ -254,7 +289,11 @@ button{ font-family:inherit; cursor:pointer; }
 .section{ padding-block:48px; }
 .section-tight{ padding-block:28px; }
 
-/* ---------- Grid utilitario ---------- */
+/* ---------- Grid utilitario ----------
+   .grid-3 la uso para el listado de blogs y para el catálogo de
+   productos (3 columnas en desktop, 2 en tablet, 1 en celular). No
+   necesité más de 2 variantes de columnas en este proyecto, así que
+   dejé solo grid-3 y grid-2. */
 .grid{
   display:grid;
   gap:28px;
@@ -268,7 +307,43 @@ button{ font-family:inherit; cursor:pointer; }
   .grid-3,.grid-2{ grid-template-columns:1fr; }
 }
 
-/* ---------- Card genérica (blog / producto) ---------- */
+/* ---------- Filtros de categoría (catálogo) ----------
+   Los uso en la página de productos, arriba de la grilla. Cada botón
+   representa una categoría de DummyJSON; productos.js le agrega la
+   clase .active al que está seleccionado, y yo solo me encargo de que
+   se note visualmente cuál es. */
+.category-filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:28px;
+}
+.filter-btn{
+  border:1px solid var(--line-strong);
+  background:var(--surface);
+  color:var(--ink-soft);
+  border-radius:999px; /* botones bien redondeados, tipo "chip" */
+  padding:.5em 1.1em;
+  font-size:.85rem;
+  font-weight:600;
+  font-family:var(--font-body);
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+.filter-btn:hover{
+  border-color:var(--brand);
+  color:var(--brand);
+}
+.filter-btn.active{
+  background:var(--brand);
+  border-color:var(--brand);
+  color:#fff;
+}
+
+/* ---------- Card genérica (blog / producto) ----------
+   La misma clase .card me sirve tanto para las tarjetas del blog como
+   para las del catálogo: una imagen arriba (.media) y el contenido
+   abajo (.card-body). Cambia el contenido interno, pero la estructura
+   visual es la misma en toda la tienda. */
 .card{
   background:var(--surface);
   border:1px solid var(--line);
@@ -318,7 +393,12 @@ button{ font-family:inherit; cursor:pointer; }
 .card-body p{ font-size:.92rem; margin-bottom:.2em; }
 .card-body .btn{ margin-top:auto; align-self:flex-start; }
 
-/* ---------- Producto ---------- */
+/* ---------- Producto ----------
+   Estas clases son el corazón visual del catálogo: el precio en fuente
+   monoespaciada (para que se vea "de ficha técnica"), el precio tachado
+   cuando hay descuento, y la etiqueta de stock que cambia de color
+   según si queda poco o nada disponible. Las uso tanto en las tarjetas
+   del catálogo como en la ficha de detalle de cada producto. */
 .price{
   font-family:var(--font-data);
   font-weight:500;
@@ -339,9 +419,14 @@ button{ font-family:inherit; cursor:pointer; }
   border-radius:2px;
   border:1px solid var(--line-strong);
 }
+/* .stock-tag sola queda en gris neutro; le agrego .ok o .low desde
+   detalle.js / productos.js según el stock que traiga la API. */
 .stock-tag.ok{ color:var(--ok); border-color:var(--ok); }
 .stock-tag.low{ color:var(--danger); border-color:var(--danger); }
 
+/* Ficha de producto: dejo la imagen a la izquierda y toda la
+   información (precio, stock, cantidad, specs) a la derecha, en dos
+   columnas iguales. En celular las apilo en una sola columna. */
 .product-detail{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -352,6 +437,10 @@ button{ font-family:inherit; cursor:pointer; }
   .product-detail{ grid-template-columns:1fr; }
 }
 .product-gallery .card-media{ aspect-ratio:1/1; border-radius:var(--radius); }
+
+/* Selector de cantidad tipo "stepper": botón menos, input numérico,
+   botón más, todo dentro de un mismo borde para que se vea como un
+   solo control en vez de 3 elementos sueltos. */
 .qty{
   display:inline-flex;
   align-items:center;
@@ -370,6 +459,10 @@ button{ font-family:inherit; cursor:pointer; }
   height:34px;
   font-family:var(--font-data);
 }
+
+/* Lista de especificaciones (marca, categoría, stock, garantía...) que
+   arma detalle.js: cada fila es una etiqueta a la izquierda y su valor
+   a la derecha, separadas por una línea fina. */
 .spec-list{ border-top:1px solid var(--line); margin-top:24px; }
 .spec-row{
   display:flex;
@@ -381,7 +474,11 @@ button{ font-family:inherit; cursor:pointer; }
 .spec-row span:first-child{ color:var(--ink-soft); }
 .spec-row span:last-child{ font-family:var(--font-data); }
 
-/* ---------- Formularios ---------- */
+/* ---------- Formularios ----------
+   Las uso en el formulario de contacto: cada .field agrupa su label,
+   su input y su mensaje de error, y contacto.js le va sumando las
+   clases .valid / .invalid mientras el usuario escribe, para que el
+   borde y el mensaje cambien de color en el momento. */
 .form{
   max-width:560px;
 }
@@ -422,6 +519,9 @@ button{ font-family:inherit; cursor:pointer; }
 .field.invalid select{
   border-color:var(--danger);
 }
+/* El mensaje de error solo se muestra cuando el campo tiene la clase
+   .invalid; así no tengo que estar mostrando/ocultando el texto a
+   mano desde JS, solo pongo o saco la clase. */
 .field .error-msg{
   display:none;
   color:var(--danger);
@@ -431,6 +531,9 @@ button{ font-family:inherit; cursor:pointer; }
 .field.invalid .error-msg{ display:block; }
 .field.valid input,
 .field.valid textarea{ border-color:var(--ok); }
+
+/* Cartel de "enviado con éxito" o "revisa los campos" que aparece
+   debajo del formulario después de intentar enviarlo. */
 .form-status{
   margin-top:16px;
   padding:12px 14px;
@@ -442,7 +545,10 @@ button{ font-family:inherit; cursor:pointer; }
 .form-status.success{ background:#E7F5EC; color:var(--ok); border:1px solid var(--ok); }
 .form-status.error{ background:#FBEAE8; color:var(--danger); border:1px solid var(--danger); }
 
-/* ---------- Blog detalle ---------- */
+/* ---------- Blog detalle ----------
+   Ancho de lectura cómodo (70 caracteres aprox) para los artículos del
+   blog, y una imagen de portada grande y panorámica arriba de cada
+   entrada. */
 .blog-body{ max-width:70ch; }
 .blog-body p{ font-size:1rem; color:var(--ink); }
 .blog-hero{
@@ -461,7 +567,11 @@ button{ font-family:inherit; cursor:pointer; }
   margin-bottom:28px;
 }
 
-/* ---------- Utilidades ---------- */
+/* ---------- Utilidades ----------
+   Clases chicas de un solo propósito que uso sueltas en distintas
+   páginas, para no tener que crear una clase nueva cada vez que
+   necesito centrar texto o esconder un elemento visualmente (pero
+   dejándolo accesible para lectores de pantalla). */
 .text-center{ text-align:center; }
 .mt-0{ margin-top:0; }
 .divider{ height:1px; background:var(--line); border:none; margin:32px 0; }
