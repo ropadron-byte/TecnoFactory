@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuevo usuario — Panel Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="home.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory Admin</a>
+  </div>
+</header>
+
+<div class="admin-wrap">
+  <nav class="admin-sidebar">
+    <a href="home.html">Inicio</a>
+    <a href="usuario.html" aria-current="page">Usuarios</a>
+    <a href="../admin-producto/producto.html">Productos</a>
+  </nav>
+
+  <main class="admin-content">
+    <h1>Nuevo usuario</h1>
+
+    <form class="form" id="form-usuario" novalidate>
+      <div class="field" id="field-run">
+        <label for="run">RUN</label>
+        <span class="hint">Sin puntos ni guion. Ej: 190110228</span>
+        <input type="text" id="run" name="run" maxlength="9" required>
+        <span class="error-msg">RUN inválido, revisa el dígito verificador.</span>
+      </div>
+
+      <div class="field" id="field-nombre">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" maxlength="50" required>
+        <span class="error-msg">El nombre es obligatorio (máx. 50 caracteres).</span>
+      </div>
+
+      <div class="field" id="field-apellidos">
+        <label for="apellidos">Apellidos</label>
+        <input type="text" id="apellidos" name="apellidos" maxlength="100" required>
+        <span class="error-msg">Los apellidos son obligatorios (máx. 100 caracteres).</span>
+      </div>
+
+      <div class="field" id="field-correo">
+        <label for="correo">Correo</label>
+        <span class="hint">Solo dominios @duoc.cl, @profesor.duoc.cl o @gmail.com</span>
+        <input type="email" id="correo" name="correo" maxlength="100" required>
+        <span class="error-msg">Correo inválido o dominio no permitido.</span>
+      </div>
+
+      <div class="field" id="field-fecha">
+        <label for="fecha_nacimiento">Fecha de nacimiento</label>
+        <span class="hint">Opcional</span>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+      </div>
+
+      <div class="field" id="field-tipo">
+        <label for="tipo">Tipo de usuario</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Selecciona un tipo</option>
+          <option value="Administrador">Administrador</option>
+          <option value="Vendedor">Vendedor</option>
+          <option value="Cliente">Cliente</option>
+        </select>
+        <span class="error-msg">Selecciona un tipo de usuario.</span>
+      </div>
+
+      <div class="field" id="field-region">
+        <label for="region">Región</label>
+        <select id="region" name="region" required>
+          <option value="">Selecciona una región</option>
+        </select>
+        <span class="error-msg">Selecciona una región.</span>
+      </div>
+
+      <div class="field" id="field-comuna">
+        <label for="comuna">Comuna</label>
+        <select id="comuna" name="comuna" required>
+          <option value="">Selecciona una comuna</option>
+        </select>
+        <span class="error-msg">Selecciona una comuna.</span>
+      </div>
+
+      <div class="field" id="field-direccion">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" name="direccion" maxlength="300" required>
+        <span class="error-msg">La dirección es obligatoria (máx. 300 caracteres).</span>
+      </div>
+
+      <button type="submit" class="btn accent">Guardar usuario</button>
+      <div class="form-status" id="form-status"></div>
+    </form>
+  </main>
+</div>
+
+<script src="../../js/regiones.js"></script>
+<script src="../../js/usuarios.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    poblarRegiones("region", "comuna");
+
+    const form = document.getElementById("form-usuario");
+    const status = document.getElementById("form-status");
+    const DOMINIOS_PERMITIDOS = ["duoc.cl", "profesor.duoc.cl", "gmail.com"];
+
+    function marcar(fieldId, valido) {
+      document.getElementById(fieldId).classList.remove("invalid", "valid");
+      document.getElementById(fieldId).classList.add(valido ? "valid" : "invalid");
+    }
+
+    function correoValido(valor) {
+      const formato = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+      if (!formato) return false;
+      const dominio = valor.split("@")[1].toLowerCase();
+      return DOMINIOS_PERMITIDOS.indexOf(dominio) !== -1;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const run = document.getElementById("run").value.trim();
+      const nombre = document.getElementById("nombre").value.trim();
+      const apellidos = document.getElementById("apellidos").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const tipo = document.getElementById("tipo").value;
+      const region = document.getElementById("region").value;
+      const comuna = document.getElementById("comuna").value;
+      const direccion = document.getElementById("direccion").value.trim();
+      const fecha = document.getElementById("fecha_nacimiento").value;
+
+      const runOk = validarRun(run);
+      const nombreOk = nombre.length > 0 && nombre.length <= 50;
+      const apellidosOk = apellidos.length > 0 && apellidos.length <= 100;
+      const correoOk = correoValido(correo) && correo.length <= 100;
+      const tipoOk = tipo.length > 0;
+      const regionOk = region.length > 0;
+      const comunaOk = comuna.length > 0;
+      const direccionOk = direccion.length > 0 && direccion.length <= 300;
+
+      marcar("field-run", runOk);
+      marcar("field-nombre", nombreOk);
+      marcar("field-apellidos", apellidosOk);
+      marcar("field-correo", correoOk);
+      marcar("field-tipo", tipoOk);
+      marcar("field-region", regionOk);
+      marcar("field-comuna", comunaOk);
+      marcar("field-direccion", direccionOk);
+
+      status.classList.remove("show", "success", "error");
+
+      if (runOk && nombreOk && apellidosOk && correoOk && tipoOk && regionOk && comunaOk && direccionOk) {
+        guardarUsuario({ run: run, nombre: nombre, apellidos: apellidos, correo: correo, fecha_nacimiento: fecha, tipo: tipo, region: region, comuna: comuna, direccion: direccion });
+        status.textContent = "Usuario guardado correctamente.";
+        status.classList.add("show", "success");
+        setTimeout(function () { window.location.href = "usuario.html"; }, 1200);
+      } else {
+        status.textContent = "Revisa los campos marcados en rojo.";
+        status.classList.add("show", "error");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

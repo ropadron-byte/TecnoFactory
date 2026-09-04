@@ -469,3 +469,92 @@ button{ font-family:inherit; cursor:pointer; }
   position:absolute; width:1px; height:1px;
   overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
 }
+/* ---------- Admin layout ---------- */
+.admin-wrap{
+  display:flex;
+  min-height:calc(100vh - 70px);
+}
+.admin-sidebar{
+  width:220px;
+  flex:none;
+  background:var(--brand);
+  display:flex;
+  flex-direction:column;
+  padding:16px 0;
+}
+.admin-nav-top{ flex:1; }
+.admin-nav-bottom{
+  border-top:1px solid rgba(255,255,255,.15);
+  padding-top:8px;
+}
+.admin-sidebar a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 22px;
+  color:#C3D2E6;
+  font-size:.9rem;
+  font-weight:500;
+  border-left:3px solid transparent;
+}
+.admin-sidebar a .icon{ font-size:1rem; width:18px; text-align:center; }
+.admin-sidebar a:hover,
+.admin-sidebar a[aria-current="page"]{
+  color:#fff;
+  background:rgba(255,255,255,.06);
+  border-left-color:var(--accent);
+}
+.admin-content{
+  flex:1;
+  padding:32px;
+}
+.admin-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+}
+.admin-header h1{ margin:0; }
+.admin-bell{
+  font-size:1.2rem;
+  color:var(--ink-soft);
+}
+.admin-panel{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:24px;
+  min-height:180px;
+}
+.admin-table{
+  width:100%;
+  border-collapse:collapse;
+  background:var(--surface);
+  border:1px solid var(--line);
+}
+.admin-table th,
+.admin-table td{
+  text-align:left;
+  padding:10px 14px;
+  border-bottom:1px solid var(--line);
+  font-size:.88rem;
+}
+.admin-table th{
+  font-family:var(--font-data);
+  font-size:.75rem;
+  color:var(--ink-soft);
+  background:var(--bg);
+}
+.admin-table tr:last-child td{ border-bottom:none; }
+.admin-actions{ display:flex; gap:8px; }
+.badge{
+  font-family:var(--font-data);
+  font-size:.72rem;
+  padding:2px 8px;
+  border-radius:2px;
+  border:1px solid var(--line-strong);
+}
+.badge.admin{ color:var(--brand); border-color:var(--brand); }
+.badge.vendedor{ color:var(--accent); border-color:var(--accent); }
+.badge.cliente{ color:var(--ink-soft); }
