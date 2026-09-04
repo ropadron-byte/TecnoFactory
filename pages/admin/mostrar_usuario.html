@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalle usuario — Panel Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+</head>
+<body>
+
+<div class="admin-wrap">
+  <nav class="admin-sidebar">
+    <div class="admin-nav-top">
+      <a href="home.html"><span class="icon">🏠</span> Inicio</a>
+      <a href="usuario.html" aria-current="page"><span class="icon">👤</span> Usuarios</a>
+      <a href="../admin-producto/producto.html"><span class="icon">📦</span> Productos</a>
+    </div>
+    <div class="admin-nav-bottom">
+      <a href="#"><span class="icon">👤</span> Perfil</a>
+    </div>
+  </nav>
+
+  <main class="admin-content">
+    <div class="admin-header">
+      <h1 id="titulo-usuario">Detalle de usuario</h1>
+    </div>
+
+    <div class="admin-panel">
+      <div class="spec-list">
+        <div class="spec-row"><span>RUN</span><span id="d-run"></span></div>
+        <div class="spec-row"><span>Nombre</span><span id="d-nombre"></span></div>
+        <div class="spec-row"><span>Apellidos</span><span id="d-apellidos"></span></div>
+        <div class="spec-row"><span>Correo</span><span id="d-correo"></span></div>
+        <div class="spec-row"><span>Fecha de nacimiento</span><span id="d-fecha"></span></div>
+        <div class="spec-row"><span>Tipo de usuario</span><span id="d-tipo"></span></div>
+        <div class="spec-row"><span>Región</span><span id="d-region"></span></div>
+        <div class="spec-row"><span>Comuna</span><span id="d-comuna"></span></div>
+        <div class="spec-row"><span>Dirección</span><span id="d-direccion"></span></div>
+      </div>
+
+      <p style="margin-top:24px;">
+        <a class="btn accent small" id="btn-editar" href="#">Editar</a>
+        <a class="btn ghost small" href="usuario.html">← Volver al listado</a>
+      </p>
+    </div>
+  </main>
+</div>
+
+<script src="../../js/usuarios.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const id = Number(params.get("id"));
+    const usuario = obtenerUsuarioPorId(id);
+
+    if (!usuario) {
+      document.querySelector(".admin-content").innerHTML = "<h1>Usuario no encontrado</h1><p><a class='btn ghost' href='usuario.html'>Volver al listado</a></p>";
+      return;
+    }
+
+    document.getElementById("titulo-usuario").textContent = usuario.nombre + " " + usuario.apellidos;
+    document.getElementById("d-run").textContent = usuario.run;
+    document.getElementById("d-nombre").textContent = usuario.nombre;
+    document.getElementById("d-apellidos").textContent = usuario.apellidos;
+    document.getElementById("d-correo").textContent = usuario.correo;
+    document.getElementById("d-fecha").textContent = usuario.fecha_nacimiento || "No especificada";
+    document.getElementById("d-tipo").textContent = usuario.tipo;
+    document.getElementById("d-region").textContent = usuario.region;
+    document.getElementById("d-comuna").textContent = usuario.comuna;
+    document.getElementById("d-direccion").textContent = usuario.direccion;
+    document.getElementById("btn-editar").href = "editar_usuario.html?id=" + usuario.id;
+  });
+</script>
+
+</body>
+</html>
