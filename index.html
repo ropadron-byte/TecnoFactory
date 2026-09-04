@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoFactory</title>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/estilos.css">
-
 </head>
 
 <body>
 <header class="site-header">
-
   <div class="wrap nav">
     <a href="index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
-
     <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     
     <ul class="nav-links">
@@ -24,57 +23,143 @@
       <li><a href="pages/tienda/productos.html">Productos</a></li>
       <li><a href="pages/tienda/nosotros.html">Nosotros</a></li>
       <li><a href="pages/tienda/blogs.html">Blogs</a></li>
-      <li><a href="pages/tienda/contacto.html" >Contacto</a></li>
+      <li><a href="pages/tienda/contacto.html">Contacto</a></li>
       <li><a href="pages/tienda/registro_usuario.html">Registrarme</a></li>
       <li><a href="pages/tienda/iniciar_sesion.html">Iniciar sesión</a></li>
     </ul>
     
     <div class="nav-actions">
-      
-        <a href="carrito.html" class="cart-btn" aria-label="Ver carrito de compras">
+      <a href="carrito.html" class="cart-btn" aria-label="Ver carrito de compras">
         🛒 Carrito <span class="cart-count" data-cart-count>0</span>
       </a>
-
     </div>
-  
-</div>
-
+  </div>
 </header>
  
-<main>
-
-<div style="height: min-content;">
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_t.png" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_t.png" class="d-block w-100" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+<!-- 1. HERO Y CARRUSEL -->
+<section class="bg-dark text-white py-5 position-relative">
+  <div class="container text-center mb-4">
+    <h1 class="display-4 fw-bold">Bienvenido a Tecno Factory</h1>
+    <p class="lead text-secondary mt-2">Los mejores precios y una gran variedad de productos electrónicos</p>
   </div>
 
-</div>
+  <div class="container">
+    <!-- Contenedor para controlar la altura máxima del carrusel -->
+    <div id="carouselHero" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 800px;">
+      <div class="carousel-inner rounded shadow">
+        <div class="carousel-item active bg-white p-4">
+          <img src="https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Monitor 1" style="height: 300px; object-fit: contain;">
+        </div>
+        <div class="carousel-item bg-white p-4">
+          <img src="https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Monitor 2" style="height: 300px; object-fit: contain;">
+        </div>
+        <div class="carousel-item bg-white p-4">
+          <img src="https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_t.png" class="d-block mx-auto img-fluid" alt="Disco Duro" style="height: 300px; object-fit: contain;">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselHero" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
+    </div>
+  </div>
+</section>
 
-  
+<!-- 2. BARRA DE BENEFICIOS (OPCIONAL) -->
+<section class="py-4 bg-body-tertiary border-bottom">
+  <div class="container">
+    <div class="row text-center g-3">
+      <div class="col-6 col-md-3">
+        <i class="bi bi-truck fs-3 text-primary"></i>
+        <p class="mb-0 fw-semibold">Envíos a todo Chile</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <i class="bi bi-shield-check fs-3 text-primary"></i>
+        <p class="mb-0 fw-semibold">Garantía Asegurada</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <i class="bi bi-credit-card fs-3 text-primary"></i>
+        <p class="mb-0 fw-semibold">Pago Seguro</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <i class="bi bi-headset fs-3 text-primary"></i>
+        <p class="mb-0 fw-semibold">Soporte Continuo</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- 3. PRODUCTOS MÁS VENDIDOS -->
+<section id="productos" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4 fw-bold">Productos Más Vendidos</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+      
+      <!-- Producto 1 -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <span class="badge bg-danger position-absolute top-0 end-0 m-2">Oferta</span>
+          <img src="https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png" class="card-img-top p-3" alt="Monitor Acer" style="height: 200px; object-fit: contain;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fs-6">Monitor Acer 21.5" Full HD</h5>
+            <p class="card-text text-primary fw-bold mb-2">$89.990</p>
+            <button class="btn btn-outline-primary mt-auto w-100">
+              <i class="bi bi-cart-plus me-1"></i> Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      </div>
 
-</main>
+      <!-- Producto 2 -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <img src="https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_t.png" class="card-img-top p-3" alt="Monitor Samsung" style="height: 200px; object-fit: contain;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fs-6">Monitor Samsung Curvo 49"</h5>
+            <p class="card-text text-primary fw-bold mb-2">$899.990</p>
+            <button class="btn btn-outline-primary mt-auto w-100">
+              <i class="bi bi-cart-plus me-1"></i> Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      </div>
 
-    
+      <!-- Producto 3 -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <span class="badge bg-success position-absolute top-0 end-0 m-2">Nuevo</span>
+          <img src="https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_t.png" class="card-img-top p-3" alt="SSD WD Element" style="height: 200px; object-fit: contain;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fs-6">Disco Duro Externo 2TB</h5>
+            <p class="card-text text-primary fw-bold mb-2">$59.990</p>
+            <button class="btn btn-outline-primary mt-auto w-100">
+              <i class="bi bi-cart-plus me-1"></i> Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      </div>
 
+      <!-- Producto 4 -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <img src="https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg" class="card-img-top p-3" alt="SSD SanDisk" style="height: 200px; object-fit: contain;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fs-6">SSD SanDisk 1TB Interno</h5>
+            <p class="card-text text-primary fw-bold mb-2">$74.990</p>
+            <button class="btn btn-outline-primary mt-auto w-100">
+              <i class="bi bi-cart-plus me-1"></i> Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <footer class="site-footer">
   <div class="wrap footer-grid">
@@ -95,5 +180,8 @@
     <span>© 2026 Tecno Factory.</span>
   </div>
 </footer>
+
+<!-- Bootstrap 5.3 JS Bundle (Incluye Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
