@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
       card.className = "card";
       card.innerHTML =
         '<a href="detalle_productos.html?codigo=' + encodeURIComponent(producto.codigo) + '">' +
-          '<div class="media media--card" style="display:flex; align-items:center; justify-content:center; font-size:3.5rem;">' +
-            iconoCategoria(producto.categoria) +
+          '<div class="media media--card" style="display:flex; align-items:center; justify-content:center; overflow:hidden;">' +
+            mediaProductoHTML(producto) +
           "</div>" +
         "</a>" +
         '<div class="card-body">' +
