@@ -6,6 +6,8 @@
 <title>Detalle producto — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
 <link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
 </head>
 <body>
 
@@ -13,7 +15,7 @@
   <nav class="admin-sidebar">
     <div class="admin-nav-top">
       <a href="home.html"><span class="icon">🏠</span> Inicio</a>
-      <a href="usuario.html"><span class="icon">👤</span> Usuarios</a>
+      <a href="usuario.html" data-admin-only><span class="icon">👤</span> Usuarios</a>
       <a href="producto.html" aria-current="page"><span class="icon">📦</span> Productos</a>
     </div>
     <div class="admin-nav-bottom">
@@ -27,6 +29,8 @@
     </div>
 
     <div class="admin-panel">
+      <div class="media" id="d-imagen-principal" style="width:120px; height:120px; margin-bottom:12px;"></div>
+      <div class="product-thumbs" id="d-imagenes" style="margin-top:0; margin-bottom:18px;"></div>
       <div class="spec-list">
         <div class="spec-row"><span>Código</span><span id="d-codigo"></span></div>
         <div class="spec-row"><span>Nombre</span><span id="d-nombre"></span></div>
@@ -38,7 +42,7 @@
       </div>
 
       <p style="margin-top:24px;">
-        <a class="btn accent small" id="btn-editar" href="#">Editar</a>
+        <a class="btn accent small" id="btn-editar" href="#" data-admin-only>Editar</a>
         <a class="btn ghost small" href="producto.html">← Volver al listado</a>
       </p>
     </div>
@@ -55,6 +59,18 @@
     if (!producto) {
       document.querySelector(".admin-content").innerHTML = "<h1>Producto no encontrado</h1><p><a class='btn ghost' href='producto.html'>Volver al listado</a></p>";
       return;
+    }
+
+    document.getElementById("d-imagen-principal").innerHTML = mediaProductoHTML(producto);
+    const imagenes = imagenesProducto(producto);
+    if (imagenes.length > 1) {
+      const thumbsWrap = document.getElementById("d-imagenes");
+      imagenes.forEach(function (url) {
+        const thumb = document.createElement("div");
+        thumb.className = "product-thumb";
+        thumb.innerHTML = '<img src="' + escapeAttr(url) + '" alt="">';
+        thumbsWrap.appendChild(thumb);
+      });
     }
 
     document.getElementById("titulo-producto").textContent = producto.nombre;

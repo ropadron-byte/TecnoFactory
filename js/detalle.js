@@ -29,18 +29,50 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("producto-descripcion").textContent = producto.descripcion;
   document.getElementById("producto-precio").textContent = formatCLP(producto.precio);
 
-  // En vez de una imagen descargada de internet, muestro un ícono
-  // grande según la categoría (mismo criterio que en el catálogo).
-  const imagen = document.getElementById("producto-imagen");
-  imagen.remove();
-  const iconoDiv = document.createElement("div");
-  iconoDiv.style.fontSize = "6rem";
-  iconoDiv.style.display = "flex";
-  iconoDiv.style.alignItems = "center";
-  iconoDiv.style.justifyContent = "center";
-  iconoDiv.style.height = "100%";
-  iconoDiv.textContent = iconoCategoria(producto.categoria);
-  document.querySelector(".media--square").appendChild(iconoDiv);
+  // Galería de imágenes del producto: la imagen principal grande arriba
+  // y, si tiene más de una, una fila de miniaturas para cambiarla.
+  const imagenPrincipal = document.getElementById("producto-imagen");
+  const miniaturasWrap = document.getElementById("producto-miniaturas");
+  const imagenes = imagenesProducto(producto);
+
+  function mostrarImagenPrincipal(url) {
+    imagenPrincipal.src = url;
+    imagenPrincipal.alt = producto.nombre;
+  }
+
+  if (imagenes.length === 0) {
+    // Sin ninguna imagen cargada: dejamos el ícono de categoría como
+    // antes, para no mostrar un espacio vacío o un ícono de imagen rota.
+    imagenPrincipal.remove();
+    const iconoDiv = document.createElement("div");
+    iconoDiv.style.fontSize = "6rem";
+    iconoDiv.style.display = "flex";
+    iconoDiv.style.alignItems = "center";
+    iconoDiv.style.justifyContent = "center";
+    iconoDiv.style.height = "100%";
+    iconoDiv.textContent = iconoCategoria(producto.categoria);
+    document.querySelector(".media--square").appendChild(iconoDiv);
+  } else {
+    mostrarImagenPrincipal(imagenes[0]);
+    imagenPrincipal.onerror = function () {
+      handleImgError(imagenPrincipal, iconoCategoria(producto.categoria));
+    };
+
+    if (imagenes.length > 1 && miniaturasWrap) {
+      imagenes.forEach(function (url, i) {
+        const thumb = document.createElement("button");
+        thumb.type = "button";
+        thumb.className = "product-thumb" + (i === 0 ? " active" : "");
+        thumb.innerHTML = '<img src="' + escapeAttr(url) + '" alt="Miniatura ' + (i + 1) + " de " + escapeAttr(producto.nombre) + '">';
+        thumb.addEventListener("click", function () {
+          mostrarImagenPrincipal(url);
+          miniaturasWrap.querySelectorAll(".product-thumb").forEach(function (t) { t.classList.remove("active"); });
+          thumb.classList.add("active");
+        });
+        miniaturasWrap.appendChild(thumb);
+      });
+    }
+  }
 
   const stockEl = document.getElementById("producto-stock");
   const qtyInput = document.getElementById("input-cantidad");

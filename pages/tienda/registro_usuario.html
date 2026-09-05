@@ -62,7 +62,7 @@
         <label for="correo">Correo</label>
         <span class="hint">Solo dominios @duoc.cl, @profesor.duoc.cl o @gmail.com</span>
         <input type="email" id="correo" name="correo" maxlength="100" required>
-        <span class="error-msg">Correo inválido o dominio no permitido.</span>
+        <span class="error-msg">Correo inválido, dominio no permitido, o ya está registrado.</span>
       </div>
 
       <div class="field" id="field-contrasena">
@@ -222,7 +222,8 @@
       const runOk = validarRun(run);
       const nombreOk = nombre.length > 0 && nombre.length <= 50;
       const apellidosOk = apellidos.length > 0 && apellidos.length <= 100;
-      const correoOk = correoValido(correo) && correo.length <= 100;
+      const correoFormatoOk = correoValido(correo) && correo.length <= 100;
+      const correoDisponibleOk = correoFormatoOk && !correoYaRegistrado(correo);
       const contrasenaOk = contrasena.length >= 4 && contrasena.length <= 10;
       const confirmarOk = confirmar === contrasena && contrasenaOk;
       const regionOk = region.length > 0;
@@ -232,7 +233,7 @@
       marcar("field-run", runOk);
       marcar("field-nombre", nombreOk);
       marcar("field-apellidos", apellidosOk);
-      marcar("field-correo", correoOk);
+      marcar("field-correo", correoDisponibleOk);
       marcar("field-contrasena", contrasenaOk);
       marcar("field-confirmar", confirmarOk);
       marcar("field-region", regionOk);
@@ -241,15 +242,18 @@
 
       status.classList.remove("show", "success", "error");
 
-      if (runOk && nombreOk && apellidosOk && correoOk && contrasenaOk && confirmarOk && regionOk && comunaOk && direccionOk) {
+      if (runOk && nombreOk && apellidosOk && correoDisponibleOk && contrasenaOk && confirmarOk && regionOk && comunaOk && direccionOk) {
         guardarUsuario({
-          run: run, nombre: nombre, apellidos: apellidos, correo: correo,
+          run: run, nombre: nombre, apellidos: apellidos, correo: correo, contrasena: contrasena,
           fecha_nacimiento: fecha, telefono: telefono, tipo: "Cliente",
           region: region, comuna: comuna, direccion: direccion
         });
         status.textContent = "Cuenta creada correctamente. Redirigiendo...";
         status.classList.add("show", "success");
         setTimeout(function () { window.location.href = "iniciar_sesion.html"; }, 1200);
+      } else if (correoFormatoOk && !correoDisponibleOk) {
+        status.textContent = "Ya existe una cuenta registrada con ese correo.";
+        status.classList.add("show", "error");
       } else {
         status.textContent = "Revisa los campos marcados en rojo.";
         status.classList.add("show", "error");

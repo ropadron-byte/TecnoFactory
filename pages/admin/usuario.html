@@ -6,6 +6,8 @@
 <title>Usuarios — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
 <link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
 </head>
 <body>
 
@@ -13,7 +15,7 @@
   <nav class="admin-sidebar">
     <div class="admin-nav-top">
       <a href="home.html"><span class="icon">🏠</span> Inicio</a>
-      <a href="usuario.html" aria-current="page"><span class="icon">👤</span> Usuarios</a>
+      <a href="usuario.html" data-admin-only aria-current="page"><span class="icon">👤</span> Usuarios</a>
       <a href="producto.html"><span class="icon">📦</span> Productos</a>
     </div>
     <div class="admin-nav-bottom">
@@ -44,7 +46,6 @@
   </main>
 </div>
 
-<script src="../../js/usuarios.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const tbody = document.getElementById("tabla-usuarios");

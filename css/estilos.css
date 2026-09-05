@@ -438,6 +438,65 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .product-gallery .card-media{ aspect-ratio:1/1; border-radius:var(--radius); }
 
+/* Fila de miniaturas debajo de la imagen principal en la ficha de
+   producto. Solo se llena (desde detalle.js) cuando el producto tiene
+   más de una imagen cargada. */
+.product-thumbs{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.product-thumb{
+  width:64px;
+  height:64px;
+  padding:0;
+  border:2px solid var(--line-strong);
+  border-radius:8px;
+  overflow:hidden;
+  background:none;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.product-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.product-thumb.active{ border-color:var(--brand); }
+
+/* ---------- Bloque de imágenes en los formularios de administración ----------
+   Cada fila tiene la URL, una vista previa chica y un botón para
+   quitarla; se pueden agregar tantas filas como imágenes quiera cargar
+   el administrador. */
+.image-inputs{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:8px;
+}
+.image-input-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.image-input-row .imagen-url{
+  flex:1;
+}
+.image-input-row .image-preview{
+  width:44px;
+  height:44px;
+  border-radius:6px;
+  object-fit:cover;
+  border:1px solid var(--line-strong);
+  background:var(--bg,#F5F6F8);
+  flex-shrink:0;
+  display:none;
+}
+.image-input-row .image-preview.show{ display:block; }
+.btn-quitar-imagen{ flex-shrink:0; }
+
 /* Selector de cantidad tipo "stepper": botón menos, input numérico,
    botón más, todo dentro de un mismo borde para que se vea como un
    solo control en vez de 3 elementos sueltos. */

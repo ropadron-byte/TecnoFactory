@@ -6,6 +6,8 @@
 <title>Nuevo producto — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
 <link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
 </head>
 <body>
 
@@ -13,7 +15,7 @@
   <nav class="admin-sidebar">
     <div class="admin-nav-top">
       <a href="home.html"><span class="icon">🏠</span> Inicio</a>
-      <a href="usuario.html"><span class="icon">👤</span> Usuarios</a>
+      <a href="usuario.html" data-admin-only><span class="icon">👤</span> Usuarios</a>
       <a href="producto.html" aria-current="page"><span class="icon">📦</span> Productos</a>
     </div>
     <div class="admin-nav-bottom">
@@ -76,10 +78,11 @@
         <span class="error-msg">Selecciona una categoría.</span>
       </div>
 
-      <div class="field" id="field-imagen">
-        <label for="imagen">Imagen (URL)</label>
-        <span class="hint">Opcional.</span>
-        <input type="text" id="imagen" name="imagen">
+      <div class="field" id="field-imagenes">
+        <label>Imágenes del producto</label>
+        <span class="hint">Opcional. Pega la URL de cada imagen; puedes añadir una o varias.</span>
+        <div class="image-inputs" id="lista-imagenes"></div>
+        <button type="button" class="btn ghost small" id="btn-agregar-imagen">+ Añadir otra imagen</button>
       </div>
 
       <button type="submit" class="btn accent">Guardar producto</button>
@@ -98,6 +101,8 @@
       opt.textContent = c;
       selectCategoria.appendChild(opt);
     });
+
+    iniciarCampoImagenes("lista-imagenes", "btn-agregar-imagen", []);
 
     const form = document.getElementById("form-producto");
     const status = document.getElementById("form-status");
@@ -118,7 +123,7 @@
       const stockCriticoValor = document.getElementById("stock_critico").value;
       const stockCritico = stockCriticoValor === "" ? 0 : parseInt(stockCriticoValor, 10);
       const categoria = document.getElementById("categoria").value;
-      const imagen = document.getElementById("imagen").value.trim();
+      const urls = leerCampoImagenes("lista-imagenes");
 
       const codigoOk = codigo.length >= 3 && !obtenerProductoPorCodigo(codigo);
       const nombreOk = nombre.length > 0 && nombre.length <= 100;
@@ -142,7 +147,7 @@
         guardarProducto({
           codigo: codigo, nombre: nombre, descripcion: descripcion,
           precio: precio, stock: stock, stockCritico: stockCritico,
-          categoria: categoria, imagen: imagen
+          categoria: categoria, urls: urls
         });
         status.textContent = "Producto guardado correctamente.";
         status.classList.add("show", "success");
