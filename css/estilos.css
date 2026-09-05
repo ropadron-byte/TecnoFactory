@@ -648,7 +648,12 @@ button{ font-family:inherit; cursor:pointer; }
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding{
+    border-top-width: 5px;
+    border-bottom-width: 10px;
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
 }
 
 /* Grilla de logos de medios de pago (Visa, Mastercard, Webpay, etc):

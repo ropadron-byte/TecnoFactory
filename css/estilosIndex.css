@@ -7,6 +7,8 @@
 /* Amplío el footer del home para que ocupe más ancho que el resto de
    la tienda (acá tengo una tercera columna extra con medios de pago,
    así que necesito más espacio que en las páginas internas). */
+
+
 .site-footer .wrap.footer-grid {
   display: flex;
   justify-content: space-between;
@@ -15,7 +17,12 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  
+  border-top-width: 5px;
+  border-bottom-width: 10px;
+  padding-bottom: 5px;
+  padding-top: 10px;
+
 }
 
 /* Grilla de logos de medios de pago (Visa, Mastercard, Webpay, etc):
@@ -134,3 +141,4 @@ body {
 .carousel-control-next:hover .carousel-control-next-icon {
   filter: invert(100%) opacity(0.7);
 }
+
