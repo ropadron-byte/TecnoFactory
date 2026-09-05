@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productos — Panel Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+<link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+
+<div class="admin-wrap">
+  <nav class="admin-sidebar">
+    <div class="admin-nav-top">
+      <a href="home.html"><span class="icon">🏠</span> Inicio</a>
+      <a href="usuario.html"><span class="icon">👤</span> Usuarios</a>
+      <a href="producto.html" aria-current="page"><span class="icon">📦</span> Productos</a>
+    </div>
+    <div class="admin-nav-bottom">
+      <a href="#"><span class="icon">👤</span> Perfil</a>
+    </div>
+  </nav>
+
+  <main class="admin-content">
+    <div class="admin-header">
+      <h1>Productos</h1>
+    </div>
+    <p><a class="btn accent small" href="nuevo_producto.html">+ Nuevo producto</a></p>
+
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-productos">
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<script src="../../js/productos.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tbody = document.getElementById("tabla-productos");
+    const productos = obtenerProductos();
+
+    if (productos.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6">Aún no hay productos cargados.</td></tr>';
+      return;
+    }
+
+    productos.forEach(function (p) {
+      const stockBadge = p.stock <= 0
+        ? "<span class='badge critico'>Sin stock</span>"
+        : (p.stock <= p.stockCritico
+            ? "<span class='badge critico'>" + p.stock + " (crítico)</span>"
+            : "<span class='badge ok'>" + p.stock + "</span>");
+
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + p.codigo + "</td>" +
+        "<td>" + p.nombre + "</td>" +
+        "<td>" + p.categoria + "</td>" +
+        "<td>" + formatCLP(p.precio) + "</td>" +
+        "<td>" + stockBadge + "</td>" +
+        "<td class='admin-actions'>" +
+          "<a class='btn ghost small' href='mostrar_producto.html?codigo=" + encodeURIComponent(p.codigo) + "'>Ver</a>" +
+          "<a class='btn ghost small' href='editar_producto.html?codigo=" + encodeURIComponent(p.codigo) + "'>Editar</a>" +
+        "</td>";
+      tbody.appendChild(tr);
+    });
+  });
+</script>
+
+</body>
+</html>

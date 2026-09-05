@@ -37,17 +37,16 @@
 
   <section class="section wrap">
 
-    <!-- Mientras detalle.js todavía está pidiendo el producto a la API -->
     <p id="estado-carga" style="color:var(--ink-soft); padding-block:20px;">
       Cargando ficha del producto...
     </p>
 
-    <!-- Se muestra si el id de la URL no existe o la API falla -->
+    <!-- Se muestra si el código de la URL no corresponde a ningún producto -->
     <p id="producto-error" style="color:var(--danger); display:none; padding-block:20px;">
       No encontramos este producto. <a href="productos.html">Vuelve al catálogo</a>.
     </p>
 
-    <!-- Ficha completa, la arma detalle.js con los datos reales -->
+    <!-- Ficha completa, la arma detalle.js con los datos del producto -->
     <div id="producto-detalle" class="product-detail" style="display:none;">
 
       <div class="product-gallery">
@@ -143,9 +142,9 @@
   <button class="back-to-top" aria-label="Volver arriba">↑</button>
 </footer>
 
-<!-- carrito.js primero (script clásico), para que window.addToCart
-     ya exista cuando detalle.js (módulo) enlace el botón de compra. -->
+<script src="../../js/main.js"></script>
+<script src="../../js/productos.js"></script>
 <script src="../../js/carrito.js"></script>
-<script type="module" src="../../js/ApiDummyJson/detalle.js"></script>
+<script src="../../js/detalle.js"></script>
 </body>
 </html>

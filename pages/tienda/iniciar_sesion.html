@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Iniciar sesión — Tecno Factory</title>
     <link rel="stylesheet" href="../../css/estilos.css">
 </head>
 <body>
-    
-
 
 <header class="site-header">
   <div class="wrap nav">
-    <a href="index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
+    <a href="../../index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
     <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     <ul class="nav-links">
       <li><a href="../../index.html">Inicio</a></li>
@@ -29,13 +27,39 @@
       </a>
     </div>
   </div>
-
 </header>
- 
 
+<main>
+  <section class="page-head wrap">
+    <span class="eyebrow">TF / MI CUENTA</span>
+    <h1>Iniciar sesión</h1>
+    <p>Ingresa con tu correo y contraseña para ver tus pedidos y tus datos guardados.</p>
+  </section>
 
-    
+  <section class="section wrap">
+    <form class="form" id="form-login" novalidate style="max-width:420px; margin:0 auto;">
 
+      <div class="field" id="field-correo">
+        <label for="correo">Correo electrónico</label>
+        <span class="hint">Solo dominios @duoc.cl, @profesor.duoc.cl o @gmail.com</span>
+        <input type="text" id="correo" name="correo" maxlength="100" autocomplete="email" required>
+        <span class="error-msg">Ingresa un correo válido de dominio @duoc.cl, @profesor.duoc.cl o @gmail.com.</span>
+      </div>
+
+      <div class="field" id="field-contrasena">
+        <label for="contrasena">Contraseña</label>
+        <span class="hint">Entre 4 y 10 caracteres.</span>
+        <input type="password" id="contrasena" name="contrasena" maxlength="10" autocomplete="current-password" required>
+        <span class="error-msg">La contraseña debe tener entre 4 y 10 caracteres.</span>
+      </div>
+
+      <button type="submit" class="btn accent">Iniciar sesión</button>
+      <p style="margin-top:14px;">¿Aún no tienes cuenta? <a href="registro_usuario.html">Regístrate aquí</a>.</p>
+
+      <div class="form-status" id="form-status"></div>
+    </form>
+  </section>
+</main>
 
 <footer class="site-footer">
   <div class="wrap footer-grid" style="
@@ -60,7 +84,7 @@
     <div>
       <h4>Medios de Pago</h4>
       <div class="payment-methods">
-        
+
         <div class="payment-card-badge">
           <img src="https://e7.pngegg.com/pngimages/882/375/png-clipart-wikipedia-logo-visa-graphics-credit-card-the-african-grassland-blue-text.png" alt="Visa">
           <span>Crédito</span>
@@ -96,6 +120,52 @@
 
   <button class="back-to-top" aria-label="Volver arriba">↑</button>
 </footer>
+
+<script src="../../js/main.js"></script>
+<script src="../../js/carrito.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("form-login");
+    const status = document.getElementById("form-status");
+    const DOMINIOS_PERMITIDOS = ["duoc.cl", "profesor.duoc.cl", "gmail.com"];
+
+    function marcar(fieldId, valido) {
+      document.getElementById(fieldId).classList.remove("invalid", "valid");
+      document.getElementById(fieldId).classList.add(valido ? "valid" : "invalid");
+    }
+
+    function correoValido(valor) {
+      const formato = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+      if (!formato) return false;
+      const dominio = valor.split("@")[1].toLowerCase();
+      return DOMINIOS_PERMITIDOS.indexOf(dominio) !== -1;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const correo = document.getElementById("correo").value.trim();
+      const contrasena = document.getElementById("contrasena").value;
+
+      const correoOk = correoValido(correo) && correo.length <= 100;
+      const contrasenaOk = contrasena.length >= 4 && contrasena.length <= 10;
+
+      marcar("field-correo", correoOk);
+      marcar("field-contrasena", contrasenaOk);
+
+      status.classList.remove("show", "success", "error");
+
+      if (correoOk && contrasenaOk) {
+        status.textContent = "Sesión iniciada correctamente. Redirigiendo...";
+        status.classList.add("show", "success");
+        setTimeout(function () { window.location.href = "../../index.html"; }, 1200);
+      } else {
+        status.textContent = "Revisa los campos marcados en rojo.";
+        status.classList.add("show", "error");
+      }
+    });
+  });
+</script>
 
 </body>
 </html>

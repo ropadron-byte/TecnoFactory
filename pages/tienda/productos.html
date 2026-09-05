@@ -33,37 +33,36 @@
   <section class="page-head wrap">
     <span class="eyebrow">TF / CATÁLOGO</span>
     <h1>Todos nuestros productos</h1>
-    <p>Notebooks, relojes, accesorios, smartphones y tablets, con datos e imágenes en tiempo real desde nuestro catálogo conectado a DummyJSON.</p>
+    <p>Notebooks, audio, accesorios, monitores y almacenamiento: todo lo que necesitas, en un solo catálogo.</p>
   </section>
 
   <section class="section wrap">
 
     <!--
-      Filtros de categoría. Los dejo escritos a mano en el HTML (en vez
-      de generarlos con JS) porque son fijos y así el botón "Todos"
-      siempre existe aunque la API se demore o falle. productos.js solo
-      se encarga de escuchar los clics y decidir qué mostrar.
+      Filtros de categoría. Quedan escritos a mano en el HTML porque son
+      fijos: catalogo.js solo escucha los clics y decide qué productos
+      mostrar según la categoría elegida.
     -->
     <div class="category-filters" id="filtros-categoria">
       <button class="filter-btn active" type="button" data-categoria="todos">Todos</button>
-      <button class="filter-btn" type="button" data-categoria="laptops">Notebooks</button>
-      <button class="filter-btn" type="button" data-categoria="mens-watches">Relojes</button>
-      <button class="filter-btn" type="button" data-categoria="mobile-accessories">Accesorios</button>
-      <button class="filter-btn" type="button" data-categoria="smartphones">Smartphones</button>
-      <button class="filter-btn" type="button" data-categoria="tablets">Tablets</button>
+      <button class="filter-btn" type="button" data-categoria="Notebooks">Notebooks</button>
+      <button class="filter-btn" type="button" data-categoria="Audio">Audio</button>
+      <button class="filter-btn" type="button" data-categoria="Accesorios">Accesorios</button>
+      <button class="filter-btn" type="button" data-categoria="Monitores">Monitores</button>
+      <button class="filter-btn" type="button" data-categoria="Almacenamiento">Almacenamiento</button>
     </div>
 
-    <!-- Mensaje mientras productos.js todavía está pidiendo los datos -->
+    <!-- Como el catálogo es local, este mensaje casi no alcanza a verse -->
     <p id="estado-carga" class="text-center" style="color:var(--ink-soft); padding-block:40px;">
-      Cargando productos desde la API...
+      Cargando productos...
     </p>
 
-    <!-- Mensaje si un filtro no tiene productos (o si la API falló) -->
+    <!-- Mensaje si un filtro no tiene productos -->
     <p id="sin-resultados" class="text-center" style="color:var(--ink-soft); display:none; padding-block:40px;">
       No encontramos productos para esta categoría.
     </p>
 
-    <!-- Grilla real de productos, la llena productos.js -->
+    <!-- Grilla real de productos, la llena catalogo.js -->
     <div id="grid-productos" class="grid grid-3" style="display:none;"></div>
 
   </section>
@@ -129,9 +128,9 @@
   <button class="back-to-top" aria-label="Volver arriba">↑</button>
 </footer>
 
-<!-- carrito.js va primero porque productos.js (módulo) necesita que
-     window.addToCart ya exista cuando el usuario haga clic. -->
+<script src="../../js/main.js"></script>
+<script src="../../js/productos.js"></script>
 <script src="../../js/carrito.js"></script>
-<script type="module" src="../../js/ApiDummyJson/productos.js"></script>
+<script src="../../js/catalogo.js"></script>
 </body>
 </html>
