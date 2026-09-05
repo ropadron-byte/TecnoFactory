@@ -309,9 +309,9 @@ button{ font-family:inherit; cursor:pointer; }
 
 /* ---------- Filtros de categoría (catálogo) ----------
    Los uso en la página de productos, arriba de la grilla. Cada botón
-   representa una categoría de DummyJSON; productos.js le agrega la
-   clase .active al que está seleccionado, y yo solo me encargo de que
-   se note visualmente cuál es. */
+   representa una categoría de nuestro catálogo; catalogo.js le agrega
+   la clase .active al que está seleccionado, y yo solo me encargo de
+   que se note visualmente cuál es. */
 .category-filters{
   display:flex;
   flex-wrap:wrap;

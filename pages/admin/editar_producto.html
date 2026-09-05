@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editar producto — Panel Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+<link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+
+<div class="admin-wrap">
+  <nav class="admin-sidebar">
+    <div class="admin-nav-top">
+      <a href="home.html"><span class="icon">🏠</span> Inicio</a>
+      <a href="usuario.html"><span class="icon">👤</span> Usuarios</a>
+      <a href="producto.html" aria-current="page"><span class="icon">📦</span> Productos</a>
+    </div>
+    <div class="admin-nav-bottom">
+      <a href="#"><span class="icon">👤</span> Perfil</a>
+    </div>
+  </nav>
+
+  <main class="admin-content">
+    <div class="admin-header">
+      <h1>Editar producto</h1>
+    </div>
+
+    <form class="form" id="form-producto" novalidate>
+      <div class="field" id="field-codigo">
+        <label for="codigo">Código producto</label>
+        <span class="hint">El código no se puede modificar.</span>
+        <input type="text" id="codigo" name="codigo" minlength="3" required readonly>
+      </div>
+
+      <div class="field" id="field-nombre">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" maxlength="100" required>
+        <span class="error-msg">El nombre es obligatorio (máx. 100 caracteres).</span>
+      </div>
+
+      <div class="field" id="field-descripcion">
+        <label for="descripcion">Descripción</label>
+        <span class="hint">Opcional. Máximo 500 caracteres.</span>
+        <textarea id="descripcion" name="descripcion" maxlength="500"></textarea>
+        <span class="error-msg">La descripción no puede superar los 500 caracteres.</span>
+      </div>
+
+      <div class="field" id="field-precio">
+        <label for="precio">Precio</label>
+        <span class="hint">Puede tener decimales. Mínimo 0 (se considera producto gratis).</span>
+        <input type="number" id="precio" name="precio" min="0" step="0.01" required>
+        <span class="error-msg">Ingresa un precio válido (0 o más).</span>
+      </div>
+
+      <div class="field" id="field-stock">
+        <label for="stock">Stock</label>
+        <span class="hint">Solo números enteros, mínimo 0.</span>
+        <input type="number" id="stock" name="stock" min="0" step="1" required>
+        <span class="error-msg">Ingresa una cantidad de stock válida (número entero, 0 o más).</span>
+      </div>
+
+      <div class="field" id="field-stock-critico">
+        <label for="stock_critico">Stock crítico</label>
+        <span class="hint">Opcional. Se mostrará una alerta cuando el stock llegue a este valor o menos.</span>
+        <input type="number" id="stock_critico" name="stock_critico" min="0" step="1">
+        <span class="error-msg">El stock crítico debe ser un número entero, 0 o más.</span>
+      </div>
+
+      <div class="field" id="field-categoria">
+        <label for="categoria">Categoría</label>
+        <select id="categoria" name="categoria" required>
+          <option value="">Selecciona una categoría</option>
+        </select>
+        <span class="error-msg">Selecciona una categoría.</span>
+      </div>
+
+      <div class="field" id="field-imagen">
+        <label for="imagen">Imagen (URL)</label>
+        <span class="hint">Opcional.</span>
+        <input type="text" id="imagen" name="imagen">
+      </div>
+
+      <button type="submit" class="btn accent">Guardar cambios</button>
+      <a href="producto.html" class="btn ghost">Cancelar</a>
+      <div class="form-status" id="form-status"></div>
+    </form>
+  </main>
+</div>
+
+<script src="../../js/productos.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const codigo = params.get("codigo");
+    const producto = codigo ? obtenerProductoPorCodigo(codigo) : null;
+
+    if (!producto) {
+      document.querySelector(".admin-content").innerHTML = "<h1>Producto no encontrado</h1><p><a class='btn ghost' href='producto.html'>Volver al listado</a></p>";
+      return;
+    }
+
+    const selectCategoria = document.getElementById("categoria");
+    CATEGORIAS.forEach(function (c) {
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      selectCategoria.appendChild(opt);
+    });
+
+    document.getElementById("codigo").value = producto.codigo;
+    document.getElementById("nombre").value = producto.nombre;
+    document.getElementById("descripcion").value = producto.descripcion || "";
+    document.getElementById("precio").value = producto.precio;
+    document.getElementById("stock").value = producto.stock;
+    document.getElementById("stock_critico").value = producto.stockCritico || "";
+    document.getElementById("categoria").value = producto.categoria;
+    document.getElementById("imagen").value = producto.imagen || "";
+
+    const form = document.getElementById("form-producto");
+    const status = document.getElementById("form-status");
+
+    function marcar(fieldId, valido) {
+      document.getElementById(fieldId).classList.remove("invalid", "valid");
+      document.getElementById(fieldId).classList.add(valido ? "valid" : "invalid");
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const descripcion = document.getElementById("descripcion").value.trim();
+      const precio = parseFloat(document.getElementById("precio").value);
+      const stock = parseInt(document.getElementById("stock").value, 10);
+      const stockCriticoValor = document.getElementById("stock_critico").value;
+      const stockCritico = stockCriticoValor === "" ? 0 : parseInt(stockCriticoValor, 10);
+      const categoria = document.getElementById("categoria").value;
+      const imagen = document.getElementById("imagen").value.trim();
+
+      const nombreOk = nombre.length > 0 && nombre.length <= 100;
+      const descripcionOk = descripcion.length <= 500;
+      const precioOk = !isNaN(precio) && precio >= 0;
+      const stockOk = !isNaN(stock) && Number.isInteger(stock) && stock >= 0;
+      const stockCriticoOk = stockCriticoValor === "" || (Number.isInteger(stockCritico) && stockCritico >= 0);
+      const categoriaOk = categoria.length > 0;
+
+      marcar("field-nombre", nombreOk);
+      marcar("field-descripcion", descripcionOk);
+      marcar("field-precio", precioOk);
+      marcar("field-stock", stockOk);
+      marcar("field-stock-critico", stockCriticoOk);
+      marcar("field-categoria", categoriaOk);
+
+      status.classList.remove("show", "success", "error");
+
+      if (nombreOk && descripcionOk && precioOk && stockOk && stockCriticoOk && categoriaOk) {
+        actualizarProducto(producto.codigo, {
+          nombre: nombre, descripcion: descripcion, precio: precio,
+          stock: stock, stockCritico: stockCritico, categoria: categoria, imagen: imagen
+        });
+        status.textContent = "Producto actualizado correctamente.";
+        status.classList.add("show", "success");
+        setTimeout(function () { window.location.href = "producto.html"; }, 1200);
+      } else {
+        status.textContent = "Revisa los campos marcados en rojo.";
+        status.classList.add("show", "error");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

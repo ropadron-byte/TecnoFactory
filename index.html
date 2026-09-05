@@ -116,9 +116,8 @@
     <h2 class="text-center mb-4 fw-bold">Productos Más Vendidos</h2>
     <!--
       Este grid ya no trae productos "quemados" en el HTML: lo llena
-      js/ApiDummyJson/main.js apenas carga la página, con productos
-      reales que trae desde la API de DummyJSON. Mientras se cargan,
-      dejo un texto simple de aviso.
+      js/home.js apenas carga la página, tomando los productos desde
+      el arreglo definido en js/productos.js.
     -->
     <div id="productos-destacados" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
       <p class="text-center text-muted">Cargando productos...</p>
@@ -190,11 +189,14 @@
 <!-- Bootstrap 5.3 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!--
-  Cargo carrito.js primero (script clásico) para que sus funciones
-  queden disponibles en window antes de que corra main.js, que sí es un
-  módulo y depende de addToCart() para el botón "Agregar al Carrito".
+  Cargo productos.js primero (define el catálogo de productos), luego
+  carrito.js (funciones del carrito de compras) y por último home.js,
+  que usa las funciones de los dos anteriores para pintar los
+  productos destacados en la página de inicio.
 -->
+<script src="js/productos.js"></script>
 <script src="js/carrito.js"></script>
-<script type="module" src="js/ApiDummyJson/main.js"></script>
+<script src="js/home.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

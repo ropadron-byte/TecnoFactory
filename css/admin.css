@@ -1,0 +1,109 @@
+/* admin.css
+   Estilos del panel de administración (pages/admin). Se carga después
+   de estilos.css para poder reutilizar las mismas variables de color
+   (--brand, --ink, --line, etc.) definidas ahí, sin repetirlas. */
+
+.admin-wrap{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ---------- Barra lateral ---------- */
+.admin-sidebar{
+  width:220px;
+  flex-shrink:0;
+  background:var(--ink);
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:24px 0;
+}
+.admin-nav-top,
+.admin-nav-bottom{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.admin-sidebar a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 24px;
+  color:#cbd5e1;
+  text-decoration:none;
+  font-weight:600;
+  font-size:.95rem;
+}
+.admin-sidebar a:hover{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+.admin-sidebar a[aria-current="page"]{
+  background:var(--brand);
+  color:#fff;
+}
+.admin-sidebar .icon{ font-size:1.1rem; }
+
+/* ---------- Contenido principal ---------- */
+.admin-content{
+  flex:1;
+  padding:32px 40px;
+  background:var(--bg,#F5F6F8);
+}
+.admin-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+}
+.admin-header h1{ margin:0; }
+.admin-bell{ font-size:1.3rem; }
+
+.admin-panel{
+  background:var(--surface,#fff);
+  border:1px solid var(--line);
+  border-radius:var(--radius,10px);
+  padding:24px;
+  margin-bottom:20px;
+}
+
+/* ---------- Tabla de listados (usuarios / productos) ---------- */
+.admin-table{
+  width:100%;
+  border-collapse:collapse;
+  background:var(--surface,#fff);
+  border:1px solid var(--line);
+  border-radius:var(--radius,10px);
+  overflow:hidden;
+}
+.admin-table th,
+.admin-table td{
+  text-align:left;
+  padding:12px 16px;
+  border-bottom:1px solid var(--line);
+  font-size:.92rem;
+}
+.admin-table th{
+  background:#F0F1F4;
+  font-weight:700;
+  color:var(--ink-soft,#555);
+}
+.admin-table tr:last-child td{ border-bottom:none; }
+.admin-actions{ display:flex; gap:8px; }
+
+/* Etiqueta de tipo de usuario / estado de stock */
+.badge{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:700;
+  background:#E7EAF0;
+  color:var(--ink);
+}
+.badge.administrador{ background:#FBEAE8; color:var(--danger); }
+.badge.vendedor{ background:#FFF3D6; color:#9A6A00; }
+.badge.cliente{ background:#E7F5EC; color:var(--ok); }
+.badge.critico{ background:#FBEAE8; color:var(--danger); }
+.badge.ok{ background:#E7F5EC; color:var(--ok); }

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi carrito — Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="../../index.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory</a>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="blogs.html">Blogs</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="registro_usuario.html">Registrarme</a></li>
+      <li><a href="iniciar_sesion.html">Iniciar sesión</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="carrito.html" class="cart-btn" aria-label="Ver carrito de compras" aria-current="page">
+        🛒 Carrito <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head wrap">
+    <span class="eyebrow">TF / MI CARRITO</span>
+    <h1>Mi carrito de compras</h1>
+  </section>
+
+  <section class="section wrap">
+    <p id="carrito-vacio" style="display:none; color:var(--ink-soft);">
+      Tu carrito está vacío. <a href="productos.html">Ver catálogo</a>.
+    </p>
+
+    <div id="carrito-lleno" class="product-detail">
+      <div>
+        <table class="admin-table" id="tabla-carrito">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="filas-carrito"></tbody>
+        </table>
+      </div>
+
+      <div class="product-info">
+        <div class="admin-panel">
+          <p style="display:flex; justify-content:space-between; font-size:1.3rem; font-weight:700;">
+            <span>Total</span>
+            <span id="carrito-total">$0</span>
+          </p>
+          <button type="button" class="btn accent" id="btn-pagar" style="width:100%; margin-top:12px;">Pagar</button>
+          <p id="mensaje-pago" style="display:none; margin-top:10px;"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid" style="
+    border-top-width: 5px;
+    border-bottom-width: 10px;
+    padding-bottom: 5px;
+    padding-top: 10px;">
+    <div>
+      <h4>Tecno Factory</h4>
+      <p>Tecnología pensada para acompañarte en el estudio, el trabajo y tus proyectos personales.</p>
+    </div>
+
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>hola@tecnofactory.cl</li>
+        <li>+56 9 1234 5678</li>
+        <li>Santiago, Chile</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Medios de Pago</h4>
+      <div class="payment-methods">
+
+        <div class="payment-card-badge">
+          <img src="https://e7.pngegg.com/pngimages/882/375/png-clipart-wikipedia-logo-visa-graphics-credit-card-the-african-grassland-blue-text.png" alt="Visa">
+          <span>Crédito</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+          <span>Mastercard</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="https://vectorseek.com/wp-content/uploads/2023/09/WebPay-Logo-Vector.svg-.png" alt="Webpay">
+          <span>WebPay</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="https://clientes.xgaming.cl/tutoriales/pago/1.png" alt="BancoEstado">
+          <span>CuentaRUT</span>
+        </div>
+
+        <div class="payment-card-badge">
+          <img src="../../images/logos/Falabella-Banco-Logo-PNG-Picture.png" alt="Banco Falabella">
+          <span>CMR</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <span>© 2026 Tecno Factory.</span>
+  </div>
+
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+</footer>
+
+<script src="../../js/main.js"></script>
+<script src="../../js/productos.js"></script>
+<script src="../../js/carrito.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    pintarCarrito();
+
+    function pintarCarrito() {
+      const cart = getCart();
+      const vacio = document.getElementById("carrito-vacio");
+      const lleno = document.getElementById("carrito-lleno");
+      const filas = document.getElementById("filas-carrito");
+
+      if (cart.length === 0) {
+        vacio.style.display = "block";
+        lleno.style.display = "none";
+        return;
+      }
+      vacio.style.display = "none";
+      lleno.style.display = "grid";
+
+      filas.innerHTML = "";
+      cart.forEach(function (item) {
+        const producto = obtenerProductoPorCodigo(item.codigo);
+        if (!producto) return;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>" + producto.nombre + "</td>" +
+          "<td>" + formatCLP(producto.precio) + "</td>" +
+          "<td>" +
+            "<div class='qty'>" +
+              "<button type='button' data-restar='" + producto.codigo + "'>−</button>" +
+              "<input type='number' value='" + item.qty + "' min='1' max='" + producto.stock + "' data-qty='" + producto.codigo + "'>" +
+              "<button type='button' data-sumar='" + producto.codigo + "'>+</button>" +
+            "</div>" +
+          "</td>" +
+          "<td>" + formatCLP(producto.precio * item.qty) + "</td>" +
+          "<td><button type='button' class='btn ghost small' data-quitar='" + producto.codigo + "'>Quitar</button></td>";
+        filas.appendChild(tr);
+      });
+
+      document.getElementById("carrito-total").textContent = formatCLP(cartTotalPrice());
+
+      filas.querySelectorAll("[data-restar]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const codigo = btn.getAttribute("data-restar");
+          const item = getCart().find(function (i) { return i.codigo === codigo; });
+          updateCartQty(codigo, Math.max(1, item.qty - 1));
+          pintarCarrito();
+        });
+      });
+      filas.querySelectorAll("[data-sumar]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const codigo = btn.getAttribute("data-sumar");
+          const item = getCart().find(function (i) { return i.codigo === codigo; });
+          updateCartQty(codigo, item.qty + 1);
+          pintarCarrito();
+        });
+      });
+      filas.querySelectorAll("[data-qty]").forEach(function (input) {
+        input.addEventListener("change", function () {
+          const codigo = input.getAttribute("data-qty");
+          let valor = parseInt(input.value || "1", 10);
+          if (isNaN(valor) || valor < 1) valor = 1;
+          updateCartQty(codigo, valor);
+          pintarCarrito();
+        });
+      });
+      filas.querySelectorAll("[data-quitar]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          removeFromCart(btn.getAttribute("data-quitar"));
+          pintarCarrito();
+        });
+      });
+    }
+
+    document.getElementById("btn-pagar").addEventListener("click", function () {
+      const mensaje = document.getElementById("mensaje-pago");
+      mensaje.textContent = "¡Gracias por tu compra! (simulación, sin pasarela de pago real)";
+      mensaje.style.display = "block";
+      mensaje.style.color = "var(--ok)";
+      localStorage.removeItem(CART_KEY);
+      updateCartBadge();
+      setTimeout(pintarCarrito, 1200);
+    });
+  });
+</script>
+
+</body>
+</html>

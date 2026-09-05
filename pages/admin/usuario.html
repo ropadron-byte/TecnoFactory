@@ -5,24 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Usuarios — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
+<link rel="stylesheet" href="../../css/admin.css">
 </head>
 <body>
 
-<header class="site-header">
-  <div class="wrap nav">
-    <a href="home.html" class="logo"><span class="logo-mark" aria-hidden="true"></span> Tecno Factory Admin</a>
-  </div>
-</header>
-
 <div class="admin-wrap">
   <nav class="admin-sidebar">
-    <a href="home.html">Inicio</a>
-    <a href="usuario.html" aria-current="page">Usuarios</a>
-    <a href="../admin-producto/producto.html">Productos</a>
+    <div class="admin-nav-top">
+      <a href="home.html"><span class="icon">🏠</span> Inicio</a>
+      <a href="usuario.html" aria-current="page"><span class="icon">👤</span> Usuarios</a>
+      <a href="producto.html"><span class="icon">📦</span> Productos</a>
+    </div>
+    <div class="admin-nav-bottom">
+      <a href="#"><span class="icon">👤</span> Perfil</a>
+    </div>
   </nav>
 
   <main class="admin-content">
-    <h1>Usuarios</h1>
+    <div class="admin-header">
+      <h1>Usuarios</h1>
+    </div>
     <p><a class="btn accent small" href="nuevo_usuario.html">+ Nuevo usuario</a></p>
 
     <table class="admin-table">
