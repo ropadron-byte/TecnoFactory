@@ -6,15 +6,20 @@ const SESION_KEY = "tf_sesion";
 // registrar una cuenta a mano. Se crea solo una vez, la primera vez
 // que se pide la lista de usuarios y todavía no hay ninguno guardado.
 //
+// Importante: el correo usa un dominio de los permitidos en el login
+// (@duoc.cl, @profesor.duoc.cl, @gmail.com), porque si no, el propio
+// formulario de inicio de sesión lo rechazaría antes de validar la
+// contraseña.
+//
 // Credenciales de acceso:
-//   correo:      admin@tecnofactory.cl
+//   correo:      admin@duoc.cl
 //   contraseña:  admin123
 const USUARIO_ADMIN_BASE = {
   id: 1,
   run: "123456785",
   nombre: "Admin",
   apellidos: "Tecno Factory",
-  correo: "admin@tecnofactory.cl",
+  correo: "admin@duoc.cl",
   contrasena: "admin123",
   fecha_nacimiento: "",
   tipo: "Administrador",
@@ -31,12 +36,29 @@ function obtenerUsuarios() {
       return [USUARIO_ADMIN_BASE];
     }
     const usuarios = JSON.parse(data);
+
+    // Migración: si en el navegador quedó guardada una versión anterior
+    // del admin base (con el correo viejo @tecnofactory.cl, que no pasa
+    // la validación del login), lo actualizamos al correo/dominio válido.
+    let seModifico = false;
+    usuarios.forEach(function (u) {
+      if (u.id === 1 && u.tipo === "Administrador" && u.correo !== USUARIO_ADMIN_BASE.correo && u.correo.toLowerCase().indexOf("@tecnofactory.cl") !== -1) {
+        u.correo = USUARIO_ADMIN_BASE.correo;
+        if (!u.contrasena) u.contrasena = USUARIO_ADMIN_BASE.contrasena;
+        seModifico = true;
+      }
+    });
+
     // Por si alguien ya tenía usuarios guardados de una versión anterior
     // (sin el admin base), nos aseguramos de que siempre exista al menos
     // un usuario Administrador para poder entrar al panel.
     const yaTieneAdmin = usuarios.some(function (u) { return u.tipo === "Administrador"; });
     if (!yaTieneAdmin) {
       usuarios.push(USUARIO_ADMIN_BASE);
+      seModifico = true;
+    }
+
+    if (seModifico) {
       localStorage.setItem(USUARIOS_KEY, JSON.stringify(usuarios));
     }
     return usuarios;
@@ -87,12 +109,13 @@ function obtenerUsuarios() {
    * usuario encontrado (sin la contraseña) si las credenciales son
    * correctas, o null si no coinciden con ningún usuario registrado.
    */
-  function iniciarSesion(correo, contrasena) {
+function iniciarSesion(correo, contrasena) {
     const correoNormalizado = (correo || "").trim().toLowerCase();
+    const contrasenaNormalizada = (contrasena || "").trim();
     const usuario = obtenerUsuarios().find(function (u) {
-      return u.correo.trim().toLowerCase() === correoNormalizado && u.contrasena === contrasena;
+      return u.correo.trim().toLowerCase() === correoNormalizado
+        && (u.contrasena || "").trim() === contrasenaNormalizada;
     });
-    if (!usuario) return null;
 
     const sesion = Object.assign({}, usuario);
     delete sesion.contrasena;
