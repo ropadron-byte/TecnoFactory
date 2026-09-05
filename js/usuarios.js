@@ -117,11 +117,15 @@ function iniciarSesion(correo, contrasena) {
         && (u.contrasena || "").trim() === contrasenaNormalizada;
     });
 
+    if (!usuario) {
+      return null;   // 👈 la línea que faltaba
+    }
+
     const sesion = Object.assign({}, usuario);
     delete sesion.contrasena;
     localStorage.setItem(SESION_KEY, JSON.stringify(sesion));
     return sesion;
-  }
+}
 
   // Devuelve el usuario que tiene la sesión iniciada actualmente, o null
   // si nadie ha iniciado sesión.
