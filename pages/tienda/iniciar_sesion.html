@@ -55,6 +55,9 @@
 
       <button type="submit" class="btn accent">Iniciar sesión</button>
       <p style="margin-top:14px;">¿Aún no tienes cuenta? <a href="registro_usuario.html">Regístrate aquí</a>.</p>
+      <p style="margin-top:8px; font-size:.8rem; opacity:.7;">
+        Cuenta de administrador de prueba: <strong>admin@tecnofactory.cl</strong> / <strong>admin123</strong>
+      </p>
 
       <div class="form-status" id="form-status"></div>
     </form>
@@ -122,6 +125,7 @@
 </footer>
 
 <script src="../../js/main.js"></script>
+<script src="../../js/usuarios.js"></script>
 <script src="../../js/carrito.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -155,14 +159,32 @@
 
       status.classList.remove("show", "success", "error");
 
-      if (correoOk && contrasenaOk) {
-        status.textContent = "Sesión iniciada correctamente. Redirigiendo...";
-        status.classList.add("show", "success");
-        setTimeout(function () { window.location.href = "../../index.html"; }, 1200);
-      } else {
+      if (!correoOk || !contrasenaOk) {
         status.textContent = "Revisa los campos marcados en rojo.";
         status.classList.add("show", "error");
+        return;
       }
+
+      // Formato válido: ahora sí comprobamos que exista un usuario
+      // registrado con ese correo y esa contraseña.
+      const sesion = iniciarSesion(correo, contrasena);
+
+      if (!sesion) {
+        status.textContent = "Correo o contraseña incorrectos.";
+        status.classList.add("show", "error");
+        return;
+      }
+
+      status.textContent = "Sesión iniciada correctamente. Redirigiendo...";
+      status.classList.add("show", "success");
+
+      // Administrador y Vendedor entran al panel de administración;
+      // el Cliente vuelve a navegar la tienda normalmente.
+      const destino = (sesion.tipo === "Administrador" || sesion.tipo === "Vendedor")
+        ? "../admin/home.html"
+        : "../../index.html";
+
+      setTimeout(function () { window.location.href = destino; }, 900);
     });
   });
 </script>

@@ -6,6 +6,8 @@
 <title>Detalle producto — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
 <link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
 </head>
 <body>
 
@@ -13,7 +15,7 @@
   <nav class="admin-sidebar">
     <div class="admin-nav-top">
       <a href="home.html"><span class="icon">🏠</span> Inicio</a>
-      <a href="usuario.html"><span class="icon">👤</span> Usuarios</a>
+      <a href="usuario.html" data-admin-only><span class="icon">👤</span> Usuarios</a>
       <a href="producto.html" aria-current="page"><span class="icon">📦</span> Productos</a>
     </div>
     <div class="admin-nav-bottom">
@@ -38,7 +40,7 @@
       </div>
 
       <p style="margin-top:24px;">
-        <a class="btn accent small" id="btn-editar" href="#">Editar</a>
+        <a class="btn accent small" id="btn-editar" href="#" data-admin-only>Editar</a>
         <a class="btn ghost small" href="producto.html">← Volver al listado</a>
       </p>
     </div>
