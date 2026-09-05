@@ -6,6 +6,8 @@
 <title>Productos — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
 <link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
 </head>
 <body>
 
@@ -13,7 +15,7 @@
   <nav class="admin-sidebar">
     <div class="admin-nav-top">
       <a href="home.html"><span class="icon">🏠</span> Inicio</a>
-      <a href="usuario.html"><span class="icon">👤</span> Usuarios</a>
+      <a href="usuario.html" data-admin-only><span class="icon">👤</span> Usuarios</a>
       <a href="producto.html" aria-current="page"><span class="icon">📦</span> Productos</a>
     </div>
     <div class="admin-nav-bottom">
@@ -25,11 +27,12 @@
     <div class="admin-header">
       <h1>Productos</h1>
     </div>
-    <p><a class="btn accent small" href="nuevo_producto.html">+ Nuevo producto</a></p>
+    <p><a class="btn accent small" href="nuevo_producto.html" data-admin-only>+ Nuevo producto</a></p>
 
     <table class="admin-table">
       <thead>
         <tr>
+          <th></th>
           <th>Código</th>
           <th>Nombre</th>
           <th>Categoría</th>
@@ -51,7 +54,7 @@
     const productos = obtenerProductos();
 
     if (productos.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6">Aún no hay productos cargados.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7">Aún no hay productos cargados.</td></tr>';
       return;
     }
 
@@ -64,6 +67,7 @@
 
       const tr = document.createElement("tr");
       tr.innerHTML =
+        "<td><div class='table-thumb'>" + mediaProductoHTML(p) + "</div></td>" +
         "<td>" + p.codigo + "</td>" +
         "<td>" + p.nombre + "</td>" +
         "<td>" + p.categoria + "</td>" +
@@ -71,7 +75,7 @@
         "<td>" + stockBadge + "</td>" +
         "<td class='admin-actions'>" +
           "<a class='btn ghost small' href='mostrar_producto.html?codigo=" + encodeURIComponent(p.codigo) + "'>Ver</a>" +
-          "<a class='btn ghost small' href='editar_producto.html?codigo=" + encodeURIComponent(p.codigo) + "'>Editar</a>" +
+          "<a class='btn ghost small' data-admin-only href='editar_producto.html?codigo=" + encodeURIComponent(p.codigo) + "'>Editar</a>" +
         "</td>";
       tbody.appendChild(tr);
     });

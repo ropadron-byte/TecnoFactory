@@ -6,6 +6,8 @@
 <title>Editar usuario — Panel Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
 <link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
 </head>
 <body>
 
@@ -13,7 +15,7 @@
   <nav class="admin-sidebar">
     <div class="admin-nav-top">
       <a href="home.html"><span class="icon">🏠</span> Inicio</a>
-      <a href="usuario.html" aria-current="page"><span class="icon">👤</span> Usuarios</a>
+      <a href="usuario.html" data-admin-only aria-current="page"><span class="icon">👤</span> Usuarios</a>
       <a href="producto.html"><span class="icon">📦</span> Productos</a>
     </div>
     <div class="admin-nav-bottom">
@@ -50,7 +52,14 @@
         <label for="correo">Correo</label>
         <span class="hint">Solo dominios @duoc.cl, @profesor.duoc.cl o @gmail.com</span>
         <input type="email" id="correo" name="correo" maxlength="100" required>
-        <span class="error-msg">Correo inválido o dominio no permitido.</span>
+        <span class="error-msg">Correo inválido, dominio no permitido, o ya está en uso por otro usuario.</span>
+      </div>
+
+      <div class="field" id="field-contrasena">
+        <label for="contrasena">Nueva contraseña</label>
+        <span class="hint">Opcional. Déjala en blanco para mantener la contraseña actual. Si la cambias, entre 4 y 10 caracteres.</span>
+        <input type="password" id="contrasena" name="contrasena" maxlength="10">
+        <span class="error-msg">La contraseña debe tener entre 4 y 10 caracteres.</span>
       </div>
 
       <div class="field" id="field-fecha">
@@ -100,7 +109,6 @@
 </div>
 
 <script src="../../js/regiones.js"></script>
-<script src="../../js/usuarios.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
@@ -152,6 +160,7 @@
       const nombre = document.getElementById("nombre").value.trim();
       const apellidos = document.getElementById("apellidos").value.trim();
       const correo = document.getElementById("correo").value.trim();
+      const contrasena = document.getElementById("contrasena").value;
       const tipo = document.getElementById("tipo").value;
       const region = document.getElementById("region").value;
       const comuna = document.getElementById("comuna").value;
@@ -161,7 +170,10 @@
       const runOk = validarRun(run);
       const nombreOk = nombre.length > 0 && nombre.length <= 50;
       const apellidosOk = apellidos.length > 0 && apellidos.length <= 100;
-      const correoOk = correoValido(correo) && correo.length <= 100;
+      const correoFormatoOk = correoValido(correo) && correo.length <= 100;
+      const correoDisponibleOk = correoFormatoOk && !correoYaRegistrado(correo, id);
+      // La contraseña es opcional al editar: solo se valida el largo si se escribió algo.
+      const contrasenaOk = contrasena.length === 0 || (contrasena.length >= 4 && contrasena.length <= 10);
       const tipoOk = tipo.length > 0;
       const regionOk = region.length > 0;
       const comunaOk = comuna.length > 0;
@@ -170,19 +182,26 @@
       marcar("field-run", runOk);
       marcar("field-nombre", nombreOk);
       marcar("field-apellidos", apellidosOk);
-      marcar("field-correo", correoOk);
+      marcar("field-correo", correoDisponibleOk);
       marcar("field-tipo", tipoOk);
       marcar("field-region", regionOk);
       marcar("field-comuna", comunaOk);
       marcar("field-direccion", direccionOk);
+      document.getElementById("field-contrasena").classList.remove("invalid", "valid");
+      if (contrasena.length > 0) {
+        document.getElementById("field-contrasena").classList.add(contrasenaOk ? "valid" : "invalid");
+      }
 
       status.classList.remove("show", "success", "error");
 
-      if (runOk && nombreOk && apellidosOk && correoOk && tipoOk && regionOk && comunaOk && direccionOk) {
-        actualizarUsuario(id, { run: run, nombre: nombre, apellidos: apellidos, correo: correo, fecha_nacimiento: fecha, tipo: tipo, region: region, comuna: comuna, direccion: direccion });
+      if (runOk && nombreOk && apellidosOk && correoDisponibleOk && contrasenaOk && tipoOk && regionOk && comunaOk && direccionOk) {
+        actualizarUsuario(id, { run: run, nombre: nombre, apellidos: apellidos, correo: correo, contrasena: contrasena, fecha_nacimiento: fecha, tipo: tipo, region: region, comuna: comuna, direccion: direccion });
         status.textContent = "Usuario actualizado correctamente.";
         status.classList.add("show", "success");
         setTimeout(function () { window.location.href = "usuario.html"; }, 1200);
+      } else if (correoFormatoOk && !correoDisponibleOk) {
+        status.textContent = "Ya existe otro usuario registrado con ese correo.";
+        status.classList.add("show", "error");
       } else {
         status.textContent = "Revisa los campos marcados en rojo.";
         status.classList.add("show", "error");
