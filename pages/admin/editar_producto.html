@@ -77,10 +77,11 @@
         <span class="error-msg">Selecciona una categoría.</span>
       </div>
 
-      <div class="field" id="field-imagen">
-        <label for="imagen">Imagen (URL)</label>
-        <span class="hint">Opcional.</span>
-        <input type="text" id="imagen" name="imagen">
+      <div class="field" id="field-imagenes">
+        <label>Imágenes del producto</label>
+        <span class="hint">Opcional. Pega la URL de cada imagen; puedes añadir una o varias.</span>
+        <div class="image-inputs" id="lista-imagenes"></div>
+        <button type="button" class="btn ghost small" id="btn-agregar-imagen">+ Añadir otra imagen</button>
       </div>
 
       <button type="submit" class="btn accent">Guardar cambios</button>
@@ -117,7 +118,7 @@
     document.getElementById("stock").value = producto.stock;
     document.getElementById("stock_critico").value = producto.stockCritico || "";
     document.getElementById("categoria").value = producto.categoria;
-    document.getElementById("imagen").value = producto.imagen || "";
+    iniciarCampoImagenes("lista-imagenes", "btn-agregar-imagen", imagenesProducto(producto));
 
     const form = document.getElementById("form-producto");
     const status = document.getElementById("form-status");
@@ -137,7 +138,7 @@
       const stockCriticoValor = document.getElementById("stock_critico").value;
       const stockCritico = stockCriticoValor === "" ? 0 : parseInt(stockCriticoValor, 10);
       const categoria = document.getElementById("categoria").value;
-      const imagen = document.getElementById("imagen").value.trim();
+      const urls = leerCampoImagenes("lista-imagenes");
 
       const nombreOk = nombre.length > 0 && nombre.length <= 100;
       const descripcionOk = descripcion.length <= 500;
@@ -158,7 +159,7 @@
       if (nombreOk && descripcionOk && precioOk && stockOk && stockCriticoOk && categoriaOk) {
         actualizarProducto(producto.codigo, {
           nombre: nombre, descripcion: descripcion, precio: precio,
-          stock: stock, stockCritico: stockCritico, categoria: categoria, imagen: imagen
+          stock: stock, stockCritico: stockCritico, categoria: categoria, urls: urls
         });
         status.textContent = "Producto actualizado correctamente.";
         status.classList.add("show", "success");

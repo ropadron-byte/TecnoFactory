@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     col.className = "col mb-2";
     col.innerHTML =
       '<div class="card h-100 text-center p-3">' +
-        '<div style="font-size:3rem;">' + iconoCategoria(producto.categoria) + "</div>" +
+        '<div class="media" style="height:140px; margin-bottom:.75rem;">' + mediaProductoHTML(producto) + "</div>" +
         '<div class="card-body d-flex flex-column">' +
           '<h6 class="card-title">' + producto.nombre + "</h6>" +
           '<p class="text-muted small mb-1">' + producto.categoria + "</p>" +

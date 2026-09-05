@@ -394,3 +394,112 @@ function formatCLP(valor) {
 function iconoCategoria(categoria) {
   return ICONOS_CATEGORIA[categoria] || "📦";
 }
+
+/** Escapa comillas y ángulos para poder meter texto dinámico (nombre de
+ * producto, etc.) dentro de un atributo HTML sin romper el marcado. */
+function escapeAttr(texto) {
+  return String(texto == null ? "" : texto)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/** Devuelve el arreglo de URLs de imágenes de un producto. Soporta tanto
+ * el campo nuevo "urls" (arreglo, uno o más) como el campo antiguo
+ * "imagen" (una sola URL) que usaban los formularios de administración
+ * antes de permitir varias imágenes, para no romper datos ya guardados. */
+function imagenesProducto(producto) {
+  if (Array.isArray(producto.urls)) {
+    return producto.urls.filter(function (u) { return u && u.trim().length > 0; });
+  }
+  if (producto.imagen) return [producto.imagen];
+  return [];
+}
+
+/** Si una imagen no carga (URL rota, por ejemplo), la reemplazamos por
+ * el ícono de categoría en vez de dejar el típico ícono roto del
+ * navegador. */
+function handleImgError(img, icono) {
+  const div = document.createElement("div");
+  div.style.cssText = "font-size:3rem; width:100%; height:100%; display:flex; align-items:center; justify-content:center;";
+  div.textContent = icono;
+  img.replaceWith(div);
+}
+
+/** Arma el HTML de la imagen (o ícono, si no tiene ninguna cargada) que
+ * se usa en las tarjetas del catálogo y del home. Muestra la primera
+ * imagen del producto; si no carga, cae de vuelta al ícono de categoría. */
+function mediaProductoHTML(producto) {
+  const imagenes = imagenesProducto(producto);
+  if (imagenes.length === 0) {
+    return '<div style="font-size:3rem; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">' +
+      iconoCategoria(producto.categoria) + "</div>";
+  }
+  return '<img src="' + escapeAttr(imagenes[0]) + '" alt="' + escapeAttr(producto.nombre) +
+    '" loading="lazy" onerror="handleImgError(this, \'' + iconoCategoria(producto.categoria) + "')\">";
+}
+
+/* ---------- Campo de imágenes en los formularios de administración ----------
+   Los formularios de nuevo/editar producto usan estas funciones para
+   poder cargar 1 o más URLs de imagen, con una vista previa de cada una
+   y la posibilidad de agregar o quitar filas. */
+
+/** Crea una fila con: input de URL, vista previa y botón para quitarla. */
+function crearFilaImagen(valorInicial) {
+  const row = document.createElement("div");
+  row.className = "image-input-row";
+  row.innerHTML =
+    '<input type="text" class="imagen-url" placeholder="https://...">' +
+    '<img class="image-preview" alt="Vista previa">' +
+    '<button type="button" class="btn ghost small btn-quitar-imagen" aria-label="Quitar esta imagen">✕</button>';
+
+  const input = row.querySelector(".imagen-url");
+  const preview = row.querySelector(".image-preview");
+  input.value = valorInicial || "";
+
+  function actualizarPreview() {
+    const url = input.value.trim();
+    if (url) {
+      preview.src = url;
+      preview.classList.add("show");
+    } else {
+      preview.classList.remove("show");
+      preview.removeAttribute("src");
+    }
+  }
+  preview.addEventListener("error", function () { preview.classList.remove("show"); });
+  input.addEventListener("input", actualizarPreview);
+  actualizarPreview();
+
+  row.querySelector(".btn-quitar-imagen").addEventListener("click", function () {
+    row.remove();
+  });
+
+  return row;
+}
+
+/** Inicializa el bloque de imágenes de un formulario: agrega una fila
+ * por cada URL existente (o una fila vacía si es un producto nuevo) y
+ * conecta el botón de "+ Añadir otra imagen". */
+function iniciarCampoImagenes(contenedorId, botonAgregarId, urlsIniciales) {
+  const contenedor = document.getElementById(contenedorId);
+  const urls = (urlsIniciales && urlsIniciales.length > 0) ? urlsIniciales : [""];
+  urls.forEach(function (url) { contenedor.appendChild(crearFilaImagen(url)); });
+
+  document.getElementById(botonAgregarId).addEventListener("click", function () {
+    contenedor.appendChild(crearFilaImagen(""));
+  });
+}
+
+/** Recoge las URLs cargadas en el bloque de imágenes de un formulario,
+ * ya sin espacios, vacíos ni duplicados. */
+function leerCampoImagenes(contenedorId) {
+  const contenedor = document.getElementById(contenedorId);
+  const urls = [];
+  contenedor.querySelectorAll(".imagen-url").forEach(function (input) {
+    const valor = input.value.trim();
+    if (valor && urls.indexOf(valor) === -1) urls.push(valor);
+  });
+  return urls;
+}
