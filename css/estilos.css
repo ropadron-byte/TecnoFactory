@@ -718,3 +718,21 @@ button{ font-family:inherit; cursor:pointer; }
   width: 38px;
   height: 26px;
 }
+
+/* ---------- Video embebido ---------- */
+.video-embed{
+  width:100%;
+  aspect-ratio:16/9;
+  border:none;
+  border-radius:var(--radius);
+  margin:20px 0 28px;
+}
+
+/* ---------- Admin footer ---------- */
+.admin-footer{
+  margin-top:32px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  font-size:.8rem;
+  color:var(--ink-soft);
+}

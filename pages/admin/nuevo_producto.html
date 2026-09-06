@@ -24,11 +24,12 @@
   </nav>
 
   <main class="admin-content">
-    <div class="admin-header">
+    <header class="admin-header">
       <h1>Nuevo producto</h1>
-    </div>
+    </header>
 
-    <form class="form" id="form-producto" novalidate>
+    <section>
+      <form class="form" id="form-producto" novalidate>
       <div class="field" id="field-codigo">
         <label for="codigo">Código producto</label>
         <span class="hint">Mínimo 3 caracteres. Ej: TF-NB-002</span>
@@ -88,7 +89,12 @@
       <button type="submit" class="btn accent">Guardar producto</button>
       <div class="form-status" id="form-status"></div>
     </form>
-  </main>
+  </section>
+
+  <footer class="admin-footer">
+    <p>© 2026 Tecno Factory — Panel de administración</p>
+  </footer>
+</main>
 </div>
 
 <script src="../../js/productos.js"></script>

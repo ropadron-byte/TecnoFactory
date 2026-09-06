@@ -24,11 +24,12 @@
   </nav>
 
   <main class="admin-content">
-    <div class="admin-header">
+    <header class="admin-header">
       <h1>Editar usuario</h1>
-    </div>
+    </header>
 
-    <form class="form" id="form-usuario" novalidate>
+    <section>
+      <form class="form" id="form-usuario" novalidate>
       <div class="field" id="field-run">
         <label for="run">RUN</label>
         <span class="hint">Sin puntos ni guion. Ej: 190110228</span>
@@ -105,7 +106,12 @@
       <a href="usuario.html" class="btn ghost">Cancelar</a>
       <div class="form-status" id="form-status"></div>
     </form>
-  </main>
+  </section>
+
+  <footer class="admin-footer">
+    <p>© 2026 Tecno Factory — Panel de administración</p>
+  </footer>
+</main>
 </div>
 
 <script src="../../js/regiones.js"></script>
