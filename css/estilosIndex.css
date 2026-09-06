@@ -6,7 +6,11 @@
 
 /* Amplío el footer del home para que ocupe más ancho que el resto de
    la tienda (acá tengo una tercera columna extra con medios de pago,
-   así que necesito más espacio que en las páginas internas). */
+   así que necesito más espacio que en las páginas internas).
+   Importante: este override (y todo el bloque de medios de pago de
+   acá abajo) vive SOLO en este archivo. No debe repetirse en
+   estilos.css, porque ese archivo es compartido con las páginas
+   internas que no tienen la columna de medios de pago. */
 
 
 .site-footer .wrap.footer-grid {
@@ -94,7 +98,10 @@
 }
 
 /* Uso Inter como tipografía base también acá, para que el home calce
-   con el resto de la tienda aunque use Bootstrap como base. */
+   con el resto de la tienda aunque use Bootstrap como base. Nota: acá
+   la traigo por su nombre de familia nomás porque asumo que Bootstrap
+   o el propio index.html ya cargó la fuente desde Google Fonts; si no
+   fuera así, faltaría el @import (como en estilos.css). */
 body {
   font-family: 'Inter', sans-serif;
 }

@@ -3,6 +3,9 @@
    de estilos.css para poder reutilizar las mismas variables de color
    (--brand, --ink, --line, etc.) definidas ahí, sin repetirlas. */
 
+/* Contenedor general del panel: sidebar a la izquierda + contenido a
+   la derecha, en flexbox. min-height:100vh para que el fondo del panel
+   siempre llegue hasta el borde inferior aunque haya poco contenido. */
 .admin-wrap{
   display:flex;
   min-height:100vh;
@@ -51,6 +54,8 @@
   padding:32px 40px;
   background:var(--bg,#F5F6F8);
 }
+/* Encabezado de cada sección del panel: título a la izquierda y la
+   campanita de notificaciones (.admin-bell) a la derecha. */
 .admin-header{
   display:flex;
   align-items:center;
@@ -60,6 +65,9 @@
 .admin-header h1{ margin:0; }
 .admin-bell{ font-size:1.3rem; }
 
+/* Tarjeta genérica del panel: la uso como contenedor para formularios,
+   resúmenes o cualquier bloque suelto que necesite fondo y borde
+   propios, reutilizando el mismo look que .admin-table de abajo. */
 .admin-panel{
   background:var(--surface,#fff);
   border:1px solid var(--line);

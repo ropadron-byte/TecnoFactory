@@ -190,6 +190,9 @@ button{ font-family:inherit; cursor:pointer; }
   position:relative;
 }
 .cart-btn:hover{ border-color:var(--brand); }
+/* Globito circular con la cantidad de productos en el carrito, se
+   posiciona sobre .cart-btn (que tiene position:relative) y carrito.js
+   le actualiza el número por dentro cada vez que cambia el carrito. */
 .cart-count{
   background:var(--accent);
   color:var(--ink);
@@ -203,6 +206,9 @@ button{ font-family:inherit; cursor:pointer; }
   font-family:var(--font-data);
   padding:0 4px;
 }
+/* Botón "☰" para mostrar/ocultar el menú en mobile. Va oculto por
+   defecto (display:none) y solo aparece dentro del media query de más
+   abajo, cuando la pantalla es angosta. */
 .nav-toggle{
   display:none;
   border:1px solid var(--line-strong);
@@ -257,6 +263,9 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .footer-grid li{ margin-bottom:.5em; }
 .footer-grid a:hover{ color:#fff; }
+/* Franja angosta debajo del footer-grid, con el copyright a un lado y
+   (opcionalmente) links legales al otro; se separa con una línea fina
+   semitransparente porque el fondo del footer ya es de color. */
 .footer-bottom{
   border-top:1px solid rgba(255,255,255,.15);
   padding-block:16px;
@@ -279,6 +288,8 @@ button{ font-family:inherit; cursor:pointer; }
   padding-block:40px 28px;
   border-bottom:1px solid var(--line);
 }
+/* Etiqueta chica en fuente monoespaciada (ej: "TF / CONTACTO") que va
+   arriba del título en .page-head, a modo de "breadcrumb" simple. */
 .eyebrow{
   font-family:var(--font-data);
   font-size:.78rem;
@@ -639,87 +650,9 @@ button{ font-family:inherit; cursor:pointer; }
   overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
 }
 
-
-.site-footer .wrap.footer-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding{
-    border-top-width: 5px;
-    border-bottom-width: 10px;
-    padding-bottom: 5px;
-    padding-top: 10px;
-}
-}
-
-/* Grilla de logos de medios de pago (Visa, Mastercard, Webpay, etc):
-   la armo en 2 columnas fijas de 120px cada una. */
-.payment-methods {
-  display: grid;
-  grid-template-columns: repeat(2, 120px);
-  gap: 10px;
-  justify-content: start;
-  margin-top: 12px;
-}
-
-/* Como tengo 5 medios de pago (número impar), el último queda solo en
-   la fila final. Con nth-child(5) lo hago ocupar todo el ancho
-   disponible y lo centro, para que no quede pegado a la izquierda. */
-.payment-card-badge:nth-child(5) {
-  grid-column: 1 / -1;
-  justify-self: center;
-  width: 120px;
-}
-
-/* Estilo base de cada "chip" de medio de pago: fondo semitransparente
-   sobre el footer oscuro, con un borde sutil que se resalta al pasar
-   el mouse por encima. */
-.payment-card-badge {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: #e2e8f0;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.payment-card-badge:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Tamaño estándar de los logos (Visa, Mastercard, Webpay comparten
-   este mismo tamaño para verse parejos). */
-.payment-card-badge img {
-  width: 26px;
-  height: 18px;
-  object-fit: contain;
-  display: block;
-}
-
-/* --- Ajustes puntuales de tamaño ---
-   Algunos logos (BancoEstado y CMR Falabella) se ven muy chicos con el
-   tamaño estándar de arriba, así que a esos dos les doy un poco más de
-   espacio para que se lean bien. */
-
-/* 4º elemento: BancoEstado / CuentaRUT */
-.payment-card-badge:nth-child(4) img {
-  width: 36px;
-  height: 24px;
-}
-
-/* 5º elemento: CMR Falabella */
-.payment-card-badge:nth-child(5) img {
-  width: 38px;
-  height: 26px;
-}
+/* NOTA: los estilos del footer "ancho" con 3 columnas (medios de pago
+   incluidos) NO van acá: ese layout es exclusivo del home y vive en
+   estilosIndex.css, que se carga después y sobreescribe/completa lo
+   que necesite para esa página en particular. Mantenerlo en un solo
+   archivo evita tener la misma regla escrita dos veces (y, de paso,
+   evita arrastrar una versión con sintaxis inválida). */
