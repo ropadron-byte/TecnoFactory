@@ -48,27 +48,27 @@
 
       <div class="field" id="field-nombre">
         <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" maxlength="50" required>
+        <input type="text" id="nombre" name="nombre" maxlength="50" required autocomplete="given-name">
         <span class="error-msg">El nombre es obligatorio (máx. 50 caracteres).</span>
       </div>
 
       <div class="field" id="field-apellidos">
         <label for="apellidos">Apellidos</label>
-        <input type="text" id="apellidos" name="apellidos" maxlength="100" required>
+        <input type="text" id="apellidos" name="apellidos" maxlength="100" required autocomplete="family-name">
         <span class="error-msg">Los apellidos son obligatorios (máx. 100 caracteres).</span>
       </div>
 
       <div class="field" id="field-correo">
         <label for="correo">Correo</label>
         <span class="hint">Solo dominios @duoc.cl, @profesor.duoc.cl o @gmail.com</span>
-        <input type="email" id="correo" name="correo" maxlength="100" required>
+        <input type="email" id="correo" name="correo" maxlength="100" required autocomplete="email">
         <span class="error-msg">Correo inválido, dominio no permitido, o ya está registrado.</span>
       </div>
 
       <div class="field" id="field-contrasena">
         <label for="contrasena">Contraseña</label>
         <span class="hint">Entre 4 y 10 caracteres.</span>
-        <input type="password" id="contrasena" name="contrasena" maxlength="10" required>
+        <input type="password" id="contrasena" name="contrasena" maxlength="10" required autocomplete="new-password">
         <span class="error-msg">La contraseña debe tener entre 4 y 10 caracteres.</span>
       </div>
 
@@ -81,7 +81,7 @@
       <div class="field" id="field-telefono">
         <label for="telefono">Teléfono</label>
         <span class="hint">Opcional.</span>
-        <input type="tel" id="telefono" name="telefono" maxlength="15">
+        <input type="tel" id="telefono" name="telefono" maxlength="15" autocomplete="tel">
       </div>
 
       <div class="field" id="field-fecha">
@@ -108,7 +108,7 @@
 
       <div class="field" id="field-direccion">
         <label for="direccion">Dirección</label>
-        <input type="text" id="direccion" name="direccion" maxlength="300" required>
+        <input type="text" id="direccion" name="direccion" maxlength="300" required autocomplete="street-address">
         <span class="error-msg">La dirección es obligatoria (máx. 300 caracteres).</span>
       </div>
 
