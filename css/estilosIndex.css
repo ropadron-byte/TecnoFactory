@@ -15,6 +15,7 @@
 
 .site-footer .wrap.footer-grid {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
@@ -28,10 +29,25 @@
   padding-top: 10px;
 
 }
+/* En pantallas angostas, cada columna del footer pasa a ocupar todo
+   el ancho disponible (una debajo de otra) en vez de quedar apretadas
+   una al lado de la otra. */
+@media (max-width:700px){
+  .site-footer .wrap.footer-grid{
+    flex-direction: column;
+  }
+  .site-footer .wrap.footer-grid > div{
+    width: 100%;
+  }
+}
 
 /* Grilla de logos de medios de pago (Visa, Mastercard, Webpay, etc):
-   la armo en 2 columnas fijas de 120px cada una. */
-.payment-methods {
+   la armo en 2 columnas fijas de 120px cada una. Uso el selector
+   ".site-footer .payment-methods" (en vez de solo ".payment-methods")
+   a propósito: así este diseño de grilla, exclusivo del home, gana
+   siempre por especificidad sobre el estilo compartido y más simple
+   que vive en estilos.css para el resto de las páginas de la tienda. */
+.site-footer .payment-methods {
   display: grid;
   grid-template-columns: repeat(2, 120px);
   gap: 10px;
@@ -42,7 +58,7 @@
 /* Como tengo 5 medios de pago (número impar), el último queda solo en
    la fila final. Con nth-child(5) lo hago ocupar todo el ancho
    disponible y lo centro, para que no quede pegado a la izquierda. */
-.payment-card-badge:nth-child(5) {
+.site-footer .payment-card-badge:nth-child(5) {
   grid-column: 1 / -1;
   justify-self: center;
   width: 120px;
@@ -51,7 +67,7 @@
 /* Estilo base de cada "chip" de medio de pago: fondo semitransparente
    sobre el footer oscuro, con un borde sutil que se resalta al pasar
    el mouse por encima. */
-.payment-card-badge {
+.site-footer .payment-card-badge {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
@@ -66,14 +82,14 @@
   transition: all 0.2s ease;
 }
 
-.payment-card-badge:hover {
+.site-footer .payment-card-badge:hover {
   background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Tamaño estándar de los logos (Visa, Mastercard, Webpay comparten
    este mismo tamaño para verse parejos). */
-.payment-card-badge img {
+.site-footer .payment-card-badge img {
   width: 26px;
   height: 18px;
   object-fit: contain;
@@ -86,15 +102,29 @@
    espacio para que se lean bien. */
 
 /* 4º elemento: BancoEstado / CuentaRUT */
-.payment-card-badge:nth-child(4) img {
+.site-footer .payment-card-badge:nth-child(4) img {
   width: 36px;
   height: 24px;
 }
 
 /* 5º elemento: CMR Falabella */
-.payment-card-badge:nth-child(5) img {
+.site-footer .payment-card-badge:nth-child(5) img {
   width: 38px;
   height: 26px;
+}
+
+/* En celulares muy angostos, la grilla fija de 120px puede quedar un
+   poco ajustada según el navegador (barras, zoom, etc), así que la
+   dejo fluida por debajo de los 380px: una sola columna que ocupa
+   todo el ancho disponible. */
+@media (max-width:380px){
+  .site-footer .payment-methods{
+    grid-template-columns: 1fr;
+  }
+  .site-footer .payment-card-badge,
+  .site-footer .payment-card-badge:nth-child(5){
+    width: 100%;
+  }
 }
 
 /* Uso Inter como tipografía base también acá, para que el home calce

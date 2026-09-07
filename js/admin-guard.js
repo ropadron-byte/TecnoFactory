@@ -76,4 +76,79 @@
       });
     }
   });
+
+  // ---------------------------------------------------------------
+  // Menú lateral responsivo (mobile)
+  //
+  // En pantallas angostas, admin.css convierte .admin-sidebar en un
+  // menú "off-canvas" oculto por defecto. Acá armamos el botón "☰"
+  // (lo insertamos dentro de .admin-header, que ya existe en todas
+  // las páginas del panel) y el fondo oscuro (.admin-overlay) que
+  // permite cerrar el menú tocando afuera. Todo se genera desde JS
+  // para no tener que repetir este mismo bloque de HTML en cada una
+  // de las páginas de pages/admin/.
+  // ---------------------------------------------------------------
+  document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.querySelector(".admin-sidebar");
+    const header = document.querySelector(".admin-header");
+    if (!sidebar || !header) return;
+
+    // Fondo oscuro detrás del menú, para poder cerrarlo tocando
+    // afuera. Se agrega una sola vez, directo dentro de <body>.
+    const overlay = document.createElement("div");
+    overlay.className = "admin-overlay";
+    document.body.appendChild(overlay);
+
+    // Botón "☰" para abrir/cerrar el menú. Lo insertamos como primer
+    // hijo del encabezado, antes del título de la página.
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "admin-toggle";
+    toggle.setAttribute("aria-label", "Abrir menú del panel");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.textContent = "☰";
+    header.insertBefore(toggle, header.firstChild);
+
+    function abrirMenu() {
+      sidebar.classList.add("open");
+      overlay.classList.add("show");
+      toggle.setAttribute("aria-expanded", "true");
+    }
+    function cerrarMenu() {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+    function alternarMenu() {
+      if (sidebar.classList.contains("open")) {
+        cerrarMenu();
+      } else {
+        abrirMenu();
+      }
+    }
+
+    toggle.addEventListener("click", alternarMenu);
+    overlay.addEventListener("click", cerrarMenu);
+
+    // Si el usuario toca un link del menú (para navegar a otra
+    // sección del panel), lo cerramos: si no, quedaría abierto sobre
+    // la página siguiente hasta que el usuario lo cerrara a mano.
+    sidebar.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", cerrarMenu);
+    });
+
+    // Tecla Escape también cierra el menú, como en cualquier panel
+    // lateral / modal.
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") cerrarMenu();
+    });
+
+    // Si la persona rota el celular o agranda la ventana hasta pasar
+    // a la vista de escritorio, nos aseguramos de dejar el menú (y el
+    // fondo oscuro) cerrados, para no dejar clases "open" pegadas que
+    // ya no correspondan a ese ancho de pantalla.
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 880) cerrarMenu();
+    });
+  });
 })();

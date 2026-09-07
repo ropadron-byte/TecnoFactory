@@ -129,3 +129,72 @@
 .badge.cliente{ background:#E7F5EC; color:var(--ok); }
 .badge.critico{ background:#FBEAE8; color:var(--danger); }
 .badge.ok{ background:#E7F5EC; color:var(--ok); }
+
+/* ---------- Botón "☰" para abrir/cerrar el menú en mobile ----------
+   Va oculto por defecto (solo aparece dentro del media query de más
+   abajo, en pantallas angostas). admin-guard.js lo inyecta dentro de
+   cada .admin-header y le conecta el click. */
+.admin-toggle{
+  display:none;
+  border:1px solid var(--line-strong);
+  background:none;
+  border-radius:var(--radius);
+  padding:.4em .6em;
+  font-size:1.1rem;
+  line-height:1;
+  color:var(--ink);
+}
+
+/* Fondo semitransparente que cubre el contenido cuando el menú lateral
+   está abierto en mobile, para poder cerrarlo tocando afuera y para
+   dejar claro que el resto de la página no está disponible mientras
+   tanto. Oculto en desktop y cuando el menú está cerrado. */
+.admin-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(20,21,26,.45);
+  z-index:59;
+}
+.admin-overlay.show{ display:block; }
+
+/* ---------- Panel de administración responsivo ----------
+   En pantallas angostas, la barra lateral fija de 220px no cabe junto
+   al contenido sin apretarlo demasiado. La convierto en un menú
+   "off-canvas": queda oculta fuera de la pantalla (a la izquierda) y
+   solo se desliza hacia adentro cuando el usuario toca el botón "☰",
+   gracias a la clase .open que admin-guard.js agrega/quita. */
+@media (max-width:880px){
+  .admin-toggle{ display:inline-flex; }
+
+  .admin-wrap{
+    display:block;
+  }
+  .admin-sidebar{
+    position:fixed;
+    top:0; left:0;
+    height:100vh;
+    z-index:60;
+    transform:translateX(-100%);
+    transition:transform .2s ease;
+    box-shadow:2px 0 12px rgba(0,0,0,.25);
+  }
+  .admin-sidebar.open{
+    transform:translateX(0);
+  }
+  .admin-content{
+    padding:20px 16px;
+  }
+  .admin-header{
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .admin-header h1{
+    font-size:1.4rem;
+  }
+}
+
+@media (max-width:480px){
+  .admin-content{ padding:16px 12px; }
+  .admin-actions{ flex-wrap:wrap; }
+}

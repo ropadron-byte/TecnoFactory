@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi carrito — Tecno Factory</title>
 <link rel="stylesheet" href="../../css/estilos.css">
+<!-- La tabla del carrito reutiliza el estilo .admin-table del panel,
+     así que también necesitamos cargar admin.css acá (si no, la tabla
+     se ve sin estilo, con los bordes por defecto del navegador). -->
+<link rel="stylesheet" href="../../css/admin.css">
 </head>
 <body>
 
@@ -41,7 +45,7 @@
     </p>
 
     <div id="carrito-lleno" class="product-detail">
-      <div>
+      <div class="table-scroll">
         <table class="admin-table" id="tabla-carrito">
           <thead>
             <tr>

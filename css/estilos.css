@@ -280,6 +280,60 @@ button{ font-family:inherit; cursor:pointer; }
   .footer-grid{ grid-template-columns:1fr; }
 }
 
+/* ---------- Medios de pago (footer) ----------
+   El bloque de logos (Visa, Mastercard, Webpay, etc) aparece en el
+   footer de TODAS las páginas de la tienda, no solo en el home, así
+   que el estilo base vive acá (compartido). index.html tiene además
+   su propio ajuste en estilosIndex.css (grilla fija de 2 columnas)
+   que sobreescribe esto solo en el home, gracias a un selector más
+   específico. En el resto de las páginas se usa este diseño flexible,
+   que se acomoda solo al ancho disponible en cualquier tamaño de
+   pantalla. */
+.payment-methods{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+.payment-card-badge{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-size:.75rem;
+  color:#e2e8f0;
+  flex:1 1 120px;
+  max-width:160px;
+  box-sizing:border-box;
+  transition:all .2s ease;
+}
+.payment-card-badge:hover{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.3);
+}
+.payment-card-badge img{
+  width:26px; height:18px; object-fit:contain; display:block;
+}
+
+/* ---------- Tablas con scroll horizontal ----------
+   Envuelvo las tablas del panel de administración y del carrito en un
+   contenedor con overflow-x:auto, para que en pantallas angostas se
+   puedan desplazar horizontalmente en vez de romper el layout de la
+   página o achicar el texto hasta hacerlo ilegible. */
+.table-scroll{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:var(--radius);
+}
+.table-scroll .admin-table{
+  min-width:560px;
+}
+
 /* ---------- Página genérica ----------
    Este bloque lo repito arriba de casi todas las páginas internas: un
    "eyebrow" chico (por ejemplo "TF / CONTACTO") seguido del título y
@@ -491,6 +545,7 @@ button{ font-family:inherit; cursor:pointer; }
   display:flex;
   align-items:center;
   gap:10px;
+  flex-wrap:wrap;
 }
 .image-input-row .imagen-url{
   flex:1;
