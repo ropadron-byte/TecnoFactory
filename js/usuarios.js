@@ -118,7 +118,7 @@ function iniciarSesion(correo, contrasena) {
     });
 
     if (!usuario) {
-      return null;   // 👈 la línea que faltaba
+      return null;   
     }
 
     const sesion = Object.assign({}, usuario);
