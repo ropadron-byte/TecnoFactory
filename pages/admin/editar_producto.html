@@ -24,11 +24,12 @@
   </nav>
 
   <main class="admin-content">
-    <div class="admin-header">
+    <header class="admin-header">
       <h1>Editar producto</h1>
-    </div>
+    </header>
 
-    <form class="form" id="form-producto" novalidate>
+    <section>
+      <form class="form" id="form-producto" novalidate>
       <div class="field" id="field-codigo">
         <label for="codigo">Código producto</label>
         <span class="hint">El código no se puede modificar.</span>
@@ -88,7 +89,12 @@
       <a href="producto.html" class="btn ghost">Cancelar</a>
       <div class="form-status" id="form-status"></div>
     </form>
-  </main>
+  </section>
+
+  <footer class="admin-footer">
+    <p>© 2026 Tecno Factory — Panel de administración</p>
+  </footer>
+</main>
 </div>
 
 <script src="../../js/productos.js"></script>

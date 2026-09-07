@@ -109,23 +109,17 @@ function obtenerUsuarios() {
    * usuario encontrado (sin la contraseña) si las credenciales son
    * correctas, o null si no coinciden con ningún usuario registrado.
    */
-function iniciarSesion(correo, contrasena) {
-    const correoNormalizado = (correo || "").trim().toLowerCase();
-    const contrasenaNormalizada = (contrasena || "").trim();
-    const usuario = obtenerUsuarios().find(function (u) {
-      return u.correo.trim().toLowerCase() === correoNormalizado
-        && (u.contrasena || "").trim() === contrasenaNormalizada;
-    });
-
-    if (!usuario) {
-      return null;   
-    }
-
-    const sesion = Object.assign({}, usuario);
-    delete sesion.contrasena;
-    localStorage.setItem(SESION_KEY, JSON.stringify(sesion));
-    return sesion;
-}
+  function iniciarSesion(correo, contrasena) { 
+    const correoNormalizado = (correo || "").trim().toLowerCase(); 
+    const contrasenaNormalizada = (contrasena || "").trim(); 
+    const usuario = obtenerUsuarios().find(function (u) { 
+      return u.correo.trim().toLowerCase() === correoNormalizado && (u.contrasena || "").trim() === contrasenaNormalizada; 
+    }); 
+    if (!usuario) { 
+      return null; } 
+      const sesion = Object.assign({}, usuario); 
+      delete sesion.contrasena; localStorage.setItem(SESION_KEY, JSON.stringify(sesion)); 
+      return sesion; }
 
   // Devuelve el usuario que tiene la sesión iniciada actualmente, o null
   // si nadie ha iniciado sesión.
