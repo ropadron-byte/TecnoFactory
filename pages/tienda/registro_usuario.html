@@ -91,20 +91,26 @@
       </div>
 
       <div class="field" id="field-region">
-        <label for="region">Región</label>
-        <select id="region" name="region" required>
-          <option value="">Selecciona una región</option>
-        </select>
-        <span class="error-msg">Selecciona una región.</span>
+      <label for="region">Región</label>
+
+      <select id="region" name="region" required>
+        <option value="">Selecciona una región</option>
+      </select>
+
+      <span class="error-msg">Selecciona una región.</span>
       </div>
 
       <div class="field" id="field-comuna">
-        <label for="comuna">Comuna</label>
-        <select id="comuna" name="comuna" required>
-          <option value="">Selecciona una comuna</option>
-        </select>
-        <span class="error-msg">Selecciona una comuna.</span>
+      <label for="comuna">Comuna</label>
+
+      <select id="comuna" name="comuna" required disabled>
+        <option value="">Selecciona una comuna</option>
+      </select>
+
+      <span class="error-msg">Selecciona una comuna.</span>
       </div>
+
+
 
       <div class="field" id="field-direccion">
         <label for="direccion">Dirección</label>
@@ -255,6 +261,12 @@
       }
     });
   });
+</script>
+
+<script src="regiones.js"></script>
+
+<script>
+  poblarRegiones("region", "comuna");
 </script>
 
 </body>
