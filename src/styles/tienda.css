@@ -236,9 +236,10 @@ button{ font-family:inherit; cursor:pointer; }
 }
 
 /* ---------- Footer ----------
-   Uso un grid de 3 columnas para separar "quiénes somos", contacto y
-   (en el home) medios de pago. En pantallas angostas lo colapso a una
-   sola columna para que no quede apretado. */
+   Una sola definición para TODAS las páginas (antes había parches
+   repetidos en tienda.css y home.css que se pisaban entre sí).
+   Columnas y copyright usan el mismo contenedor (.wrap), así que quedan
+   alineados al mismo borde izquierdo y derecho. */
 .site-footer{
   background:var(--brand);
   color:#EAF0F8;
@@ -246,77 +247,96 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .footer-grid{
   display:grid;
-  grid-template-columns:1.4fr 1fr 1fr;
-  gap:32px;
-  padding-block:44px;
+  grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) auto;
+  gap:40px 48px;
+  align-items:start;
+  padding-block:56px 40px;
 }
 .footer-grid h4{
   font-family:var(--font-display);
   color:#fff;
   font-size:.95rem;
   text-transform:none;
-  margin-bottom:.9em;
+  margin-bottom:1em;
 }
 .footer-grid p,.footer-grid a{
   color:#C3D2E6;
   font-size:.9rem;
+  line-height:1.6;
 }
-.footer-grid li{ margin-bottom:.5em; }
+.footer-grid p{ max-width:42ch; }
+.footer-grid ul{ list-style:none; padding:0; margin:0; }
+.footer-grid li{ margin-bottom:.55em; color:#C3D2E6; font-size:.9rem; }
 .footer-grid a:hover{ color:#fff; }
-/* Franja angosta debajo del footer-grid, con el copyright a un lado y
-   (opcionalmente) links legales al otro; se separa con una línea fina
-   semitransparente porque el fondo del footer ya es de color. */
+
+/* Franja inferior con el copyright, separada por una línea fina
+   semitransparente (el fondo del footer ya es de color). */
 .footer-bottom{
   border-top:1px solid rgba(255,255,255,.15);
-  padding-block:16px;
+  padding-block:20px 24px;
   font-size:.8rem;
   color:#9FB4CE;
   display:flex;
   justify-content:space-between;
+  align-items:center;
   flex-wrap:wrap;
   gap:8px;
 }
-@media (max-width:700px){
-  .footer-grid{ grid-template-columns:1fr; }
-}
 
 /* ---------- Medios de pago (footer) ----------
-   El bloque de logos (Visa, Mastercard, Webpay, etc) aparece en el
-   footer de TODAS las páginas de la tienda, no solo en el home, así
-   que el estilo base vive acá (compartido). index.html tiene además
-   su propio ajuste en estilosIndex.css (grilla fija de 2 columnas)
-   que sobreescribe esto solo en el home, gracias a un selector más
-   específico. En el resto de las páginas se usa este diseño flexible,
-   que se acomoda solo al ancho disponible en cualquier tamaño de
-   pantalla. */
+   Grilla de 2 columnas iguales. Como son 5 medios (impar), el último
+   ocupa las dos columnas para que la grilla quede pareja y alineada
+   a la izquierda, en vez de quedar suelto y centrado. */
 .payment-methods{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:10px;
-  margin-top:12px;
+  width:260px;
+  max-width:100%;
 }
 .payment-card-badge{
   background:rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.15);
   border-radius:8px;
-  padding:8px 10px;
+  padding:9px 10px;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:8px;
   font-size:.75rem;
   color:#e2e8f0;
-  flex:1 1 120px;
-  max-width:160px;
   box-sizing:border-box;
+  min-height:42px;
   transition:all .2s ease;
 }
+.payment-card-badge:last-child{ grid-column:1 / -1; }
 .payment-card-badge:hover{
   background:rgba(255,255,255,.16);
   border-color:rgba(255,255,255,.3);
 }
 .payment-card-badge img{
-  width:26px; height:18px; object-fit:contain; display:block;
+  width:26px; height:18px; object-fit:contain; display:block; flex-shrink:0;
+}
+/* BancoEstado y CMR Falabella se ven muy chicos con el tamaño estándar */
+.payment-card-badge:nth-child(4) img{ width:36px; height:24px; }
+.payment-card-badge:nth-child(5) img{ width:38px; height:26px; }
+
+/* Tablet: marca arriba a todo el ancho; contacto y pagos debajo, lado a lado */
+@media (max-width:900px){
+  .footer-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    padding-block:44px 32px;
+  }
+  .footer-grid > div:first-child{ grid-column:1 / -1; }
+}
+/* Móvil: una sola columna */
+@media (max-width:600px){
+  .footer-grid{
+    grid-template-columns:1fr;
+    gap:32px;
+    padding-block:36px 28px;
+  }
+  .payment-methods{ width:100%; max-width:320px; }
 }
 
 /* ---------- Tablas con scroll horizontal ----------
@@ -705,85 +725,6 @@ button{ font-family:inherit; cursor:pointer; }
   overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
 }
 
-
-.site-footer .wrap.footer-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-/* Grilla de logos de medios de pago (Visa, Mastercard, Webpay, etc):
-   la armo en 2 columnas fijas de 120px cada una. */
-.payment-methods {
-  display: grid;
-  grid-template-columns: repeat(2, 120px);
-  gap: 10px;
-  justify-content: start;
-  margin-top: 12px;
-}
-
-/* Como tengo 5 medios de pago (número impar), el último queda solo en
-   la fila final. Con nth-child(5) lo hago ocupar todo el ancho
-   disponible y lo centro, para que no quede pegado a la izquierda. */
-.payment-card-badge:nth-child(5) {
-  grid-column: 1 / -1;
-  justify-self: center;
-  width: 120px;
-}
-
-/* Estilo base de cada "chip" de medio de pago: fondo semitransparente
-   sobre el footer oscuro, con un borde sutil que se resalta al pasar
-   el mouse por encima. */
-.payment-card-badge {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: #e2e8f0;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-}
-
-.payment-card-badge:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Tamaño estándar de los logos (Visa, Mastercard, Webpay comparten
-   este mismo tamaño para verse parejos). */
-.payment-card-badge img {
-  width: 26px;
-  height: 18px;
-  object-fit: contain;
-  display: block;
-}
-
-/* --- Ajustes puntuales de tamaño ---
-   Algunos logos (BancoEstado y CMR Falabella) se ven muy chicos con el
-   tamaño estándar de arriba, así que a esos dos les doy un poco más de
-   espacio para que se lean bien. */
-
-/* 4º elemento: BancoEstado / CuentaRUT */
-.payment-card-badge:nth-child(4) img {
-  width: 36px;
-  height: 24px;
-}
-
-/* 5º elemento: CMR Falabella */
-.payment-card-badge:nth-child(5) img {
-  width: 38px;
-  height: 26px;
-}
 
 /* ---------- Video embebido ---------- */
 .video-embed{

@@ -24,8 +24,10 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="wrap footer-bottom">
-        <span>© 2026 Tecno Factory.</span>
+      <div className="wrap">
+        <div className="footer-bottom">
+          <span>© 2026 Tecno Factory.</span>
+        </div>
       </div>
     </footer>
   )
