@@ -58,10 +58,53 @@ export function correoYaRegistrado(correo, idExcluir) {
   )
 }
 
-export function guardarUsuario(usuario) {
-  const usuarios = obtenerUsuarios()
-  usuarios.push({ ...usuario, id: Date.now() })
+function guardarUsuarios(usuarios) {
   localStorage.setItem(STORAGE_KEYS.usuarios, JSON.stringify(usuarios))
+}
+
+export function obtenerUsuarioPorId(id) {
+  return obtenerUsuarios().find((u) => u.id === id)
+}
+
+export function guardarUsuario(usuario) {
+  guardarUsuarios([...obtenerUsuarios(), { ...usuario, id: Date.now() }])
+}
+
+/** Actualiza un usuario. Si la contraseña viene vacía se conserva la actual.
+ * Si se edita al usuario con sesión iniciada, su sesión también se actualiza. */
+export function actualizarUsuario(id, datosNuevos) {
+  const usuarios = obtenerUsuarios()
+  const existente = usuarios.find((u) => u.id === id)
+  if (!existente) return
+
+  const { contrasena, ...resto } = datosNuevos
+  const actualizado = { ...existente, ...resto, ...(contrasena ? { contrasena } : {}) }
+  guardarUsuarios(usuarios.map((u) => (u.id === id ? actualizado : u)))
+
+  if (obtenerSesion()?.id === id) {
+    const { contrasena: _omitida, ...sesion } = actualizado
+    localStorage.setItem(STORAGE_KEYS.sesion, JSON.stringify(sesion))
+  }
+}
+
+/** Motivo por el que NO se puede eliminar al usuario (o null si se puede). */
+export function motivoNoEliminable(id) {
+  const usuarios = obtenerUsuarios()
+  const usuario = usuarios.find((u) => u.id === id)
+  if (!usuario) return 'El usuario no existe.'
+  if (obtenerSesion()?.id === id) return 'No puedes eliminar tu propia cuenta mientras tienes la sesión iniciada.'
+  if (usuario.tipo === 'Administrador' && usuarios.filter((u) => u.tipo === 'Administrador').length <= 1) {
+    return 'No puedes eliminar al único administrador.'
+  }
+  return null
+}
+
+/** Elimina un usuario. Devuelve { ok, message }. */
+export function eliminarUsuario(id) {
+  const motivo = motivoNoEliminable(id)
+  if (motivo) return { ok: false, message: motivo }
+  guardarUsuarios(obtenerUsuarios().filter((u) => u.id !== id))
+  return { ok: true, message: 'Usuario eliminado.' }
 }
 
 /** Inicia sesión. Devuelve el usuario (sin contraseña) o null si no coincide. */

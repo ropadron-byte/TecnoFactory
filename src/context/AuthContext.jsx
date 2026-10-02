@@ -13,6 +13,11 @@ export function AuthProvider({ children }) {
     return nueva
   }
 
+  /** Vuelve a leer la sesión guardada (p. ej. tras editar al usuario actual). */
+  function recargarSesion() {
+    setSesion(usuarios.obtenerSesion())
+  }
+
   function logout() {
     usuarios.cerrarSesion()
     setSesion(null)
@@ -22,6 +27,7 @@ export function AuthProvider({ children }) {
     sesion,
     login,
     logout,
+    recargarSesion,
     esStaff: sesion?.tipo === 'Administrador' || sesion?.tipo === 'Vendedor',
   }
 

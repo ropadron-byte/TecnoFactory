@@ -26,5 +26,10 @@ export const STORAGE_KEYS = {
   sesion: 'tf_sesion',
 }
 
-// Ruta (respetando la base de Vite) al panel de administración estático.
-export const ADMIN_HOME_URL = import.meta.env.BASE_URL + 'admin/pages/admin/home.html'
+// Tipos de usuario (roles) del sistema.
+export const ROLES = {
+  admin: 'Administrador',
+  vendedor: 'Vendedor',
+  cliente: 'Cliente',
+}
+export const TIPOS_USUARIO = [ROLES.admin, ROLES.vendedor, ROLES.cliente]

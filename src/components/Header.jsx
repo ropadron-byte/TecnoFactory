@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
-import { ADMIN_HOME_URL } from '../data/constantes'
 
 const ENLACES = [
   { to: '/', label: 'Inicio', end: true },
@@ -60,7 +59,7 @@ export default function Header() {
             <>
               {esStaff && (
                 <li>
-                  <a href={ADMIN_HOME_URL}>Panel admin</a>
+                  <NavLink to="/admin" onClick={cerrarMenu}>Panel admin</NavLink>
                 </li>
               )}
               <li>

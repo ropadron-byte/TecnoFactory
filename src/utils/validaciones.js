@@ -32,3 +32,28 @@ export function contrasenaValida(valor) {
   const largo = String(valor ?? '').length
   return largo >= 4 && largo <= 10
 }
+
+// ---------- Productos (panel de administración) ----------
+
+/**
+ * Valida los datos de un producto tal como vienen del formulario
+ * (todo como texto). Devuelve un objeto { campo: true/false }.
+ * `codigoDisponible` indica si el código no está ya en uso.
+ */
+export function validarProducto(v, { codigoDisponible = true, validarCodigo = true } = {}) {
+  const precio = parseFloat(v.precio)
+  const stock = Number(v.stock)
+  const critico = Number(v.stockCritico)
+  const vacio = (x) => String(x ?? '').trim() === ''
+
+  const resultado = {
+    nombre: v.nombre.trim().length > 0 && v.nombre.trim().length <= 100,
+    descripcion: v.descripcion.trim().length <= 500,
+    precio: !vacio(v.precio) && !Number.isNaN(precio) && precio >= 0,
+    stock: !vacio(v.stock) && Number.isInteger(stock) && stock >= 0,
+    stockCritico: vacio(v.stockCritico) || (Number.isInteger(critico) && critico >= 0),
+    categoria: v.categoria.length > 0,
+  }
+  if (validarCodigo) resultado.codigo = v.codigo.trim().length >= 3 && codigoDisponible
+  return resultado
+}

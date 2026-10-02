@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import PageHead from '../components/PageHead.jsx'
 import FormField from '../components/FormField.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
-import { ADMIN_HOME_URL } from '../data/constantes'
 import { contrasenaValida, correoValido } from '../utils/validaciones'
 import usePageTitle from '../hooks/usePageTitle'
 
@@ -38,12 +37,11 @@ export default function IniciarSesion() {
 
     setEstado({ tipo: 'success', texto: 'Sesión iniciada correctamente. Redirigiendo...' })
 
-    // Administrador y Vendedor entran al panel de administración (páginas
-    // estáticas en /admin); el Cliente vuelve a la tienda.
+    // Administrador y Vendedor entran al panel de administración;
+    // el Cliente vuelve a la tienda.
     const esStaff = sesion.tipo === 'Administrador' || sesion.tipo === 'Vendedor'
     setTimeout(() => {
-      if (esStaff) window.location.href = ADMIN_HOME_URL
-      else navigate('/')
+      navigate(esStaff ? '/admin' : '/')
     }, 900)
   }
 

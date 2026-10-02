@@ -18,6 +18,27 @@ export function obtenerProductos() {
   }
 }
 
+function guardarProductos(productos) {
+  localStorage.setItem(STORAGE_KEYS.productos, JSON.stringify(productos))
+}
+
+/** Agrega un producto nuevo al catálogo. */
+export function guardarProducto(producto) {
+  guardarProductos([...obtenerProductos(), producto])
+}
+
+/** Actualiza un producto existente (se busca por su código, que no cambia). */
+export function actualizarProducto(codigo, datosNuevos) {
+  const productos = obtenerProductos()
+  if (!productos.some((p) => p.codigo === codigo)) return
+  guardarProductos(productos.map((p) => (p.codigo === codigo ? { ...p, ...datosNuevos } : p)))
+}
+
+/** Elimina un producto del catálogo por su código. */
+export function eliminarProducto(codigo) {
+  guardarProductos(obtenerProductos().filter((p) => p.codigo !== codigo))
+}
+
 /** Busca un producto por su código. */
 export function obtenerProductoPorCodigo(codigo) {
   return obtenerProductos().find((p) => p.codigo === codigo)

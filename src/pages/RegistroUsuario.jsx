@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PageHead from '../components/PageHead.jsx'
 import FormField from '../components/FormField.jsx'
-import { REGIONES } from '../data/regiones'
+import RegionComunaFields from '../components/RegionComunaFields.jsx'
 import { contrasenaValida, correoValido, validarRun } from '../utils/validaciones'
 import { correoYaRegistrado, guardarUsuario } from '../services/usuariosService'
 import usePageTitle from '../hooks/usePageTitle'
@@ -27,8 +27,6 @@ export default function RegistroUsuario() {
   const [v, setV] = useState(INICIAL)
   const [enviado, setEnviado] = useState(false)
   const [estado, setEstado] = useState(null)
-
-  const comunas = REGIONES.find((r) => r.region === v.region)?.comunas ?? []
 
   function cambiar(e) {
     const { name, value } = e.target
@@ -123,27 +121,13 @@ export default function RegistroUsuario() {
             <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value={v.fecha_nacimiento} onChange={cambiar} />
           </FormField>
 
-          <FormField id="region" label="Región" error="Selecciona una región." estado={marca('region')}>
-            <select id="region" name="region" value={v.region} onChange={cambiar}>
-              <option value="">Selecciona una región</option>
-              {REGIONES.map((r) => (
-                <option key={r.region} value={r.region}>
-                  {r.region}
-                </option>
-              ))}
-            </select>
-          </FormField>
-
-          <FormField id="comuna" label="Comuna" error="Selecciona una comuna." estado={marca('comuna')}>
-            <select id="comuna" name="comuna" value={v.comuna} onChange={cambiar} disabled={!v.region}>
-              <option value="">Selecciona una comuna</option>
-              {comunas.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </FormField>
+          <RegionComunaFields
+            region={v.region}
+            comuna={v.comuna}
+            onChange={cambiar}
+            estadoRegion={marca('region')}
+            estadoComuna={marca('comuna')}
+          />
 
           <FormField id="direccion" label="Dirección" error="La dirección es obligatoria (máx. 300 caracteres)." estado={marca('direccion')}>
             <input type="text" id="direccion" name="direccion" maxLength={300} autoComplete="street-address" value={v.direccion} onChange={cambiar} />
