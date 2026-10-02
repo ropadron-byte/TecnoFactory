@@ -1,0 +1,840 @@
+/* =========================================================
+   TECNO FACTORY — hoja de estilos compartida (tienda)
+   Paleta: catálogo/ficha técnica industrial.
+
+   La uso en casi todas las páginas de "pages/tienda/" (blogs, contacto,
+   catálogo, ficha de producto, etc). index.html usa Bootstrap para el
+   home, pero desde acá para adentro prefiero mis propias clases para
+   tener control total del diseño sin pelear con las clases de Bootstrap.
+   ========================================================= */
+
+/* Traigo 3 tipografías de Google Fonts: una para títulos (Space
+   Grotesk), una para texto normal (Inter) y una monoespaciada
+   (JetBrains Mono) que uso para precios, fechas y datos técnicos, así
+   se sienten como una "ficha técnica" real. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+
+/* Dejo toda la paleta de colores y variables de layout acá arriba, en
+   :root, para no repetir valores sueltos por todo el archivo. Si algún
+   día quiero cambiar el color de marca, lo cambio en un solo lugar y
+   se actualiza en toda la tienda. */
+:root{
+  --bg:        #F4F5F7;
+  --surface:   #FFFFFF;
+  --ink:       #14151A;
+  --ink-soft:  #565B66;
+  --brand:     #22406B;
+  --brand-2:   #345580;
+  --accent:    #F2A93B;
+  --line:      #D7DBE2;
+  --line-strong:#B9C0CB;
+  --danger:    #C0392B;
+  --ok:        #1E7B45;
+
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body:    'Inter', 'Segoe UI', sans-serif;
+  --font-data:    'JetBrains Mono', 'Courier New', monospace;
+
+  --maxw: 1160px;
+  --radius: 3px;
+}
+
+/* Uso box-sizing:border-box en todo para que el padding y el border no
+   me alteren el ancho que yo defino, que es el comportamiento que
+   siempre termino necesitando. */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; } /* así los links con # (anclas) se desplazan suave */
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:600;
+  line-height:1.15;
+  margin:0 0 .5em;
+  letter-spacing:-0.01em;
+}
+h1{ font-size:clamp(2rem,4vw,2.75rem); font-weight:700; }
+h2{ font-size:clamp(1.4rem,2.5vw,1.9rem); }
+h3{ font-size:1.15rem; }
+p{ margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+ul{ margin:0; padding:0; list-style:none; }
+button{ font-family:inherit; cursor:pointer; }
+
+/* .wrap es mi contenedor genérico: centra el contenido y le pone un
+   ancho máximo, lo uso dentro de casi cualquier <section> de la tienda
+   en vez de escribir margin/max-width a cada rato. */
+.wrap{
+  max-width:var(--maxw);
+  margin-inline:auto;
+  padding-inline:24px;
+}
+
+/* ---------- Botones ----------
+   Un botón base (.btn) y un par de variantes (.ghost, .accent) que voy
+   combinando según el contexto: el sólido para la acción principal, el
+   "ghost" para acciones secundarias como "Ver más" o "Volver", y el
+   "accent" para destacar algo como "Agregar al carrito". */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  padding:.7em 1.3em;
+  border:1px solid var(--brand);
+  border-radius:var(--radius);
+  background:var(--brand);
+  color:#fff;
+  font-weight:600;
+  font-size:.92rem;
+  transition:background .15s ease, transform .1s ease;
+}
+.btn:hover{ background:var(--brand-2); }
+.btn:active{ transform:translateY(1px); }
+.btn.ghost{
+  background:transparent;
+  color:var(--brand);
+}
+.btn.ghost:hover{ background:var(--brand); color:#fff; }
+.btn.accent{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--ink);
+}
+.btn.accent:hover{ background:#e0972a; border-color:#e0972a; }
+.btn:disabled{ opacity:.5; cursor:not-allowed; }
+.btn.small{ padding:.45em .9em; font-size:.82rem; }
+
+/* ---------- Header / nav ----------
+   El header queda "pegado" arriba (position:sticky) mientras el
+   usuario hace scroll, y adentro uso flexbox para separar el logo, el
+   menú y el botón del carrito en 3 grupos bien distribuidos. */
+.site-header{
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding-block:14px;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1.15rem;
+  color:var(--ink);
+}
+.logo-mark{
+  width:30px; height:30px;
+  background:var(--brand);
+  border-radius:4px;
+  position:relative;
+  flex:none;
+}
+.logo-mark::before,.logo-mark::after{
+  content:"";
+  position:absolute;
+  background:var(--accent);
+}
+.logo-mark::before{ width:12px; height:3px; top:8px; left:9px; }
+.logo-mark::after{ width:3px; height:12px; top:8px; left:9px; }
+
+.nav-links{
+  display:flex;
+  gap:26px;
+  flex-wrap:wrap;
+}
+.nav-links a{
+  font-size:.94rem;
+  font-weight:500;
+  color:var(--ink-soft);
+  padding-block:6px;
+  border-bottom:2px solid transparent;
+  transition:color .15s ease,border-color .15s ease;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"]{
+  color:var(--ink);
+  border-color:var(--accent);
+}
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.cart-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  padding:.5em .8em;
+  font-size:.85rem;
+  font-weight:600;
+  color:var(--ink);
+  position:relative;
+}
+.cart-btn:hover{ border-color:var(--brand); }
+/* Globito circular con la cantidad de productos en el carrito, se
+   posiciona sobre .cart-btn (que tiene position:relative) y carrito.js
+   le actualiza el número por dentro cada vez que cambia el carrito. */
+.cart-count{
+  background:var(--accent);
+  color:var(--ink);
+  border-radius:50%;
+  min-width:18px;
+  height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.7rem;
+  font-family:var(--font-data);
+  padding:0 4px;
+}
+/* Botón "☰" para mostrar/ocultar el menú en mobile. Va oculto por
+   defecto (display:none) y solo aparece dentro del media query de más
+   abajo, cuando la pantalla es angosta. */
+.nav-toggle{
+  display:none;
+  border:1px solid var(--line-strong);
+  background:none;
+  border-radius:var(--radius);
+  padding:.4em .6em;
+}
+
+/* En pantallas angostas escondo el menú horizontal y muestro el botón
+   "☰" (.nav-toggle); el propio JS del header (si lo agrego más
+   adelante) se encarga de sumarle la clase .open para desplegarlo. */
+@media (max-width:820px){
+  .nav-toggle{ display:inline-flex; }
+  .nav-links{
+    display:none;
+    width:100%;
+    flex-direction:column;
+    gap:2px;
+    padding-top:10px;
+    border-top:1px solid var(--line);
+    margin-top:10px;
+  }
+  .nav-links.open{ display:flex; }
+  .nav{ flex-wrap:wrap; }
+}
+
+/* ---------- Footer ----------
+   Uso un grid de 3 columnas para separar "quiénes somos", contacto y
+   (en el home) medios de pago. En pantallas angostas lo colapso a una
+   sola columna para que no quede apretado. */
+.site-footer{
+  background:var(--brand);
+  color:#EAF0F8;
+  margin-top:64px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+  gap:32px;
+  padding-block:44px;
+}
+.footer-grid h4{
+  font-family:var(--font-display);
+  color:#fff;
+  font-size:.95rem;
+  text-transform:none;
+  margin-bottom:.9em;
+}
+.footer-grid p,.footer-grid a{
+  color:#C3D2E6;
+  font-size:.9rem;
+}
+.footer-grid li{ margin-bottom:.5em; }
+.footer-grid a:hover{ color:#fff; }
+/* Franja angosta debajo del footer-grid, con el copyright a un lado y
+   (opcionalmente) links legales al otro; se separa con una línea fina
+   semitransparente porque el fondo del footer ya es de color. */
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.15);
+  padding-block:16px;
+  font-size:.8rem;
+  color:#9FB4CE;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+}
+@media (max-width:700px){
+  .footer-grid{ grid-template-columns:1fr; }
+}
+
+/* ---------- Medios de pago (footer) ----------
+   El bloque de logos (Visa, Mastercard, Webpay, etc) aparece en el
+   footer de TODAS las páginas de la tienda, no solo en el home, así
+   que el estilo base vive acá (compartido). index.html tiene además
+   su propio ajuste en estilosIndex.css (grilla fija de 2 columnas)
+   que sobreescribe esto solo en el home, gracias a un selector más
+   específico. En el resto de las páginas se usa este diseño flexible,
+   que se acomoda solo al ancho disponible en cualquier tamaño de
+   pantalla. */
+.payment-methods{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+.payment-card-badge{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-size:.75rem;
+  color:#e2e8f0;
+  flex:1 1 120px;
+  max-width:160px;
+  box-sizing:border-box;
+  transition:all .2s ease;
+}
+.payment-card-badge:hover{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.3);
+}
+.payment-card-badge img{
+  width:26px; height:18px; object-fit:contain; display:block;
+}
+
+/* ---------- Tablas con scroll horizontal ----------
+   Envuelvo las tablas del panel de administración y del carrito en un
+   contenedor con overflow-x:auto, para que en pantallas angostas se
+   puedan desplazar horizontalmente en vez de romper el layout de la
+   página o achicar el texto hasta hacerlo ilegible. */
+.table-scroll{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:var(--radius);
+}
+.table-scroll .admin-table{
+  min-width:560px;
+}
+
+/* ---------- Página genérica ----------
+   Este bloque lo repito arriba de casi todas las páginas internas: un
+   "eyebrow" chico (por ejemplo "TF / CONTACTO") seguido del título y
+   una bajada. Lo pienso como el encabezado estándar de cada sección. */
+.page-head{
+  padding-block:40px 28px;
+  border-bottom:1px solid var(--line);
+}
+/* Etiqueta chica en fuente monoespaciada (ej: "TF / CONTACTO") que va
+   arriba del título en .page-head, a modo de "breadcrumb" simple. */
+.eyebrow{
+  font-family:var(--font-data);
+  font-size:.78rem;
+  color:var(--brand);
+  margin-bottom:.6em;
+  display:block;
+}
+.section{ padding-block:48px; }
+.section-tight{ padding-block:28px; }
+
+/* ---------- Grid utilitario ----------
+   .grid-3 la uso para el listado de blogs y para el catálogo de
+   productos (3 columnas en desktop, 2 en tablet, 1 en celular). No
+   necesité más de 2 variantes de columnas en este proyecto, así que
+   dejé solo grid-3 y grid-2. */
+.grid{
+  display:grid;
+  gap:28px;
+}
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+@media (max-width:900px){
+  .grid-3{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:640px){
+  .grid-3,.grid-2{ grid-template-columns:1fr; }
+}
+
+/* ---------- Filtros de categoría (catálogo) ----------
+   Los uso en la página de productos, arriba de la grilla. Cada botón
+   representa una categoría de nuestro catálogo; catalogo.js le agrega
+   la clase .active al que está seleccionado, y yo solo me encargo de
+   que se note visualmente cuál es. */
+.category-filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:28px;
+}
+.filter-btn{
+  border:1px solid var(--line-strong);
+  background:var(--surface);
+  color:var(--ink-soft);
+  border-radius:999px; /* botones bien redondeados, tipo "chip" */
+  padding:.5em 1.1em;
+  font-size:.85rem;
+  font-weight:600;
+  font-family:var(--font-body);
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+.filter-btn:hover{
+  border-color:var(--brand);
+  color:var(--brand);
+}
+.filter-btn.active{
+  background:var(--brand);
+  border-color:var(--brand);
+  color:#fff;
+}
+
+/* ---------- Card genérica (blog / producto) ----------
+   La misma clase .card me sirve tanto para las tarjetas del blog como
+   para las del catálogo: una imagen arriba (.media) y el contenido
+   abajo (.card-body). Cambia el contenido interno, pero la estructura
+   visual es la misma en toda la tienda. */
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.media{
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--radius);
+  background:linear-gradient(135deg,var(--brand) 0%,var(--brand-2) 60%,#4A6E9C 100%);
+}
+.media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.media-tag{
+  position:absolute;
+  bottom:10px; left:10px;
+  font-family:var(--font-data);
+  font-size:.7rem;
+  background:rgba(0,0,0,.35);
+  color:#fff;
+  padding:3px 8px;
+  border-radius:2px;
+}
+.media--card{ aspect-ratio:16/10; }
+.media--square{ aspect-ratio:1/1; }
+.media--wide{ aspect-ratio:21/8; margin-bottom:28px; }
+.card-body{
+  padding:18px 18px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:.5em;
+  flex:1;
+}
+.card-body h3{ margin-bottom:.1em; }
+.card-meta{
+  font-family:var(--font-data);
+  font-size:.72rem;
+  color:var(--ink-soft);
+}
+.card-body p{ font-size:.92rem; margin-bottom:.2em; }
+.card-body .btn{ margin-top:auto; align-self:flex-start; }
+
+/* ---------- Producto ----------
+   Estas clases son el corazón visual del catálogo: el precio en fuente
+   monoespaciada (para que se vea "de ficha técnica"), el precio tachado
+   cuando hay descuento, y la etiqueta de stock que cambia de color
+   según si queda poco o nada disponible. Las uso tanto en las tarjetas
+   del catálogo como en la ficha de detalle de cada producto. */
+.price{
+  font-family:var(--font-data);
+  font-weight:500;
+  color:var(--brand);
+  font-size:1.05rem;
+}
+.price-old{
+  font-family:var(--font-data);
+  color:var(--ink-soft);
+  text-decoration:line-through;
+  font-size:.85rem;
+  margin-left:.4em;
+}
+.stock-tag{
+  font-family:var(--font-data);
+  font-size:.72rem;
+  padding:2px 7px;
+  border-radius:2px;
+  border:1px solid var(--line-strong);
+}
+/* .stock-tag sola queda en gris neutro; le agrego .ok o .low desde
+   detalle.js / productos.js según el stock que traiga la API. */
+.stock-tag.ok{ color:var(--ok); border-color:var(--ok); }
+.stock-tag.low{ color:var(--danger); border-color:var(--danger); }
+
+/* Ficha de producto: dejo la imagen a la izquierda y toda la
+   información (precio, stock, cantidad, specs) a la derecha, en dos
+   columnas iguales. En celular las apilo en una sola columna. */
+.product-detail{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:44px;
+  align-items:start;
+}
+@media (max-width:820px){
+  .product-detail{ grid-template-columns:1fr; }
+}
+.product-gallery .card-media{ aspect-ratio:1/1; border-radius:var(--radius); }
+
+/* Fila de miniaturas debajo de la imagen principal en la ficha de
+   producto. Solo se llena (desde detalle.js) cuando el producto tiene
+   más de una imagen cargada. */
+.product-thumbs{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.product-thumb{
+  width:64px;
+  height:64px;
+  padding:0;
+  border:2px solid var(--line-strong);
+  border-radius:8px;
+  overflow:hidden;
+  background:none;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.product-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.product-thumb.active{ border-color:var(--brand); }
+
+/* ---------- Bloque de imágenes en los formularios de administración ----------
+   Cada fila tiene la URL, una vista previa chica y un botón para
+   quitarla; se pueden agregar tantas filas como imágenes quiera cargar
+   el administrador. */
+.image-inputs{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:8px;
+}
+.image-input-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.image-input-row .imagen-url{
+  flex:1;
+}
+.image-input-row .image-preview{
+  width:44px;
+  height:44px;
+  border-radius:6px;
+  object-fit:cover;
+  border:1px solid var(--line-strong);
+  background:var(--bg,#F5F6F8);
+  flex-shrink:0;
+  display:none;
+}
+.image-input-row .image-preview.show{ display:block; }
+.btn-quitar-imagen{ flex-shrink:0; }
+
+/* Selector de cantidad tipo "stepper": botón menos, input numérico,
+   botón más, todo dentro de un mismo borde para que se vea como un
+   solo control en vez de 3 elementos sueltos. */
+.qty{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+}
+.qty button{
+  background:none; border:none;
+  width:34px; height:34px;
+  font-size:1rem;
+}
+.qty input{
+  width:44px; text-align:center;
+  border:none; border-left:1px solid var(--line-strong);
+  border-right:1px solid var(--line-strong);
+  height:34px;
+  font-family:var(--font-data);
+}
+
+/* Lista de especificaciones (marca, categoría, stock, garantía...) que
+   arma detalle.js: cada fila es una etiqueta a la izquierda y su valor
+   a la derecha, separadas por una línea fina. */
+.spec-list{ border-top:1px solid var(--line); margin-top:24px; }
+.spec-row{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+  font-size:.88rem;
+}
+.spec-row span:first-child{ color:var(--ink-soft); }
+.spec-row span:last-child{ font-family:var(--font-data); }
+
+/* ---------- Formularios ----------
+   Las uso en el formulario de contacto: cada .field agrupa su label,
+   su input y su mensaje de error, y contacto.js le va sumando las
+   clases .valid / .invalid mientras el usuario escribe, para que el
+   borde y el mensaje cambien de color en el momento. */
+.form{
+  max-width:560px;
+}
+.field{
+  margin-bottom:18px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.field label{
+  font-size:.85rem;
+  font-weight:600;
+}
+.field .hint{
+  font-size:.78rem;
+  color:var(--ink-soft);
+}
+.field input,
+.field textarea,
+.field select{
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  padding:.7em .8em;
+  font-family:var(--font-body);
+  font-size:.95rem;
+  background:var(--surface);
+  color:var(--ink);
+}
+.field textarea{ resize:vertical; min-height:120px; }
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  outline:2px solid var(--brand);
+  outline-offset:1px;
+}
+.field.invalid input,
+.field.invalid textarea,
+.field.invalid select{
+  border-color:var(--danger);
+}
+/* El mensaje de error solo se muestra cuando el campo tiene la clase
+   .invalid; así no tengo que estar mostrando/ocultando el texto a
+   mano desde JS, solo pongo o saco la clase. */
+.field .error-msg{
+  display:none;
+  color:var(--danger);
+  font-size:.78rem;
+  font-family:var(--font-data);
+}
+.field.invalid .error-msg{ display:block; }
+.field.valid input,
+.field.valid textarea{ border-color:var(--ok); }
+
+/* Cartel de "enviado con éxito" o "revisa los campos" que aparece
+   debajo del formulario después de intentar enviarlo. */
+.form-status{
+  margin-top:16px;
+  padding:12px 14px;
+  border-radius:var(--radius);
+  font-size:.9rem;
+  display:none;
+}
+.form-status.show{ display:block; }
+.form-status.success{ background:#E7F5EC; color:var(--ok); border:1px solid var(--ok); }
+.form-status.error{ background:#FBEAE8; color:var(--danger); border:1px solid var(--danger); }
+
+/* ---------- Blog detalle ----------
+   Ancho de lectura cómodo (70 caracteres aprox) para los artículos del
+   blog, y una imagen de portada grande y panorámica arriba de cada
+   entrada. */
+.blog-body{ max-width:70ch; }
+.blog-body p{ font-size:1rem; color:var(--ink); }
+.blog-hero{
+  aspect-ratio:21/8;
+  background:linear-gradient(135deg,var(--brand),#4A6E9C);
+  background-size:cover;
+  background-position:center;
+  border-radius:var(--radius);
+  margin-bottom:28px;
+}
+.blog-hero-img{
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  border-radius:var(--radius);
+  margin-bottom:28px;
+}
+
+/* ---------- Utilidades ----------
+   Clases chicas de un solo propósito que uso sueltas en distintas
+   páginas, para no tener que crear una clase nueva cada vez que
+   necesito centrar texto o esconder un elemento visualmente (pero
+   dejándolo accesible para lectores de pantalla). */
+.text-center{ text-align:center; }
+.mt-0{ margin-top:0; }
+.divider{ height:1px; background:var(--line); border:none; margin:32px 0; }
+.visually-hidden{
+  position:absolute; width:1px; height:1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
+}
+
+
+.site-footer .wrap.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Grilla de logos de medios de pago (Visa, Mastercard, Webpay, etc):
+   la armo en 2 columnas fijas de 120px cada una. */
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 120px);
+  gap: 10px;
+  justify-content: start;
+  margin-top: 12px;
+}
+
+/* Como tengo 5 medios de pago (número impar), el último queda solo en
+   la fila final. Con nth-child(5) lo hago ocupar todo el ancho
+   disponible y lo centro, para que no quede pegado a la izquierda. */
+.payment-card-badge:nth-child(5) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 120px;
+}
+
+/* Estilo base de cada "chip" de medio de pago: fondo semitransparente
+   sobre el footer oscuro, con un borde sutil que se resalta al pasar
+   el mouse por encima. */
+.payment-card-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.payment-card-badge:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tamaño estándar de los logos (Visa, Mastercard, Webpay comparten
+   este mismo tamaño para verse parejos). */
+.payment-card-badge img {
+  width: 26px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- Ajustes puntuales de tamaño ---
+   Algunos logos (BancoEstado y CMR Falabella) se ven muy chicos con el
+   tamaño estándar de arriba, así que a esos dos les doy un poco más de
+   espacio para que se lean bien. */
+
+/* 4º elemento: BancoEstado / CuentaRUT */
+.payment-card-badge:nth-child(4) img {
+  width: 36px;
+  height: 24px;
+}
+
+/* 5º elemento: CMR Falabella */
+.payment-card-badge:nth-child(5) img {
+  width: 38px;
+  height: 26px;
+}
+
+/* ---------- Video embebido ---------- */
+.video-embed{
+  width:100%;
+  aspect-ratio:16/9;
+  border:none;
+  border-radius:var(--radius);
+  margin:20px 0 28px;
+}
+
+/* ---------- Admin footer ---------- */
+.admin-footer{
+  margin-top:32px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  font-size:.8rem;
+  color:var(--ink-soft);
+}
+
+/* ---------- Carrito: tabla y panel ----------
+   Antes el carrito cargaba admin.css completo solo para estas reglas.
+   Ahora viven acá y el cliente ya no depende de los estilos del admin. */
+.admin-panel{
+  background:var(--surface,#fff);
+  border:1px solid var(--line);
+  border-radius:var(--radius,10px);
+  padding:24px;
+  margin-bottom:20px;
+}
+.admin-table{
+  width:100%;
+  border-collapse:collapse;
+  background:var(--surface,#fff);
+  border:1px solid var(--line);
+  border-radius:var(--radius,10px);
+  overflow:hidden;
+}
+.admin-table th,
+.admin-table td{
+  text-align:left;
+  padding:12px 16px;
+  border-bottom:1px solid var(--line);
+  font-size:.92rem;
+}
+.admin-table th{
+  background:#F0F1F4;
+  font-weight:700;
+  color:var(--ink-soft,#555);
+}
+.admin-table tr:last-child td{ border-bottom:none; }
+
+/* Mensajes de estado (carrito, ficha de producto) */
+.msg-ok{ color:var(--ok); }
+.msg-error{ color:var(--danger); }

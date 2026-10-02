@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usuarios — Panel Tecno Factory</title>
+<link rel="stylesheet" href="../../css/estilos.css">
+<link rel="stylesheet" href="../../css/admin.css">
+<script src="../../js/usuarios.js"></script>
+<script src="../../js/admin-guard.js"></script>
+</head>
+<body>
+
+<div class="admin-wrap">
+  <nav class="admin-sidebar">
+    <div class="admin-nav-top">
+      <a href="home.html"><span class="icon">🏠</span> Inicio</a>
+      <a href="usuario.html" data-admin-only aria-current="page"><span class="icon">👤</span> Usuarios</a>
+      <a href="producto.html"><span class="icon">📦</span> Productos</a>
+    </div>
+    <div class="admin-nav-bottom">
+      <a href="#"><span class="icon">👤</span> Perfil</a>
+    </div>
+  </nav>
+
+  <main class="admin-content">
+    <header class="admin-header">
+    <h1>Usuarios</h1>
+    </header>
+    
+    <section>
+    <p><a class="btn accent small" href="nuevo_usuario.html">+ Nuevo usuario</a></p>
+    
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>RUN</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Tipo</th>
+          <th>Comuna</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-usuarios">
+      </tbody>
+    </table>
+  </section>
+  
+  <footer class="admin-footer">
+  <p>© 2026 Tecno Factory — Panel de administración</p>
+  </footer>
+  </main>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tbody = document.getElementById("tabla-usuarios");
+    const usuarios = obtenerUsuarios();
+
+    if (usuarios.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6">Aún no hay usuarios registrados.</td></tr>';
+      return;
+    }
+
+    usuarios.forEach(function (u) {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + u.run + "</td>" +
+        "<td>" + u.nombre + " " + u.apellidos + "</td>" +
+        "<td>" + u.correo + "</td>" +
+        "<td><span class='badge " + u.tipo.toLowerCase() + "'>" + u.tipo + "</span></td>" +
+        "<td>" + u.comuna + "</td>" +
+        "<td class='admin-actions'>" +
+          "<a class='btn ghost small' href='mostrar_usuario.html?id=" + u.id + "'>Ver</a>" +
+          "<a class='btn ghost small' href='editar_usuario.html?id=" + u.id + "'>Editar</a>" +
+        "</td>";
+      tbody.appendChild(tr);
+    });
+  });
+</script>
+
+</body>
+</html>
