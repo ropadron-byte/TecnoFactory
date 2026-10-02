@@ -69,7 +69,7 @@
    porque el carrito de la tienda también las usa. */
 
 /* ---------- Acciones de los listados (usuarios / productos) ---------- */
-.admin-actions{ display:flex; gap:8px; }
+.admin-actions{ display:flex; align-items:center; gap:8px; }
 
 /* Miniatura del producto en el listado admin. */
 .table-thumb{

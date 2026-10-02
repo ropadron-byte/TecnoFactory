@@ -58,16 +58,18 @@ export default function AdminUsuarios() {
                       <span className={'badge ' + u.tipo.toLowerCase()}>{u.tipo}</span>
                     </td>
                     <td>{u.comuna}</td>
-                    <td className="admin-actions">
-                      <Link className="btn ghost small" to={`/admin/usuarios/${u.id}`}>
-                        Ver
-                      </Link>
-                      <Link className="btn ghost small" to={`/admin/usuarios/${u.id}/editar`}>
-                        Editar
-                      </Link>
-                      <button type="button" className="btn ghost small danger" onClick={() => eliminar(u)}>
-                        Eliminar
-                      </button>
+                    <td>
+                      <div className="admin-actions">
+                        <Link className="btn ghost small" to={`/admin/usuarios/${u.id}`}>
+                          Ver
+                        </Link>
+                        <Link className="btn ghost small" to={`/admin/usuarios/${u.id}/editar`}>
+                          Editar
+                        </Link>
+                        <button type="button" className="btn ghost small danger" onClick={() => eliminar(u)}>
+                          Eliminar
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

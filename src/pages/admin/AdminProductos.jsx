@@ -73,20 +73,22 @@ export default function AdminProductos() {
                     <td>
                       <StockBadge producto={p} />
                     </td>
-                    <td className="admin-actions">
-                      <Link className="btn ghost small" to={`/admin/productos/${encodeURIComponent(p.codigo)}`}>
-                        Ver
-                      </Link>
-                      {esAdmin && (
-                        <>
-                          <Link className="btn ghost small" to={`/admin/productos/${encodeURIComponent(p.codigo)}/editar`}>
-                            Editar
-                          </Link>
-                          <button type="button" className="btn ghost small danger" onClick={() => eliminar(p)}>
-                            Eliminar
-                          </button>
-                        </>
-                      )}
+                    <td>
+                      <div className="admin-actions">
+                        <Link className="btn ghost small" to={`/admin/productos/${encodeURIComponent(p.codigo)}`}>
+                          Ver
+                        </Link>
+                        {esAdmin && (
+                          <>
+                            <Link className="btn ghost small" to={`/admin/productos/${encodeURIComponent(p.codigo)}/editar`}>
+                              Editar
+                            </Link>
+                            <button type="button" className="btn ghost small danger" onClick={() => eliminar(p)}>
+                              Eliminar
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
