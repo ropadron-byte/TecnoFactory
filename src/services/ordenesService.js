@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from '../data/constantes'
 import { precioFinal } from '../utils/precios'
+import { obtenerUsuarioPorId } from './usuariosService'
 import { imagenesProducto, obtenerProductoPorCodigo, obtenerProductos, descontarStock } from './productosService'
 
 // Órdenes de compra (boletas). Cada orden guarda una "foto" de lo comprado
@@ -51,13 +52,38 @@ export function itemsDeCarrito(carrito) {
 }
 
 /**
+ * Si hay un usuario con sesión, completa automáticamente (solo lo que falte)
+ * los datos del cliente y de la dirección de entrega con los de su cuenta.
+ */
+export function completarConUsuario(usuarioId, cliente, entrega) {
+  const u = usuarioId == null ? null : obtenerUsuarioPorId(usuarioId)
+  if (!u) return { cliente, entrega }
+  const vacio = (v) => !String(v ?? '').trim()
+  const conDireccion = entrega.tipo === 'domicilio'
+  return {
+    cliente: {
+      nombre: vacio(cliente.nombre) ? u.nombre || '' : cliente.nombre,
+      apellidos: vacio(cliente.apellidos) ? u.apellidos || '' : cliente.apellidos,
+      correo: vacio(cliente.correo) ? u.correo || '' : cliente.correo,
+    },
+    entrega: {
+      ...entrega,
+      calle: conDireccion && vacio(entrega.calle) ? u.direccion || '' : entrega.calle,
+      region: conDireccion && vacio(entrega.region) ? u.region || '' : entrega.region,
+      comuna: conDireccion && vacio(entrega.comuna) ? u.comuna || '' : entrega.comuna,
+    },
+  }
+}
+
+/**
  * Procesa la compra (simulada: no hay pasarela de pago real).
  *  - Verifica el stock de cada producto.
  *  - `resultadoPago`: 'exitoso' | 'rechazado' (lo elige el cliente en la demo).
  *  - Siempre registra la orden; solo si el pago es exitoso descuenta el stock.
  * Devuelve { ok:true, orden } o { ok:false, motivo:'stock'|'vacio', message }.
  */
-export function procesarCompra({ carrito, cliente, entrega, usuarioId = null, resultadoPago = 'exitoso' }) {
+export function procesarCompra({ carrito, cliente: clienteForm, entrega: entregaForm, usuarioId = null, resultadoPago = 'exitoso' }) {
+  const { cliente, entrega } = completarConUsuario(usuarioId, clienteForm, entregaForm)
   const items = itemsDeCarrito(carrito)
   if (items.length === 0) return { ok: false, motivo: 'vacio', message: 'Tu carrito está vacío.' }
 

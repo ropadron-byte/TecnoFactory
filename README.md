@@ -89,13 +89,9 @@ Cuenta de prueba (administrador): `admin@duoc.cl` / `admin123`.
 
 ## Pruebas con Vitest
 
-Hay **18 pruebas** en `src/test/` (jsdom + React Testing Library, configurado en `vite.config.js`):
-
-| Archivo | Pruebas | Qué cubre |
-| ------- | :-----: | --------- |
-| `logica.test.js` | 4 | Precios y ofertas, validaciones (RUN, correo, contraseña), carrito con stock, compra pagada / rechazada |
-| `componentes.test.jsx` | 5 | Renderizado de lista, renderizado condicional (oferta, sin stock), props (`QuantitySelector`), eventos (añadir al carrito) |
-| `flujos.test.jsx` | 9 | Filtros del catálogo, formulario de contacto (estado y eventos), checkout exitoso y rechazado, permisos por rol, crear producto, categorías y boleta |
+Hay **36 pruebas**, exactamente **1 por vista**, en `src/test/` (jsdom + React Testing Library, configurado en `vite.config.js`).
+Cada archivo se llama como la vista que prueba (`Carrito.test.jsx`, `Checkout.test.jsx`, `AdminBoleta.test.jsx`, …):
+17 vistas de la tienda y 19 del panel de administración. `helpers.jsx` y `setup.js` son utilidades compartidas.
 
 > Equivalencias con Jasmine: `describe` / `it` / `expect` / `beforeEach` son iguales;
 > `spyOn` pasa a ser `vi.spyOn` y los *mocks* se hacen con `vi.fn()` / `vi.mock()`.

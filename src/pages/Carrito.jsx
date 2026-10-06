@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import PageHead from '../components/PageHead.jsx'
 import QuantitySelector from '../components/QuantitySelector.jsx'
 import PrecioProducto from '../components/PrecioProducto.jsx'
+import ProductosSugeridos from '../components/ProductosSugeridos.jsx'
 import { formatCLP } from '../utils/formato'
 import { precioFinal } from '../utils/precios'
 import { obtenerProductoPorCodigo } from '../services/productosService'
@@ -77,6 +78,7 @@ export default function Carrito() {
                   Limpiar carrito
                 </button>
               </div>
+              <ProductosSugeridos />
             </Col>
           </Row>
         )}

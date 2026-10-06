@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext.jsx'
 import { formatCLP } from '../utils/formato'
 import { validarCheckout } from '../utils/validaciones'
 import { itemsDeCarrito, procesarCompra } from '../services/ordenesService'
+import { obtenerUsuarioPorId } from '../services/usuariosService'
 import usePageTitle from '../hooks/usePageTitle'
 import EstadoForm from '../components/EstadoForm.jsx'
 
@@ -29,14 +30,16 @@ const VACIO = {
 function valoresIniciales(sesion, previos) {
   if (previos) return { ...VACIO, ...previos }
   if (!sesion) return VACIO
+  // Se prefiere el registro actual del usuario (por si editó su perfil).
+  const u = obtenerUsuarioPorId(sesion.id) ?? sesion
   return {
     ...VACIO,
-    nombre: sesion.nombre || '',
-    apellidos: sesion.apellidos || '',
-    correo: sesion.correo || '',
-    calle: sesion.direccion || '',
-    region: sesion.region || '',
-    comuna: sesion.comuna || '',
+    nombre: u.nombre || '',
+    apellidos: u.apellidos || '',
+    correo: u.correo || '',
+    calle: u.direccion || '',
+    region: u.region || '',
+    comuna: u.comuna || '',
   }
 }
 
