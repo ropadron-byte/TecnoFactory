@@ -4,11 +4,11 @@ import { useAdminUI } from '../context/AdminUIContext.jsx'
 export default function AdminHeader({ titulo, children }) {
   const { alternarMenu } = useAdminUI()
   return (
-    <header className="admin-header">
-      <button type="button" className="admin-toggle" aria-label="Abrir menú del panel" onClick={alternarMenu}>
+    <header className="d-flex align-items-center gap-3 mb-4">
+      <button type="button" className="btn btn-outline-secondary d-lg-none" aria-label="Abrir menú del panel" onClick={alternarMenu}>
         ☰
       </button>
-      <h1>{titulo}</h1>
+      <h1 className="h2 fw-bold mb-0 me-auto">{titulo}</h1>
       {children}
     </header>
   )

@@ -26,11 +26,13 @@ const MEDIOS = [
 
 export default function PaymentMethods() {
   return (
-    <div className="payment-methods">
-      {MEDIOS.map((m) => (
-        <div className="payment-card-badge" key={m.nombre}>
-          <img src={m.img} alt={m.nombre} />
-          <span>{m.etiqueta}</span>
+    <div className="row row-cols-2 g-2" style={{ maxWidth: 260 }}>
+      {MEDIOS.map((m, i) => (
+        <div className={'col' + (i === MEDIOS.length - 1 ? ' col-12' : '')} key={m.nombre}>
+          <div className="d-flex align-items-center justify-content-center gap-2 border border-light border-opacity-25 rounded bg-white bg-opacity-10 px-2 py-2 small">
+            <img src={m.img} alt={m.nombre} width="28" height="20" style={{ objectFit: 'contain' }} />
+            <span>{m.etiqueta}</span>
+          </div>
         </div>
       ))}
     </div>

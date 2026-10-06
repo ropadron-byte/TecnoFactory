@@ -1,6 +1,7 @@
 import { Link, useLoaderData } from 'react-router-dom'
 import AdminHeader from '../../components/AdminHeader.jsx'
 import usePageTitle from '../../hooks/usePageTitle'
+import ListaDatos from '../../components/ListaDatos.jsx'
 
 export default function AdminDetalleUsuario() {
   const usuario = useLoaderData()
@@ -23,21 +24,17 @@ export default function AdminDetalleUsuario() {
       <AdminHeader titulo={`${usuario.nombre} ${usuario.apellidos}`} />
 
       <section>
-        <div className="admin-panel">
-          <div className="spec-list">
-            {datos.map(([label, valor]) => (
-              <div className="spec-row" key={label}>
-                <span>{label}</span>
-                <span>{valor}</span>
-              </div>
-            ))}
-          </div>
+        <div className="card card-body mb-3">
+          <ListaDatos filas={datos} />
 
           <p style={{ marginTop: 24 }}>
-            <Link className="btn accent small" to={`/admin/usuarios/${usuario.id}/editar`}>
+            <Link className="btn btn-warning btn-sm" to={`/admin/usuarios/${usuario.id}/editar`}>
               Editar
             </Link>{' '}
-            <Link className="btn ghost small" to="/admin/usuarios">
+            <Link className="btn btn-outline-primary btn-sm" to={`/admin/usuarios/${usuario.id}/compras`}>
+              Historial de compras
+            </Link>{' '}
+            <Link className="btn btn-outline-primary btn-sm" to="/admin/usuarios">
               ← Volver al listado
             </Link>
           </p>

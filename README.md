@@ -2,76 +2,118 @@
 
 E-Commerce de venta de PC, accesorios y productos tecnológicos.
 
-Todo el sistema (tienda y panel de administración) está hecho en **React 19 + Vite +
-react-router-dom v7** (`createBrowserRouter`). `react-bootstrap` solo se usa en el Home.
+Tienda y panel de administración están hechos en **React 19 + Vite + react-router-dom v7**
+(`createBrowserRouter`) y con **Bootstrap 5 + react-bootstrap** en todo el sitio (diseño
+responsivo en móvil, tablet y escritorio). Las pruebas usan **Vitest** (en lugar de
+Jasmine + Karma) junto a React Testing Library.
 
 ## Comandos
 
 ```bash
 npm install
-npm run dev       # desarrollo  -> http://localhost:5173
-npm run build     # build de producción (dist/) + dist/404.html
-npm run preview   # sirve el build
-npm test          # tests (vitest)
-npm run lint      # oxlint
+npm run dev            # desarrollo  -> http://localhost:5173
+npm run build          # build de producción (dist/) + dist/404.html
+npm run preview        # sirve el build
+npm run lint           # oxlint
+npm test               # todas las pruebas (una vez)
+npm run test:watch     # pruebas en modo interactivo
+npm run test:coverage  # pruebas + informe de cobertura (coverage/index.html)
 ```
 
 ## Rutas (`src/router.jsx`)
 
 ### Tienda (públicas)
 
-| Ruta                   | Página                 |
-| ---------------------- | ---------------------- |
-| `/`                    | Home                   |
-| `/productos`           | Catálogo con filtros   |
-| `/productos/:codigo`   | Ficha de producto      |
-| `/carrito`             | Carrito                |
-| `/nosotros`            | Nosotros               |
-| `/blogs`, `/blogs/:slug` | Blog                 |
-| `/contacto`            | Formulario de contacto |
-| `/iniciar-sesion`, `/registro` | Cuenta         |
+| Ruta                            | Vista                                             |
+| ------------------------------- | ------------------------------------------------- |
+| `/`                             | Home (carrusel, categorías, más vendidos)         |
+| `/productos`                    | Catálogo con búsqueda, filtros y orden (en la URL)|
+| `/productos/:codigo`            | Detalle de producto                               |
+| `/categorias`                   | **Nueva** · Productos separados por categoría     |
+| `/categorias/:slug`             | **Nueva** · Una categoría                         |
+| `/ofertas`                      | **Nueva** · Productos con descuento               |
+| `/carrito`                      | Carrito (Comprar ahora / Limpiar)                 |
+| `/checkout`                     | **Nueva** · Datos del cliente, entrega y pago     |
+| `/compra/exitosa/:id`           | **Nueva** · Pago correcto + resumen / boleta      |
+| `/compra/error/:id`             | **Nueva** · Pago con error + reintentar           |
+| `/nosotros`, `/blogs`, `/blogs/:slug`, `/contacto` | Informativas                   |
+| `/iniciar-sesion`, `/registro`  | Cuenta                                            |
 
 ### Panel de administración (`/admin/*`)
 
-Protegido por `RequireRole` (reemplaza al antiguo `admin-guard.js`):
+Protegido por `RequireRole`. Sin sesión o con usuario Cliente → `/iniciar-sesion`.
 
-| Ruta                          | Quién entra            |
-| ----------------------------- | ---------------------- |
-| `/admin`                      | Administrador, Vendedor|
-| `/admin/productos`, `/admin/productos/:codigo` | Administrador, Vendedor (el Vendedor solo lectura) |
-| `/admin/productos/nuevo`, `/admin/productos/:codigo/editar` | Solo Administrador |
-| `/admin/usuarios`, `/nuevo`, `/:id`, `/:id/editar` | Solo Administrador |
+| Ruta                                                       | Vista                        | Administrador | Vendedor |
+| ---------------------------------------------------------- | ---------------------------- | :-----------: | :------: |
+| `/admin`                                                   | Dashboard con métricas reales| ✅ | ✅ |
+| `/admin/ordenes`, `/admin/ordenes/:id`                     | **Nueva** · Órdenes / Boleta | ✅ | ✅ |
+| `/admin/productos`, `/admin/productos/:codigo`             | Productos (lectura)          | ✅ | ✅ |
+| `/admin/productos/criticos`                                | **Nueva** · Stock crítico    | ✅ | ✅ |
+| `/admin/perfil`                                            | **Nueva** · Mi perfil        | ✅ | ✅ |
+| `/admin/productos/nuevo`, `/:codigo/editar`                | Crear / editar producto      | ✅ | ❌ |
+| `/admin/productos/reportes`                                | **Nueva** · Reporte inventario | ✅ | ❌ |
+| `/admin/categorias`, `/nueva`, `/:id/editar`               | **Nueva** · CRUD categorías  | ✅ | ❌ |
+| `/admin/usuarios`, `/nuevo`, `/:id`, `/:id/editar`         | CRUD usuarios                | ✅ | ❌ |
+| `/admin/usuarios/:id/compras`                              | **Nueva** · Historial de compras | ✅ | ❌ |
+| `/admin/reportes`                                          | **Nueva** · Reportes de ventas | ✅ | ❌ |
 
-- Sin sesión o con tipo **Cliente** → redirige a `/iniciar-sesion`.
-- **Vendedor** que intenta una ruta de solo Administrador → vuelve a `/admin/productos`.
-- Reglas de eliminación de usuarios: no se puede borrar la propia cuenta ni al único administrador.
+Un Vendedor que intenta una ruta de solo Administrador vuelve a `/admin/productos`.
+Las rutas con parámetros usan *loaders*: si el registro no existe se muestra un 404.
 
-Cada ruta con parámetro usa un *loader*: si el producto/usuario/artículo no existe se muestra un 404
-(en la tienda o dentro del panel, según corresponda).
+## Flujo de compra
 
-## Datos y sesión
+`Carrito → Checkout → Compra exitosa | Pago con error`
 
-Todo se guarda en `localStorage` (`tf_productos`, `tf_cart`, `tf_usuarios`, `tf_sesion`), por lo
-que tienda y panel comparten datos: lo que el admin crea o edita se ve en la tienda.
+- Si el cliente inició sesión, sus datos se cargan solos (editables).
+- Opciones de entrega: despacho a domicilio (pide dirección) o retiro en tienda.
+- **No hay pasarela de pago real**: el checkout incluye un selector *"Simulación del pago"*
+  (exitoso / rechazado) para poder mostrar ambos resultados en la demo.
+- Pago exitoso: se crea la orden, se **descuenta el stock** y se vacía el carrito.
+- Pago con error: la orden queda como *Fallida*, el stock y el carrito no cambian, y
+  "Volver a realizar el pago" regresa al checkout con los datos ya escritos.
+- La boleta se puede imprimir / guardar como PDF (diálogo del navegador) o enviar por
+  correo (abre el cliente de correo con la boleta escrita; no hay servidor de correo).
+- Cada orden guarda una copia del nombre y precio de cada producto al momento de comprar.
+
+## Datos
+
+Todo se guarda en `localStorage` (fuente de datos simulada con CRUD en `src/services/`):
+`tf_productos`, `tf_categorias`, `tf_ordenes`, `tf_usuarios`, `tf_cart`, `tf_sesion`.
+Tienda y panel comparten los mismos datos.
+
+- Ofertas: cada producto tiene un `descuento` (%); si es mayor a 0 aparece en **Ofertas**.
+- Los catálogos guardados antes de existir las ofertas se migran solos.
+- Al renombrar una categoría se actualizan sus productos; no se puede borrar una con productos.
 
 Cuenta de prueba (administrador): `admin@duoc.cl` / `admin123`.
+
+## Pruebas con Vitest
+
+Hay **18 pruebas** en `src/test/` (jsdom + React Testing Library, configurado en `vite.config.js`):
+
+| Archivo | Pruebas | Qué cubre |
+| ------- | :-----: | --------- |
+| `logica.test.js` | 4 | Precios y ofertas, validaciones (RUN, correo, contraseña), carrito con stock, compra pagada / rechazada |
+| `componentes.test.jsx` | 5 | Renderizado de lista, renderizado condicional (oferta, sin stock), props (`QuantitySelector`), eventos (añadir al carrito) |
+| `flujos.test.jsx` | 9 | Filtros del catálogo, formulario de contacto (estado y eventos), checkout exitoso y rechazado, permisos por rol, crear producto, categorías y boleta |
+
+> Equivalencias con Jasmine: `describe` / `it` / `expect` / `beforeEach` son iguales;
+> `spyOn` pasa a ser `vi.spyOn` y los *mocks* se hacen con `vi.fn()` / `vi.mock()`.
 
 ## Estructura
 
 - `src/router.jsx` mapa de rutas, loaders y `createRouter()`.
-- `src/pages/` páginas de la tienda; `src/pages/admin/` páginas del panel; `src/pages/blog/` artículos.
-- `src/components/` Header, Footer, ProductCard, FormField, **AdminLayout, RequireRole,
-  ProductoForm, UsuarioForm, ImageUrlsField, RegionComunaFields**, etc.
+- `src/pages/` vistas de la tienda · `src/pages/admin/` vistas del panel · `src/pages/blog/` artículos.
+- `src/components/` piezas reutilizables (Header, ProductCard, PrecioProducto, CategoriaCard,
+  OrdenResumen, BoletaAcciones, AdminLayout, RequireRole, formularios, etc.), hechas con react-bootstrap.
 - `src/context/` carrito, sesión y UI del panel.
-- `src/services/` acceso a datos (localStorage): productos, carrito, usuarios (CRUD completo).
-- `src/data/` catálogo inicial, regiones/comunas, blogs, constantes y roles.
-- `src/utils/` validaciones (RUN, correo, contraseña, producto) y formato CLP.
-- `src/styles/` `tienda.css` (global), `home.css` (solo Home), `admin.css` (solo panel).
-- `src/test/` 28 tests (validaciones, carrito, navegación, roles, CRUD).
+- `src/services/` acceso a datos (CRUD sobre localStorage): productos, categorías, órdenes, usuarios, carrito.
+- `src/utils/` funciones puras: precios, validaciones, reportes, CSV, boleta, texto.
+- `src/data/` catálogo y categorías iniciales, regiones/comunas, blogs, constantes.
+- `src/styles/app.css` único CSS propio: colores de la marca sobre Bootstrap y unos pocos ajustes (el resto son clases y componentes de Bootstrap).
 
 ## Despliegue
 
 `npm run build` genera además `dist/404.html` (copia de `index.html`) para que hostings estáticos
 como GitHub Pages resuelvan URLs como `/productos` o `/admin/usuarios`. Si publicas en un
-subdirectorio (p. ej. `/TecnoFactory/`), define `base: '/TecnoFactory/'` en `vite.config.js`;
-el router ya respeta esa base.
+subdirectorio (p. ej. `/TecnoFactory/`), define `base: '/TecnoFactory/'` en `vite.config.js`.

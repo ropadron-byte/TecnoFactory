@@ -3,6 +3,7 @@ import PageHead from '../components/PageHead.jsx'
 import FormField from '../components/FormField.jsx'
 import { correoValido } from '../utils/validaciones'
 import usePageTitle from '../hooks/usePageTitle'
+import EstadoForm from '../components/EstadoForm.jsx'
 
 const VACIO = { nombre: '', correo: '', comentario: '' }
 
@@ -53,8 +54,8 @@ export default function Contacto() {
         responderemos a la brevedad.
       </PageHead>
 
-      <section className="section wrap">
-        <form className="form" onSubmit={enviar} noValidate>
+      <section className="container py-4">
+        <form className="mx-auto" onSubmit={enviar} noValidate style={{ maxWidth: 720 }}>
           <FormField
             id="nombre"
             label="Nombre *"
@@ -94,11 +95,11 @@ export default function Contacto() {
             <textarea id="comentario" name="comentario" maxLength={500} value={valores.comentario} onChange={cambiar} />
           </FormField>
 
-          <button type="submit" className="btn">
+          <button type="submit" className="btn btn-primary">
             Enviar mensaje
           </button>
 
-          <div className={'form-status' + (estado ? ` show ${estado.tipo}` : '')}>{estado?.texto}</div>
+          <EstadoForm estado={estado} />
         </form>
       </section>
     </>

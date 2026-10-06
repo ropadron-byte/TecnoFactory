@@ -9,29 +9,30 @@ export default function Nosotros() {
         Conoce la historia detrás de Tecno Factory y al equipo que la hace posible.
       </PageHead>
 
-      <section className="section wrap">
-        <article className="blog-body">
-          <h2>Nuestra historia</h2>
+      <section className="container py-4">
+        <article className="mx-auto" style={{ maxWidth: 800 }}>
+          <h2 className="h4 mt-4">Nuestra historia</h2>
           <p>
             Tecno Factory nació como un pequeño local de atención presencial dedicado a la venta de notebooks,
             accesorios y equipos tecnológicos. Con el tiempo, y gracias a la confianza de nuestros clientes,
             decidimos dar el salto al mundo online para llegar a más personas en todo Chile.
           </p>
-          <iframe
-            className="video-embed"
+          <div className="ratio ratio-16x9 my-4">
+            <iframe
             src="https://www.youtube.com/embed/IXqosvy4YGE"
             title="Video institucional Tecno Factory"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
+          </div>
 
-          <h2>Nuestra misión</h2>
+          <h2 className="h4 mt-4">Nuestra misión</h2>
           <p>
             Ofrecer tecnología de calidad a precios justos, con información clara sobre cada producto y un proceso
             de compra simple, para que encontrar el equipo que necesitas no te tome más de unos minutos.
           </p>
 
-          <h2>Nuestro equipo</h2>
+          <h2 className="h4 mt-4">Nuestro equipo</h2>
           <p>
             Somos un equipo pequeño y multidisciplinario, formado por estudiantes y profesionales apasionados por la
             tecnología y el desarrollo web:
@@ -42,7 +43,7 @@ export default function Nosotros() {
             <li>Atención a clientes y soporte post-venta.</li>
           </ul>
 
-          <h2>¿Por qué elegirnos?</h2>
+          <h2 className="h4 mt-4">¿Por qué elegirnos?</h2>
           <ul>
             <li>Catálogo curado de notebooks, audio, accesorios, monitores y almacenamiento.</li>
             <li>Fichas de producto con la información que realmente importa.</li>

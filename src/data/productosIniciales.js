@@ -1,5 +1,7 @@
 // Catálogo inicial de la tienda (se copia a localStorage la primera vez).
 // Cada producto tiene un "codigo" único que se usa como identificador.
+// "descuento" es un porcentaje (0 = sin oferta); los productos con descuento
+// aparecen en la vista Ofertas.
 export const PRODUCTOS_INICIALES = [
   {
     codigo: "TF-SP-001",
@@ -10,6 +12,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 189990,
     stock: 25,
     stockCritico: 3,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-5s/2.webp",
@@ -25,6 +28,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 284990,
     stock: 60,
     stockCritico: 7,
+    descuento: 10,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-6/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-6/2.webp",
@@ -40,6 +44,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 1044990,
     stock: 56,
     stockCritico: 7,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/2.webp",
@@ -55,6 +60,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 854990,
     stock: 37,
     stockCritico: 4,
+    descuento: 15,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-x/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/iphone-x/2.webp",
@@ -70,6 +76,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 237490,
     stock: 19,
     stockCritico: 2,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/oppo-a57/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/oppo-a57/2.webp",
@@ -85,6 +92,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 379990,
     stock: 78,
     stockCritico: 9,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/oppo-f19-pro-plus/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/oppo-f19-pro-plus/2.webp",
@@ -100,6 +108,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 284990,
     stock: 55,
     stockCritico: 7,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/oppo-k1/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/oppo-k1/2.webp",
@@ -115,6 +124,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 142490,
     stock: 48,
     stockCritico: 6,
+    descuento: 20,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/realme-c35/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/realme-c35/2.webp",
@@ -130,6 +140,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 284990,
     stock: 12,
     stockCritico: 2,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/realme-x/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/realme-x/2.webp",
@@ -145,6 +156,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 332490,
     stock: 80,
     stockCritico: 10,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/realme-xt/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/realme-xt/2.webp",
@@ -160,6 +172,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 284990,
     stock: 67,
     stockCritico: 8,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/2.webp",
@@ -175,6 +188,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 474990,
     stock: 0,
     stockCritico: 2,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s8/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s8/2.webp",
@@ -190,6 +204,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 664990,
     stock: 19,
     stockCritico: 2,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s10/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s10/2.webp",
@@ -205,6 +220,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 237490,
     stock: 50,
     stockCritico: 6,
+    descuento: 10,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/vivo-s1/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/vivo-s1/2.webp",
@@ -220,6 +236,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 284990,
     stock: 82,
     stockCritico: 10,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/vivo-v9/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/vivo-v9/2.webp",
@@ -235,6 +252,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 474990,
     stock: 7,
     stockCritico: 2,
+    descuento: 25,
     urls: [
       "https://cdn.dummyjson.com/product-images/smartphones/vivo-x21/1.webp",
       "https://cdn.dummyjson.com/product-images/smartphones/vivo-x21/2.webp",
@@ -250,6 +268,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 1899990,
     stock: 24,
     stockCritico: 3,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/1.webp",
       "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/2.webp",
@@ -265,6 +284,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 1709990,
     stock: 45,
     stockCritico: 5,
+    descuento: 12,
     urls: [
       "https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/1.webp",
       "https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/2.webp",
@@ -280,6 +300,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 1329990,
     stock: 75,
     stockCritico: 9,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/1.webp",
       "https://cdn.dummyjson.com/product-images/laptops/huawei-matebook-x-pro/2.webp",
@@ -295,6 +316,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 1044990,
     stock: 40,
     stockCritico: 5,
+    descuento: 0,
     urls: [
       "https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/1.webp",
       "https://cdn.dummyjson.com/product-images/laptops/lenovo-yoga-920/2.webp",
@@ -310,6 +332,7 @@ export const PRODUCTOS_INICIALES = [
     precio: 1424990,
     stock: 74,
     stockCritico: 9,
+    descuento: 15,
     urls: [
       "https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/1.webp",
       "https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/2.webp",

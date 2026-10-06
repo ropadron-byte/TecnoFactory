@@ -7,6 +7,8 @@ import RequireRole from './components/RequireRole.jsx'
 import NotFound from './pages/NotFound.jsx'
 import { obtenerProductoPorCodigo } from './services/productosService'
 import { obtenerUsuarioPorId } from './services/usuariosService'
+import { obtenerCategoriaPorId, obtenerCategoriaPorSlug } from './services/categoriasService'
+import { obtenerOrdenPorId } from './services/ordenesService'
 import { BLOGS } from './data/blogs'
 import { ROLES } from './data/constantes'
 
@@ -35,6 +37,32 @@ function loaderUsuario({ params }) {
   return usuario
 }
 
+function loaderCategoriaSlug({ params }) {
+  const categoria = obtenerCategoriaPorSlug(params.slug)
+  if (!categoria) throw noEncontrado('Categoría no encontrada')
+  return categoria
+}
+
+function loaderCategoriaId({ params }) {
+  const categoria = obtenerCategoriaPorId(Number(params.id))
+  if (!categoria) throw noEncontrado('Categoría no encontrada')
+  return categoria
+}
+
+// La pantalla de compra exitosa / con error solo existe si la orden existe
+// y tiene el estado correspondiente (no se puede "ver" un pago ajeno al resultado).
+const loaderOrden = (estado) => ({ params }) => {
+  const orden = obtenerOrdenPorId(Number(params.id))
+  if (!orden || orden.estado !== estado) throw noEncontrado('Orden no encontrada')
+  return orden
+}
+
+function loaderOrdenAdmin({ params }) {
+  const orden = obtenerOrdenPorId(Number(params.id))
+  if (!orden) throw noEncontrado('Orden no encontrada')
+  return orden
+}
+
 // ---------- Tienda (cliente) ----------
 const rutasTienda = {
   path: '/',
@@ -51,7 +79,25 @@ const rutasTienda = {
           loader: loaderProducto,
           lazy: pagina(() => import('./pages/DetalleProducto.jsx')),
         },
+        { path: 'categorias', lazy: pagina(() => import('./pages/Categorias.jsx')) },
+        {
+          path: 'categorias/:slug',
+          loader: loaderCategoriaSlug,
+          lazy: pagina(() => import('./pages/DetalleCategoria.jsx')),
+        },
+        { path: 'ofertas', lazy: pagina(() => import('./pages/Ofertas.jsx')) },
         { path: 'carrito', lazy: pagina(() => import('./pages/Carrito.jsx')) },
+        { path: 'checkout', lazy: pagina(() => import('./pages/Checkout.jsx')) },
+        {
+          path: 'compra/exitosa/:id',
+          loader: loaderOrden('Pagada'),
+          lazy: pagina(() => import('./pages/CompraExitosa.jsx')),
+        },
+        {
+          path: 'compra/error/:id',
+          loader: loaderOrden('Fallida'),
+          lazy: pagina(() => import('./pages/CompraError.jsx')),
+        },
         { path: 'nosotros', lazy: pagina(() => import('./pages/Nosotros.jsx')) },
         { path: 'blogs', lazy: pagina(() => import('./pages/Blogs.jsx')) },
         {
@@ -69,9 +115,10 @@ const rutasTienda = {
 }
 
 // ---------- Panel de administración ----------
-// Administrador y Vendedor entran al panel. Dentro, el Vendedor solo ve
-// Inicio y Productos (solo lectura): lo demás exige ser Administrador y,
-// si el Vendedor intenta entrar, se le devuelve al listado de productos.
+// Administrador y Vendedor entran al panel. El Vendedor ve Inicio, Órdenes,
+// Productos (solo lectura, incluye críticos) y su Perfil. Todo lo demás
+// (crear/editar productos, categorías, usuarios y reportes) exige ser
+// Administrador; si el Vendedor lo intenta, vuelve al listado de productos.
 const rutasAdmin = {
   path: '/admin',
   HydrateFallback: Cargando,
@@ -86,7 +133,15 @@ const rutasAdmin = {
             { index: true, lazy: pagina(() => import('./pages/admin/AdminHome.jsx')) },
 
             // Accesibles para Administrador y Vendedor
+            { path: 'ordenes', lazy: pagina(() => import('./pages/admin/AdminOrdenes.jsx')) },
+            {
+              path: 'ordenes/:id',
+              loader: loaderOrdenAdmin,
+              lazy: pagina(() => import('./pages/admin/AdminBoleta.jsx')),
+            },
+            { path: 'perfil', lazy: pagina(() => import('./pages/admin/AdminPerfil.jsx')) },
             { path: 'productos', lazy: pagina(() => import('./pages/admin/AdminProductos.jsx')) },
+            { path: 'productos/criticos', lazy: pagina(() => import('./pages/admin/AdminProductosCriticos.jsx')) },
             {
               path: 'productos/:codigo',
               loader: loaderProducto,
@@ -103,12 +158,26 @@ const rutasAdmin = {
                   loader: loaderProducto,
                   lazy: pagina(() => import('./pages/admin/AdminEditarProducto.jsx')),
                 },
+                { path: 'productos/reportes', lazy: pagina(() => import('./pages/admin/AdminReportesProductos.jsx')) },
+                { path: 'categorias', lazy: pagina(() => import('./pages/admin/AdminCategorias.jsx')) },
+                { path: 'categorias/nueva', lazy: pagina(() => import('./pages/admin/AdminNuevaCategoria.jsx')) },
+                {
+                  path: 'categorias/:id/editar',
+                  loader: loaderCategoriaId,
+                  lazy: pagina(() => import('./pages/admin/AdminEditarCategoria.jsx')),
+                },
+                { path: 'reportes', lazy: pagina(() => import('./pages/admin/AdminReportes.jsx')) },
                 { path: 'usuarios', lazy: pagina(() => import('./pages/admin/AdminUsuarios.jsx')) },
                 { path: 'usuarios/nuevo', lazy: pagina(() => import('./pages/admin/AdminNuevoUsuario.jsx')) },
                 {
                   path: 'usuarios/:id',
                   loader: loaderUsuario,
                   lazy: pagina(() => import('./pages/admin/AdminDetalleUsuario.jsx')),
+                },
+                {
+                  path: 'usuarios/:id/compras',
+                  loader: loaderUsuario,
+                  lazy: pagina(() => import('./pages/admin/AdminHistorialCompras.jsx')),
                 },
                 {
                   path: 'usuarios/:id/editar',

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
+import { Alert, Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import PageHead from '../components/PageHead.jsx'
+import ListaDatos from '../components/ListaDatos.jsx'
 import ProductImage from '../components/ProductImage.jsx'
 import QuantitySelector from '../components/QuantitySelector.jsx'
-import { formatCLP } from '../utils/formato'
+import PrecioProducto from '../components/PrecioProducto.jsx'
 import { imagenesProducto } from '../services/productosService'
 import { useCart } from '../context/CartContext.jsx'
 import usePageTitle from '../hooks/usePageTitle'
@@ -32,9 +34,9 @@ function FichaProducto({ producto }) {
       : `${producto.stock} unidades disponibles`
 
   const specs = [
-    { label: 'Código', value: producto.codigo },
-    { label: 'Categoría', value: producto.categoria },
-    { label: 'Stock disponible', value: `${producto.stock} unidades` },
+    ['Código', producto.codigo],
+    ['Categoría', producto.categoria],
+    ['Stock disponible', `${producto.stock} unidades`],
   ]
 
   function agregar() {
@@ -45,71 +47,56 @@ function FichaProducto({ producto }) {
     <>
       <PageHead eyebrow={<Link to="/productos">← Volver al catálogo</Link>} titulo={producto.nombre} />
 
-      <section className="section wrap">
-        <div className="product-detail">
-          <div className="product-gallery">
-            <div className="media media--square">
-              <ProductImage
-                key={imagenes[indice]}
-                url={imagenes[indice]}
-                alt={producto.nombre}
-                categoria={producto.categoria}
-                iconSize="6rem"
-              />
+      <Container className="py-4">
+        <Row className="g-4">
+          <Col md={6}>
+            <div className="ratio ratio-1x1 bg-body-secondary rounded overflow-hidden">
+              <ProductImage key={imagenes[indice]} url={imagenes[indice]} alt={producto.nombre} categoria={producto.categoria} iconSize="6rem" />
             </div>
             {imagenes.length > 1 && (
-              <div className="product-thumbs">
+              <div className="d-flex flex-wrap gap-2 mt-3">
                 {imagenes.map((url, i) => (
                   <button
                     key={url}
                     type="button"
-                    className={'product-thumb' + (i === indice ? ' active' : '')}
+                    className={'btn p-1 border ' + (i === indice ? 'border-primary border-2' : '')}
+                    style={{ width: 64, height: 64 }}
                     onClick={() => setIndice(i)}
                   >
-                    <img src={url} alt={`Miniatura ${i + 1} de ${producto.nombre}`} />
+                    <img src={url} alt={`Miniatura ${i + 1} de ${producto.nombre}`} className="w-100 h-100 object-fit-cover" />
                   </button>
                 ))}
               </div>
             )}
-          </div>
+          </Col>
 
-          <div className="product-info">
-            <span className="card-meta">{producto.categoria}</span>
-            <h1 style={{ marginTop: '.2em' }}>{producto.nombre}</h1>
+          <Col md={6}>
+            <small className="text-body-secondary">{producto.categoria}</small>
+            <h2 className="h1 fw-bold">{producto.nombre}</h2>
             <p>{producto.descripcion}</p>
 
-            <p className="price">{formatCLP(producto.precio)}</p>
-            <span className="stock-tag">{stockTexto}</span>
+            <PrecioProducto producto={producto} className="fw-bold fs-3 mb-2" />
+            <Badge bg={sinStock ? 'secondary' : 'success'}>{stockTexto}</Badge>
 
-            <div style={{ marginTop: 20 }}>
-              <QuantitySelector
-                value={cantidad}
-                max={producto.stock || 1}
-                onChange={setCantidad}
-                disabled={sinStock}
-              />
+            <div className="mt-4">
+              <QuantitySelector value={cantidad} max={producto.stock || 1} onChange={setCantidad} disabled={sinStock} />
             </div>
 
-            <button className="btn accent" style={{ marginTop: 16 }} onClick={agregar} disabled={sinStock}>
+            <Button variant="warning" className="mt-3" onClick={agregar} disabled={sinStock}>
               Agregar al carrito
-            </button>
+            </Button>
             {mensaje && (
-              <p className={mensaje.ok ? 'msg-ok' : 'msg-error'} style={{ marginTop: 10 }}>
+              <Alert variant={mensaje.ok ? 'success' : 'danger'} className="mt-3 py-2">
                 {mensaje.message}
-              </p>
+              </Alert>
             )}
 
-            <div className="spec-list">
-              {specs.map((s) => (
-                <div className="spec-row" key={s.label}>
-                  <span>{s.label}</span>
-                  <span>{s.value}</span>
-                </div>
-              ))}
+            <div className="mt-4">
+              <ListaDatos filas={specs} />
             </div>
-          </div>
-        </div>
-      </section>
+          </Col>
+        </Row>
+      </Container>
     </>
   )
 }

@@ -12,7 +12,7 @@ export default function RouteError() {
   return (
     <>
       <PageHead eyebrow="TF / ERROR" titulo="Algo salió mal" />
-      <section className="section wrap">
+      <section className="container py-4">
         <p>Ocurrió un error inesperado. Intenta recargar la página.</p>
       </section>
     </>

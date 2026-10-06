@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import AdminHeader from '../../components/AdminHeader.jsx'
 import { eliminarUsuario, obtenerUsuarios } from '../../services/usuariosService'
 import usePageTitle from '../../hooks/usePageTitle'
+import EstadoForm from '../../components/EstadoForm.jsx'
 
 export default function AdminUsuarios() {
   usePageTitle('Usuarios', 'Panel Tecno Factory')
@@ -22,16 +23,16 @@ export default function AdminUsuarios() {
 
       <section>
         <p>
-          <Link className="btn accent small" to="/admin/usuarios/nuevo">
+          <Link className="btn btn-warning btn-sm" to="/admin/usuarios/nuevo">
             + Nuevo usuario
           </Link>
         </p>
 
-        {aviso && <div className={`form-status show admin-flash ${aviso.tipo}`}>{aviso.texto}</div>}
+        <EstadoForm estado={aviso} className="mb-3" />
 
-        <div className="table-scroll">
-          <table className="admin-table">
-            <thead>
+        <div className="table-responsive">
+          <table className="table table-hover align-middle bg-white">
+            <thead className="table-light">
               <tr>
                 <th>RUN</th>
                 <th>Nombre</th>
@@ -55,18 +56,18 @@ export default function AdminUsuarios() {
                     </td>
                     <td>{u.correo}</td>
                     <td>
-                      <span className={'badge ' + u.tipo.toLowerCase()}>{u.tipo}</span>
+                      <span className={'badge ' + ({ Administrador: 'text-bg-dark', Vendedor: 'text-bg-info', Cliente: 'text-bg-secondary' }[u.tipo] ?? 'text-bg-light')}>{u.tipo}</span>
                     </td>
                     <td>{u.comuna}</td>
                     <td>
-                      <div className="admin-actions">
-                        <Link className="btn ghost small" to={`/admin/usuarios/${u.id}`}>
+                      <div className="d-flex flex-wrap gap-2">
+                        <Link className="btn btn-outline-primary btn-sm" to={`/admin/usuarios/${u.id}`}>
                           Ver
                         </Link>
-                        <Link className="btn ghost small" to={`/admin/usuarios/${u.id}/editar`}>
+                        <Link className="btn btn-outline-primary btn-sm" to={`/admin/usuarios/${u.id}/editar`}>
                           Editar
                         </Link>
-                        <button type="button" className="btn ghost small danger" onClick={() => eliminar(u)}>
+                        <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => eliminar(u)}>
                           Eliminar
                         </button>
                       </div>

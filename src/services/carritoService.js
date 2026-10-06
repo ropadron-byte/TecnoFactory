@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from '../data/constantes'
 import { obtenerProductoPorCodigo } from './productosService'
+import { precioFinal } from '../utils/precios'
 
 // Lógica pura del carrito sobre localStorage. La UI no la usa directo:
 // pasa por CartContext, que además mantiene el estado de React al día.
@@ -64,6 +65,6 @@ export function cartTotalItems(cart = getCart()) {
 export function cartTotalPrice(cart = getCart()) {
   return cart.reduce((sum, item) => {
     const product = obtenerProductoPorCodigo(item.codigo)
-    return sum + (product ? product.precio * item.qty : 0)
+    return sum + (product ? precioFinal(product) * item.qty : 0)
   }, 0)
 }

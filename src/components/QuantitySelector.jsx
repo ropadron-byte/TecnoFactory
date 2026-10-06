@@ -6,19 +6,20 @@ export default function QuantitySelector({ value, min = 1, max, onChange, disabl
   }
 
   return (
-    <div className="qty">
-      <button type="button" aria-label="Restar unidad" disabled={disabled} onClick={() => onChange(limitar(value - 1))}>
+    <div className="input-group input-group-sm" style={{ width: 130 }}>
+      <button type="button" className="btn btn-outline-secondary" aria-label="Restar unidad" disabled={disabled} onClick={() => onChange(limitar(value - 1))}>
         −
       </button>
       <input
         type="number"
+        className="form-control text-center"
         value={value}
         min={min}
         max={max}
         disabled={disabled}
         onChange={(e) => onChange(limitar(parseInt(e.target.value, 10)))}
       />
-      <button type="button" aria-label="Sumar unidad" disabled={disabled} onClick={() => onChange(limitar(value + 1))}>
+      <button type="button" className="btn btn-outline-secondary" aria-label="Sumar unidad" disabled={disabled} onClick={() => onChange(limitar(value + 1))}>
         +
       </button>
     </div>

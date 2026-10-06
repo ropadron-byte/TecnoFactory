@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatCLP } from '../utils/formato'
+import { Badge, Button, Card } from 'react-bootstrap'
 import { imagenesProducto } from '../services/productosService'
 import { useCart } from '../context/CartContext.jsx'
+import { descuentoDe, tieneOferta } from '../utils/precios'
 import ProductImage from './ProductImage.jsx'
+import PrecioProducto from './PrecioProducto.jsx'
 
-// Tarjeta de producto del catálogo (página Productos).
+// Tarjeta de producto del catálogo (Productos, Categorías y Ofertas).
 export default function ProductCard({ producto }) {
   const { addToCart } = useCart()
   const [texto, setTexto] = useState(null)
@@ -19,29 +21,36 @@ export default function ProductCard({ producto }) {
   }
 
   return (
-    <article className="card">
-      <Link to={enlace}>
-        <div
-          className="media media--card"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
-        >
+    <Card as="article" className="h-100 shadow-sm">
+      <Link to={enlace} className="position-relative d-block">
+        <div className="ratio ratio-4x3 bg-body-secondary rounded-top overflow-hidden">
           <ProductImage url={imagen} alt={producto.nombre} categoria={producto.categoria} />
         </div>
-      </Link>
-      <div className="card-body">
-        <span className="card-meta">{producto.categoria}</span>
-        <h3>
-          <Link to={enlace}>{producto.nombre}</Link>
-        </h3>
-        <p className="price">{formatCLP(producto.precio)}</p>
-        {producto.stock > 0 ? (
-          <button type="button" className="btn accent small" onClick={agregar}>
-            {texto ?? 'Añadir al carrito'}
-          </button>
-        ) : (
-          <span className="stock-tag">Sin stock</span>
+        {tieneOferta(producto) && (
+          <Badge bg="danger" className="position-absolute top-0 start-0 m-2 offer-ribbon">
+            -{descuentoDe(producto)}%
+          </Badge>
         )}
-      </div>
-    </article>
+      </Link>
+      <Card.Body className="d-flex flex-column">
+        <small className="text-body-secondary">{producto.categoria}</small>
+        <Card.Title as="h3" className="h6">
+          <Link to={enlace} className="text-decoration-none text-body">
+            {producto.nombre}
+          </Link>
+        </Card.Title>
+        {/* el % ya se ve en la cinta sobre la imagen */}
+        <PrecioProducto producto={producto} etiqueta={false} />
+        {producto.stock > 0 ? (
+          <Button variant="warning" size="sm" className="mt-auto" onClick={agregar}>
+            {texto ?? 'Añadir al carrito'}
+          </Button>
+        ) : (
+          <Badge bg="secondary" className="mt-auto align-self-start">
+            Sin stock
+          </Badge>
+        )}
+      </Card.Body>
+    </Card>
   )
 }

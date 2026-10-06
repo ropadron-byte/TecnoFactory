@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import FormField from './FormField.jsx'
 import ImageUrlsField from './ImageUrlsField.jsx'
-import { CATEGORIAS } from '../data/constantes'
 import { validarProducto } from '../utils/validaciones'
 import { imagenesProducto, obtenerProductoPorCodigo } from '../services/productosService'
+import { obtenerCategorias } from '../services/categoriasService'
+import EstadoForm from './EstadoForm.jsx'
 
 function valoresIniciales(producto) {
   if (!producto) {
-    return { codigo: '', nombre: '', descripcion: '', precio: '', stock: '', stockCritico: '', categoria: '', urls: [''] }
+    return { codigo: '', nombre: '', descripcion: '', precio: '', stock: '', stockCritico: '', categoria: '', descuento: '', urls: [''] }
   }
   return {
     codigo: producto.codigo,
@@ -18,6 +19,7 @@ function valoresIniciales(producto) {
     stock: String(producto.stock),
     stockCritico: producto.stockCritico ? String(producto.stockCritico) : '',
     categoria: producto.categoria,
+    descuento: producto.descuento ? String(producto.descuento) : '',
     urls: imagenesProducto(producto),
   }
 }
@@ -31,6 +33,7 @@ export default function ProductoForm({ producto, onGuardar, mensajeExito, cancel
   const [v, setV] = useState(() => valoresIniciales(producto))
   const [enviado, setEnviado] = useState(false)
   const [estado, setEstado] = useState(null)
+  const [categorias] = useState(obtenerCategorias)
 
   const codigoOcupado = !editando && v.codigo.trim().length >= 3 && Boolean(obtenerProductoPorCodigo(v.codigo.trim()))
   const validos = validarProducto(v, { validarCodigo: !editando, codigoDisponible: !codigoOcupado })
@@ -64,13 +67,14 @@ export default function ProductoForm({ producto, onGuardar, mensajeExito, cancel
       stock: Number(v.stock),
       stockCritico: v.stockCritico === '' ? 0 : Number(v.stockCritico),
       categoria: v.categoria,
+      descuento: v.descuento === '' ? 0 : Number(v.descuento),
       urls,
     })
     setEstado({ tipo: 'success', texto: mensajeExito })
   }
 
   return (
-    <form className="form" onSubmit={enviar} noValidate>
+    <form className="mx-auto" onSubmit={enviar} noValidate style={{ maxWidth: 720 }}>
       <FormField
         id="codigo"
         label="Código producto"
@@ -128,25 +132,35 @@ export default function ProductoForm({ producto, onGuardar, mensajeExito, cancel
       <FormField id="categoria" label="Categoría" error="Selecciona una categoría." estado={marca('categoria')}>
         <select id="categoria" name="categoria" value={v.categoria} onChange={cambiar}>
           <option value="">Selecciona una categoría</option>
-          {CATEGORIAS.map((c) => (
-            <option key={c} value={c}>
-              {c}
+          {categorias.map((c) => (
+            <option key={c.id} value={c.nombre}>
+              {c.nombre}
             </option>
           ))}
         </select>
       </FormField>
 
+      <FormField
+        id="descuento"
+        label="Descuento (%)"
+        hint="Opcional. Entero entre 0 y 100. Con descuento mayor a 0 el producto aparece en Ofertas."
+        error="El descuento debe ser un número entero entre 0 y 100."
+        estado={marca('descuento')}
+      >
+        <input type="number" id="descuento" name="descuento" min={0} max={100} step="1" value={v.descuento} onChange={cambiar} />
+      </FormField>
+
       <ImageUrlsField value={v.urls} onChange={(urls) => setV((prev) => ({ ...prev, urls }))} />
 
-      <button type="submit" className="btn accent">
+      <button type="submit" className="btn btn-warning me-2">
         {editando ? 'Guardar cambios' : 'Guardar producto'}
       </button>
       {editando && (
-        <Link to={cancelarA} className="btn ghost">
+        <Link to={cancelarA} className="btn btn-outline-primary">
           Cancelar
         </Link>
       )}
-      <div className={'form-status' + (estado ? ` show ${estado.tipo}` : '')}>{estado?.texto}</div>
+      <EstadoForm estado={estado} />
     </form>
   )
 }

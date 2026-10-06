@@ -5,6 +5,7 @@ import RegionComunaFields from './RegionComunaFields.jsx'
 import { TIPOS_USUARIO } from '../data/constantes'
 import { contrasenaValida, correoValido, validarRun } from '../utils/validaciones'
 import { correoYaRegistrado } from '../services/usuariosService'
+import EstadoForm from './EstadoForm.jsx'
 
 function valoresIniciales(u) {
   return {
@@ -25,7 +26,13 @@ function valoresIniciales(u) {
  * Formulario de usuario para crear (sin `usuario`) o editar (con `usuario`).
  * Al editar, la contraseña es opcional: vacía = se conserva la actual.
  */
-export default function UsuarioForm({ usuario, onGuardar, mensajeExito, cancelarA = '/admin/usuarios' }) {
+export default function UsuarioForm({
+  usuario,
+  onGuardar,
+  mensajeExito,
+  cancelarA = '/admin/usuarios',
+  modoPerfil = false, // el usuario edita sus propios datos: no puede cambiar su tipo ni su RUN
+}) {
   const editando = Boolean(usuario)
   const [v, setV] = useState(() => valoresIniciales(usuario))
   const [enviado, setEnviado] = useState(false)
@@ -40,7 +47,7 @@ export default function UsuarioForm({ usuario, onGuardar, mensajeExito, cancelar
     correo: formatoCorreoOk && !correoDuplicado,
     // Al editar, dejarla vacía es válido (se mantiene la actual).
     contrasena: editando && v.contrasena.length === 0 ? true : contrasenaValida(v.contrasena),
-    tipo: v.tipo.length > 0,
+    tipo: modoPerfil || v.tipo.length > 0,
     region: v.region.length > 0,
     comuna: v.comuna.length > 0,
     direccion: v.direccion.trim().length > 0 && v.direccion.trim().length <= 300,
@@ -79,7 +86,7 @@ export default function UsuarioForm({ usuario, onGuardar, mensajeExito, cancelar
       correo: v.correo.trim(),
       contrasena: v.contrasena,
       fecha_nacimiento: v.fecha_nacimiento,
-      tipo: v.tipo,
+      tipo: modoPerfil ? usuario.tipo : v.tipo,
       region: v.region,
       comuna: v.comuna,
       direccion: v.direccion.trim(),
@@ -88,9 +95,9 @@ export default function UsuarioForm({ usuario, onGuardar, mensajeExito, cancelar
   }
 
   return (
-    <form className="form" onSubmit={enviar} noValidate>
+    <form className="mx-auto" onSubmit={enviar} noValidate style={{ maxWidth: 720 }}>
       <FormField id="run" label="RUN" hint="Sin puntos ni guion. Ej: 190110222" error="RUN inválido, revisa el dígito verificador." estado={marca('run')}>
-        <input type="text" id="run" name="run" maxLength={9} value={v.run} onChange={cambiar} />
+        <input type="text" id="run" name="run" maxLength={9} value={v.run} onChange={cambiar} readOnly={modoPerfil} />
       </FormField>
 
       <FormField id="nombre" label="Nombre" error="El nombre es obligatorio (máx. 50 caracteres)." estado={marca('nombre')}>
@@ -133,16 +140,18 @@ export default function UsuarioForm({ usuario, onGuardar, mensajeExito, cancelar
         <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value={v.fecha_nacimiento} onChange={cambiar} />
       </FormField>
 
-      <FormField id="tipo" label="Tipo de usuario" error="Selecciona un tipo de usuario." estado={marca('tipo')}>
-        <select id="tipo" name="tipo" value={v.tipo} onChange={cambiar}>
-          <option value="">Selecciona un tipo</option>
-          {TIPOS_USUARIO.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </FormField>
+      {!modoPerfil && (
+        <FormField id="tipo" label="Tipo de usuario" error="Selecciona un tipo de usuario." estado={marca('tipo')}>
+          <select id="tipo" name="tipo" value={v.tipo} onChange={cambiar}>
+            <option value="">Selecciona un tipo</option>
+            {TIPOS_USUARIO.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </FormField>
+      )}
 
       <RegionComunaFields
         region={v.region}
@@ -156,15 +165,15 @@ export default function UsuarioForm({ usuario, onGuardar, mensajeExito, cancelar
         <input type="text" id="direccion" name="direccion" maxLength={300} autoComplete="street-address" value={v.direccion} onChange={cambiar} />
       </FormField>
 
-      <button type="submit" className="btn accent">
+      <button type="submit" className="btn btn-warning me-2">
         {editando ? 'Guardar cambios' : 'Guardar usuario'}
       </button>
       {editando && (
-        <Link to={cancelarA} className="btn ghost">
+        <Link to={cancelarA} className="btn btn-outline-primary">
           Cancelar
         </Link>
       )}
-      <div className={'form-status' + (estado ? ` show ${estado.tipo}` : '')}>{estado?.texto}</div>
+      <EstadoForm estado={estado} />
     </form>
   )
 }

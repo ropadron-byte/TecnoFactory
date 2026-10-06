@@ -11,7 +11,7 @@ export function obtenerProductos() {
       localStorage.setItem(STORAGE_KEYS.productos, JSON.stringify(PRODUCTOS_INICIALES))
       return PRODUCTOS_INICIALES
     }
-    return JSON.parse(data)
+    return completarDescuentos(JSON.parse(data))
   } catch (e) {
     console.error('No se pudo leer el catálogo:', e)
     return PRODUCTOS_INICIALES
@@ -20,6 +20,35 @@ export function obtenerProductos() {
 
 function guardarProductos(productos) {
   localStorage.setItem(STORAGE_KEYS.productos, JSON.stringify(productos))
+}
+
+/** Migración: catálogos guardados antes de existir las ofertas no tienen el
+ * campo "descuento". Se completa con el del catálogo inicial (o 0). */
+function completarDescuentos(productos) {
+  if (productos.every((p) => p.descuento !== undefined)) return productos
+  const completos = productos.map((p) =>
+    p.descuento !== undefined
+      ? p
+      : { ...p, descuento: PRODUCTOS_INICIALES.find((i) => i.codigo === p.codigo)?.descuento ?? 0 },
+  )
+  guardarProductos(completos)
+  return completos
+}
+
+/** ¿El stock llegó al nivel crítico (o se agotó)? */
+export function esStockCritico(producto) {
+  return producto.stock <= (Number(producto.stockCritico) || 0)
+}
+
+/** Descuenta del inventario lo vendido. `items`: [{ codigo, qty }]. */
+export function descontarStock(items) {
+  const productos = obtenerProductos()
+  guardarProductos(
+    productos.map((p) => {
+      const vendido = items.find((i) => i.codigo === p.codigo)
+      return vendido ? { ...p, stock: Math.max(0, p.stock - vendido.qty) } : p
+    }),
+  )
 }
 
 /** Agrega un producto nuevo al catálogo. */

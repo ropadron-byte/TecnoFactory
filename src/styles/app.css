@@ -1,0 +1,50 @@
+/* Único CSS propio: los colores de la marca sobre Bootstrap (solo variables
+   CSS, sin Sass) y unos pocos ajustes que Bootstrap no trae. */
+:root{
+  --bs-primary:#22406B; --bs-primary-rgb:34,64,107;
+  --bs-warning:#F2A93B; --bs-warning-rgb:242,169,59;
+  --bs-body-bg:#F4F5F7; --bs-body-bg-rgb:244,245,247;
+  --bs-link-color:#22406B; --bs-link-color-rgb:34,64,107;
+  --bs-link-hover-color:#1B3356; --bs-link-hover-color-rgb:27,51,86;
+}
+.btn-primary{
+  --bs-btn-bg:#22406B; --bs-btn-border-color:#22406B;
+  --bs-btn-hover-bg:#1B3356; --bs-btn-hover-border-color:#1B3356;
+  --bs-btn-active-bg:#1B3356; --bs-btn-active-border-color:#1B3356;
+  --bs-btn-disabled-bg:#22406B; --bs-btn-disabled-border-color:#22406B;
+}
+.btn-outline-primary{
+  --bs-btn-color:#22406B; --bs-btn-border-color:#22406B;
+  --bs-btn-hover-bg:#22406B; --bs-btn-hover-border-color:#22406B;
+  --bs-btn-active-bg:#22406B; --bs-btn-active-border-color:#22406B;
+  --bs-btn-disabled-color:#22406B; --bs-btn-disabled-border-color:#22406B;
+}
+.btn-warning{
+  --bs-btn-bg:#F2A93B; --bs-btn-border-color:#F2A93B;
+  --bs-btn-hover-bg:#E39A2C; --bs-btn-hover-border-color:#E39A2C;
+  --bs-btn-active-bg:#E39A2C; --bs-btn-active-border-color:#E39A2C;
+}
+
+.card{ --bs-card-bg:#fff; }
+
+/* Home: fondo oscuro del banner */
+.hero-banner{ background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#311042 100%); }
+
+/* Panel admin: en pantallas grandes la barra lateral queda fija a la izquierda */
+@media (min-width:992px){
+  .admin-sidebar.offcanvas-lg{
+    flex:0 0 240px; width:240px !important;
+    position:sticky; top:0; height:100vh !important; overflow-y:auto;
+  }
+}
+
+/* Colores del menú lateral */
+.admin-sidebar .nav{
+  --bs-nav-link-color:rgba(255,255,255,.75); --bs-nav-link-hover-color:#fff;
+  --bs-nav-pills-link-active-bg:#F2A93B; --bs-nav-pills-link-active-color:#212529;
+}
+
+/* Al imprimir / guardar como PDF solo queda la boleta */
+@media print{
+  .navbar, footer, .offcanvas, .no-print{ display:none !important; }
+}

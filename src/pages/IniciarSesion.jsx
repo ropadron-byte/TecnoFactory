@@ -5,6 +5,7 @@ import FormField from '../components/FormField.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { contrasenaValida, correoValido } from '../utils/validaciones'
 import usePageTitle from '../hooks/usePageTitle'
+import EstadoForm from '../components/EstadoForm.jsx'
 
 export default function IniciarSesion() {
   usePageTitle('Iniciar sesión')
@@ -51,8 +52,8 @@ export default function IniciarSesion() {
         Ingresa con tu correo y contraseña para ver tus pedidos y tus datos guardados.
       </PageHead>
 
-      <section className="section wrap">
-        <form className="form" onSubmit={enviar} noValidate style={{ maxWidth: 420, margin: '0 auto' }}>
+      <section className="container py-4">
+        <form className="mx-auto" onSubmit={enviar} noValidate style={{ maxWidth: 420 }}>
           <FormField
             id="correo"
             label="Correo electrónico"
@@ -80,7 +81,7 @@ export default function IniciarSesion() {
             />
           </FormField>
 
-          <button type="submit" className="btn accent">
+          <button type="submit" className="btn btn-warning">
             Iniciar sesión
           </button>
           <p style={{ marginTop: 14 }}>
@@ -90,7 +91,7 @@ export default function IniciarSesion() {
             Cuenta de administrador de prueba: <strong>admin@duoc.cl</strong> / <strong>admin123</strong>
           </p>
 
-          <div className={'form-status' + (estado ? ` show ${estado.tipo}` : '')}>{estado?.texto}</div>
+          <EstadoForm estado={estado} />
         </form>
       </section>
     </>

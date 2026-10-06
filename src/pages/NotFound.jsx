@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <>
       <PageHead eyebrow="TF / 404" titulo="Página no encontrada" />
-      <section className="section wrap">
+      <section className="container py-4">
         <p>
           La página que buscas no existe. <Link to="/">Volver al inicio</Link>.
         </p>

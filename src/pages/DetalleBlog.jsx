@@ -26,12 +26,12 @@ export default function DetalleBlog() {
         titulo={blog.titulo}
       />
 
-      <article className="section wrap blog-body">
-        <img src={blog.imagen} alt={blog.alt} className="blog-hero-img" />
+      <article className="container py-4" style={{ maxWidth: 800 }}>
+        <img src={blog.imagen} alt={blog.alt} className="img-fluid rounded mb-4 w-100" />
         <Articulo />
-        <hr className="divider" />
+        <hr className="my-4" />
         <p>
-          <Link className="btn ghost small" to="/blogs">
+          <Link className="btn btn-outline-primary btn-sm" to="/blogs">
             ← Volver al listado de blogs
           </Link>
         </p>

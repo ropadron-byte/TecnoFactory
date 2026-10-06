@@ -1,10 +1,7 @@
 // Constantes compartidas por toda la tienda (cliente).
 
-// Categorías disponibles: se usan en los filtros del catálogo.
-export const CATEGORIAS = ['Notebooks', 'Audio', 'Accesorios', 'Monitores', 'Almacenamiento', 'Smartphones']
-
-// Un ícono simple por categoría, para cuando un producto no tiene imagen
-// (o su imagen no carga).
+// Un ícono simple por categoría, para cuando no hay imagen (o no carga).
+// Las categorías nuevas usan el ícono genérico 📦.
 export const ICONOS_CATEGORIA = {
   Notebooks: '💻',
   Audio: '🎧',
@@ -24,6 +21,8 @@ export const STORAGE_KEYS = {
   carrito: 'tf_cart',
   usuarios: 'tf_usuarios',
   sesion: 'tf_sesion',
+  categorias: 'tf_categorias',
+  ordenes: 'tf_ordenes',
 }
 
 // Tipos de usuario (roles) del sistema.

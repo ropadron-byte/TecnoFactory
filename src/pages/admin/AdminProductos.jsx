@@ -4,14 +4,14 @@ import AdminHeader from '../../components/AdminHeader.jsx'
 import ProductImage from '../../components/ProductImage.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { ROLES } from '../../data/constantes'
-import { formatCLP } from '../../utils/formato'
+import PrecioProducto from '../../components/PrecioProducto.jsx'
 import { eliminarProducto, imagenesProducto, obtenerProductos } from '../../services/productosService'
 import usePageTitle from '../../hooks/usePageTitle'
 
 function StockBadge({ producto }) {
-  if (producto.stock <= 0) return <span className="badge critico">Sin stock</span>
-  if (producto.stock <= producto.stockCritico) return <span className="badge critico">{producto.stock} (crítico)</span>
-  return <span className="badge ok">{producto.stock}</span>
+  if (producto.stock <= 0) return <span className="badge text-bg-danger">Sin stock</span>
+  if (producto.stock <= producto.stockCritico) return <span className="badge text-bg-danger">{producto.stock} (crítico)</span>
+  return <span className="badge text-bg-success">{producto.stock}</span>
 }
 
 export default function AdminProductos() {
@@ -31,18 +31,26 @@ export default function AdminProductos() {
       <AdminHeader titulo="Productos" />
 
       <section>
-        {/* Solo el Administrador puede crear, editar o eliminar productos */}
-        {esAdmin && (
-          <p>
-            <Link className="btn accent small" to="/admin/productos/nuevo">
+        <p className="d-flex flex-wrap gap-2">
+          {/* Solo el Administrador puede crear, editar o eliminar productos */}
+          {esAdmin && (
+            <Link className="btn btn-warning btn-sm" to="/admin/productos/nuevo">
               + Nuevo producto
             </Link>
-          </p>
-        )}
+          )}
+          <Link className="btn btn-outline-primary btn-sm" to="/admin/productos/criticos">
+            Productos críticos
+          </Link>
+          {esAdmin && (
+            <Link className="btn btn-outline-primary btn-sm" to="/admin/productos/reportes">
+              Reportes
+            </Link>
+          )}
+        </p>
 
-        <div className="table-scroll">
-          <table className="admin-table">
-            <thead>
+        <div className="table-responsive">
+          <table className="table table-hover align-middle bg-white">
+            <thead className="table-light">
               <tr>
                 <th></th>
                 <th>Código</th>
@@ -62,28 +70,30 @@ export default function AdminProductos() {
                 productos.map((p) => (
                   <tr key={p.codigo}>
                     <td>
-                      <div className="table-thumb">
+                      <div className="ratio ratio-1x1 bg-body-secondary rounded overflow-hidden" style={{ width: 44 }}>
                         <ProductImage url={imagenesProducto(p)[0]} alt={p.nombre} categoria={p.categoria} />
                       </div>
                     </td>
                     <td>{p.codigo}</td>
                     <td>{p.nombre}</td>
                     <td>{p.categoria}</td>
-                    <td>{formatCLP(p.precio)}</td>
+                    <td>
+                      <PrecioProducto producto={p} className="mb-0" />
+                    </td>
                     <td>
                       <StockBadge producto={p} />
                     </td>
                     <td>
-                      <div className="admin-actions">
-                        <Link className="btn ghost small" to={`/admin/productos/${encodeURIComponent(p.codigo)}`}>
+                      <div className="d-flex flex-wrap gap-2">
+                        <Link className="btn btn-outline-primary btn-sm" to={`/admin/productos/${encodeURIComponent(p.codigo)}`}>
                           Ver
                         </Link>
                         {esAdmin && (
                           <>
-                            <Link className="btn ghost small" to={`/admin/productos/${encodeURIComponent(p.codigo)}/editar`}>
+                            <Link className="btn btn-outline-primary btn-sm" to={`/admin/productos/${encodeURIComponent(p.codigo)}/editar`}>
                               Editar
                             </Link>
-                            <button type="button" className="btn ghost small danger" onClick={() => eliminar(p)}>
+                            <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => eliminar(p)}>
                               Eliminar
                             </button>
                           </>

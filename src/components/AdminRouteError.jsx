@@ -13,7 +13,7 @@ export default function AdminRouteError() {
       <section>
         <p>{noEncontrado ? 'El registro que buscas no existe.' : 'Ocurrió un error inesperado.'}</p>
         <p>
-          <Link className="btn ghost" to="/admin">
+          <Link className="btn btn-outline-primary" to="/admin">
             Volver al inicio del panel
           </Link>
         </p>

@@ -6,6 +6,7 @@ import RegionComunaFields from '../components/RegionComunaFields.jsx'
 import { contrasenaValida, correoValido, validarRun } from '../utils/validaciones'
 import { correoYaRegistrado, guardarUsuario } from '../services/usuariosService'
 import usePageTitle from '../hooks/usePageTitle'
+import EstadoForm from '../components/EstadoForm.jsx'
 
 const INICIAL = {
   run: '',
@@ -81,8 +82,8 @@ export default function RegistroUsuario() {
         Regístrate para guardar tus datos y hacer seguimiento a tus pedidos.
       </PageHead>
 
-      <section className="section wrap">
-        <form className="form" onSubmit={enviar} noValidate style={{ maxWidth: 560, margin: '0 auto' }}>
+      <section className="container py-4">
+        <form className="mx-auto" onSubmit={enviar} noValidate style={{ maxWidth: 560 }}>
           <FormField id="run" label="RUN" hint="Sin puntos ni guion. Ej: 190110222" error="RUN inválido, revisa el dígito verificador." estado={marca('run')}>
             <input type="text" id="run" name="run" maxLength={9} value={v.run} onChange={cambiar} />
           </FormField>
@@ -133,14 +134,14 @@ export default function RegistroUsuario() {
             <input type="text" id="direccion" name="direccion" maxLength={300} autoComplete="street-address" value={v.direccion} onChange={cambiar} />
           </FormField>
 
-          <button type="submit" className="btn accent">
+          <button type="submit" className="btn btn-warning">
             Crear cuenta
           </button>
           <p style={{ marginTop: 14 }}>
             ¿Ya tienes cuenta? <Link to="/iniciar-sesion">Inicia sesión aquí</Link>.
           </p>
 
-          <div className={'form-status' + (estado ? ` show ${estado.tipo}` : '')}>{estado?.texto}</div>
+          <EstadoForm estado={estado} />
         </form>
       </section>
     </>
